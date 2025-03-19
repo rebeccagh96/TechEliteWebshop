@@ -1,0 +1,117 @@
+/* 
+Färger:
+Mörkgrön #163832ff
+Mörklila #301934ff
+Ljusgrå #e3e3e3ff
+Blå-lila #9747ffff
+Rosa-lila #a948b3ff
+*/
+
+h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.forum-menu {
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.forum-menu img, button {
+    margin: 0px 30px;
+}
+
+article {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+section {
+    flex-direction: column;
+    background-color: white;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+}
+
+section div {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 400px;
+    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+}
+
+.notifications:hover {
+cursor: pointer;
+}
+
+#notification-article {
+    display: none;
+}
+
+#notification-article p{
+    margin: 10px;
+}
+
+#create-thread {
+    display: none;
+    flex-direction: column;
+    align-items: start;
+    padding: 20px;
+    margin: auto;
+    width: 300px;
+    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+    border-radius: 5px;
+    filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.171));
+}
+
+.notification-link {
+    color: black;
+}
+
+#title, #thread-category {
+    margin-top: 3px;
+    margin-bottom: 10px;
+    height: 30px;
+    width: 80%;
+}
+
+#create-thread input, select, textarea {
+    border-radius: 5px;
+    border-color: #e3e3e3ff;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#text {
+    width: 80%;
+    height: 150px;
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+.btn {
+    border-radius: 5px;
+    border-color: #e3e3e3ff;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.new-thread, .my-thread {
+    color: black;
+    margin: 10px;
+}
+
+.new-thread:hover, .my-thread:hover, .show-more:hover, .notification-link:hover {
+    text-decoration: underline;
+}
+
+.show-more {
+    text-align: end;
+    color: black;
+}

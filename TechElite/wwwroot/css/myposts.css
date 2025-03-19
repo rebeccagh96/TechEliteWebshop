@@ -1,0 +1,54 @@
+/* 
+Färger:
+Mörkgrön #163832ff
+Mörklila #301934ff
+Ljusgrå #e3e3e3ff
+Blå-lila #9747ffff
+Rosa-lila #a948b3ff
+*/
+
+h2 {
+    font-size: 1.2em;
+}
+
+article {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+section {
+    flex-direction: column;
+    background-color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+section div {
+    flex-direction: row;
+    margin: 10px;
+    padding: 10px;
+    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+}
+
+main a {
+    color: black;
+    font-weight: 700;
+}
+
+main a:hover {
+    text-decoration: underline;
+}
+
+.post-text, .my-thread {
+    margin: auto 20px;
+}
+
+.my-thread {
+    font-weight: 700;
+}
+
