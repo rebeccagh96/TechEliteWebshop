@@ -1,0 +1,127 @@
+/* 
+Färger:
+Mörkgrön #163832ff
+Mörklila #301934ff
+Ljusgrå #e3e3e3ff
+Blå-lila #9747ffff
+Rosa-lila #a948b3ff
+
+*/
+
+
+header {
+    min-height: 60vh;
+}
+
+
+h2 {
+    font-size: 1.2em;
+}
+
+
+.filter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.filter {
+    padding: 20px;
+}
+
+.filter img {
+    width: 20px;
+}
+
+.header-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.img-box {
+    margin-top: 150px;
+}
+
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+/* Hero Image Style */
+.hero-image {
+    background-image: url ('img/Products/Laptop/Laptop2.svg'); /* Lägg till din bild här */
+    background-size: cover; /* Gör så att bilden täcker hela området */
+    background-position: center; /* Centrerar bilden */
+    height: 100vh; /* Full höjd på fönstret */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white; /* Gör texten vit så att den syns på en mörk bild */
+    flex-direction: column; /* Lägger texterna vertikalt */
+}
+
+.hero-image h1 {
+    font-size: 3rem; /* Större text för rubriken */
+    margin-bottom: 20px; /* Skapar utrymme mellan rubriken och beskrivningen */
+}
+
+.hero-image p {
+    font-size: 1.5rem; /* Lite mindre text för beskrivningen */
+    margin-top: 0; /* Tar bort eventuell extra marginal ovanför beskrivningen */
+}
+.shop-now-btn {
+    display: inline-block;
+    background-color: #301934ff; /* En härlig färg för knappen */
+    color: white; /* Vit text */
+    padding: 15px 30px; /* Lite padding för att göra knappen större */
+    font-size: 1.2rem; /* Gör texten lite större */
+    text-align: center;
+    text-decoration: none; /* Ta bort understrykning på länken */
+    border-radius: 5px; /* Rundade hörn för en modern känsla */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition för hover-effekter */
+}
+
+.shop-now-btn:hover {
+    background-color: #ff4b3a; /* Mörkare nyans vid hover */
+    transform: translateY(-5px); /* Liten "pop" effekt när man hovrar */
+}
+
+.shop-now-btn:active {
+    transform: translateY(0); /* Återgår till originalposition när man klickar */
+}
+article {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+section {
+    flex-direction: column;
+    background-color: white;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+}
+
+section div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    width: 150px;
+    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+}
+
+.products img {
+    max-height: 60%;
+    max-width: 90%;
+    filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.479));
+}
