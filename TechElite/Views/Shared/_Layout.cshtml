@@ -7,42 +7,116 @@
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/TechElite.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TechElite</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+        <div class="menu">
+            <a href="index.html"><img class="logo" src="img/Logos/TechElite.grey.svg" alt="Logotyp"></a>
+            <nav>
+                <a href="index.html">Start</a>
+                <a href="cart.html">Shop</a>
+                <a href="forum.html">Forum</a>
+                <a href="about.html">Om oss</a>
+            </nav>
+            <div class="icons">
+                <a href="#"><img src="img/Icons/search.svg" alt="Sök"></a>
+                <a href="#"><img src="img/Icons/cart.svg" alt="Varukorg"></a>
+                <a href="login.html"><img src="img/Icons/account.svg" alt="Logga in"></a>
             </div>
-        </nav>
+        </div>
+        <div class="hero-image">
+            <h1>Välkommen till TechElite</h1>
+            <p>Upptäck de senaste teknologierna</p>
+            <!-- Shoppa nu knapp -->
+            <a href="cart.html" class="shop-now-btn">Shoppa nu</a>
+
+        </div>
+        <div class="header-content">
+            <div class="img-box">
+            </div>
+
+        </div>
+        <div class="links">
+            <a class="" href="#">Nyheter</a>
+            <a class="" href="#">Datorer</a>
+            <a class="" href="#">Tillbehör</a>
+            <a class="" href="#">Bildskärmar</a>
+            <a class="" href="#">Konsoler & tillbehör</a>
+            <a class="" href="#">Telefoner & tablets</a>
+            <a class="" href="#">Datorkomponenter</a>
+            <a class="" href="#">Ljud</a>
+        </div>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - TechElite - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer>
+        <div class="footer-content">
+            <div class="categories">
+                <h3>Kategorier</h3>
+                <a class="footer-cat" href="">Nyheter</a>
+                <a class="footer-cat" href="">Datorer</a>
+                <a class="footer-cat" href="">Tillbehör</a>
+                <a class="footer-cat" href="">Bildskärmar</a>
+                <a class="footer-cat" href="">Konsoler & tillbehör</a>
+                <a class="footer-cat" href="">Telefoner & tablets</a>
+                <a class="footer-cat" href="">Datorkomponenter</a>
+                <a class="footer-cat" href="">Ljud</a>
+            </div>
+            <div class="forum-links">
+                <h3>Forum</h3>
+                <a class="footer-cat" href="">Registrera dig</a>
+                <a class="footer-cat" href="">Logga in</a>
+                <a class="footer-cat" href="">Nyheter</a>
+                <a class="footer-cat" href="">Konto</a>
+                <a class="footer-cat" href="">Användarvillkor</a>
+                <a class="footer-cat" href="">Kontohantering</a>
+            </div>
+            <div class="About">
+                <h3>Om oss</h3>
+                <a class="footer-cat" href="">Vår historia</a>
+                <a class="footer-cat" href="">Våra medarbetare</a>
+                <a class="footer-cat" href="">Kontaktinformation</a>
+                <a class="footer-cat" href="">Jobba hos oss</a>
+                <a class="footer-cat" href="">Press</a>
+                <a class="footer-cat" href="">Vanliga frågor</a>
+            </div>
+            <div class="Handla">
+                <h3>Handla hos oss</h3>
+                <a class="footer-cat" href="">Försäljningsvillkor</a>
+                <a class="footer-cat" href="">Frakt & leverans</a>
+                <a class="footer-cat" href="">Ångerrätt</a>
+                <a class="footer-cat" href="">Garanti</a>
+                <a class="footer-cat" href="">Reklamation</a>
+                <a class="footer-cat" href="">Sekretess & integritet</a>
+            </div>
+            <div class="shortcuts">
+                <h3>Nyhetsbrev</h3>
+                <div class="subscribe">
+                    <input type="text" id="subscribe" name="subscribe" value="you@exampel.com">
+                    <input class="btn" type="submit" id="submit" value="Submit">
+                </div>
+                <div class="footer-buttons">
+                    <a class="btn" href="">Sign in</a>
+                    <a class="btn" href="">Register</a>
+                </div>
+                <div class="socials">
+                    <div class="social-media">
+                        <a href="#" class="fa fa-facebook" style="font-size: 20px;"></a>
+                        <a href="#" class="fa fa-linkedin" style="font-size: 20px;"></a>
+                        <a href="#" class="fa fa-instagram" style="font-size: 20px;"></a>
+                        <a href="#" class="fa fa-envelope" style="font-size: 20px;"></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
