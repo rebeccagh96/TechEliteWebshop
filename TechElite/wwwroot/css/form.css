@@ -1,0 +1,92 @@
+/* 
+Färger:
+Mörkgrön #163832ff
+Mörklila #301934ff
+Ljusgrå #e3e3e3ff
+Blå-lila #9747ffff
+Rosa-lila #a948b3ff
+
+*/
+
+
+
+h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+
+
+
+#signup, #login {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 20px;
+    margin: auto;
+    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+    border-radius: 5px;
+    filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.171));
+    width: 100%;
+    height: 100%;
+}
+
+.username, .password {
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+
+#signup input, #login input {
+    border-radius: 5px;
+    border-color: #e3e3e3ff;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.username, .password {
+    height: 30px;
+    width: 80%;
+}
+
+#userrole, #forgotPassword {
+    margin-top: 10px;
+    margin-bottom: 8px;
+}
+
+#role {
+    margin: 1px 10px;
+}
+
+.roles {
+    display: flex;
+    flex-direction: row;
+    row-gap: 10px;
+    column-gap: 5px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+
+#role label {
+    border: 1px solid #000;
+}
+
+
+#signup a, #login a {
+    color: #9747ffff;
+    text-decoration: underline;
+}
+
+#signup a:hover, #login a:hover, #terms a:hover {
+    font-weight: bold;
+}
+
+#toggleForm, #toggleFormBack {
+    margin-top: 8px;
+}
+
+#terms, #remember {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}

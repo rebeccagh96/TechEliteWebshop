@@ -1,0 +1,36 @@
+.thread {
+    width: 80%;
+}
+
+.thread-div {
+    width: auto;
+    margin-top: 10px;
+}
+
+span {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#create-post {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px;
+    padding-left: 50px;
+    margin: auto;
+    width: 75%;
+    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+    border-radius: 5px;
+    filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.171));
+}
+
+#create-post input {
+    border-radius: 5px;
+    border-color: #e3e3e3ff;
+    padding-left: 10px;
+    padding-right: 10px;
+}
