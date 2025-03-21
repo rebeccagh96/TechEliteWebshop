@@ -6,6 +6,6 @@
         public int FCategoryId { get; set; }
         public int MemberId { get; set; }
         public DateTime PublishDate { get; set; }
-        public string ThreadReplyText { get; set; }
+        public required string ThreadReplyText { get; set; }
     }
 }

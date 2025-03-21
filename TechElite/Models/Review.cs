@@ -6,7 +6,7 @@
         public int UserId { get; set;  } 
 
         public int ProductId { get; set; }
-        public string ReviewText { get; set; }
+        public string? ReviewText { get; set; }
 
         public int Stars {  get; set; }
     }
