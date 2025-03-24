@@ -11,5 +11,8 @@ namespace TechElite.Data
         {
         }
         public DbSet<TechElite.Models.User> User { get; set; } = default!;
+
+        public DbSet<ForumCategory> ForumCategory { get; set; }
+        public DbSet<Models.Thread> Thread { get; set; }
     }
 }
