@@ -13,17 +13,17 @@
 <body>
     <header>
         <div class="menu">
-            <a href="index.html"><img class="logo" src="img/Logos/TechElite.grey.svg" alt="Logotyp"></a>
+            <a href="index.html"><img class="logo" src="~/img/Logos/TechElite.grey.svg" alt="Logotyp"></a>
             <nav>
-                <a asp-page="/Index">Start</a>
-                <a asp-page="/Shop">Shop</a>
-                <a asp-area="" asp-controller="Forum" asp-action="Forum">Forum</a>
-                <a asp-page="/About">Om oss</a>
+                <a asp-controller="Home" asp-action="Index">Start</a>
+                <a asp-controller="Shop" asp-action="Shop">Shop</a>
+                <a asp-controller="Forum" asp-action="Forum">Forum</a>
+                <a asp-controller="About" asp-action="About">Om oss</a>
             </nav>
             <div class="icons">
-                <a href="#"><img src="img/Icons/search.svg" alt="Sök"></a>
-                <a href="#"><img src="img/Icons/cart.svg" alt="Varukorg"></a>
-                <a href="login.html"><img src="img/Icons/account.svg" alt="Logga in"></a>
+                <a href="#"><img src="~/img/Icons/search.svg" alt="Sök"></a>
+                <a href="#"><img src="~/img/Icons/cart.svg" alt="Varukorg"></a>
+                <a href="login.html"><img src="~/img/Icons/account.svg" alt="Logga in"></a>
             </div>
         </div>
         <div class="hero-image">
