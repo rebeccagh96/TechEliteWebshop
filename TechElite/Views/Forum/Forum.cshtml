@@ -1,11 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Forum";
 }
+<head>
+    <link rel="stylesheet" href="~/css/forum.css" asp-append-version="true" />
+</head>
 
 <main>
     <article class="forum-menu">
-        <img class="notifications" src="img/Icons/notifications.svg" onclick="showNotifications()">
-        <img src="img/Icons/search_black.svg">
+        <img class="notifications" src="~/img/Icons/notifications.svg" onclick="showNotifications()">
+        <img src="~/img/Icons/search_black.svg">
         <button class="btn" onclick="showForm()">Skapa tråd</button>
     </article>
     <article id="notification-article">
