@@ -8,9 +8,21 @@ Rosa-lila #a948b3ff
 
 */
 
-
 header {
+    background-image: none;
+}
+
+main .index {
+    background-color: #e3e3e3ff;
+}
+
+.hero-container {
     min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    color: #e3e3e3ff;
+    width: 100%;
+
 }
 
 
@@ -101,6 +113,7 @@ article {
     margin: auto;
     align-items: center;
     justify-content: center;
+    
 }
 
 section {

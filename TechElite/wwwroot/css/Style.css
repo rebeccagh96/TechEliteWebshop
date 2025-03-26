@@ -23,7 +23,11 @@ body {
     display: flex;
     flex-direction: column;
     font-family: "Space Grotesk", sans-serif;
-    background-color: #e3e3e3ff;
+    background-image: linear-gradient(to bottom right, #301934ff, #163832ff);
+    background-size: auto;
+    background-repeat: no-repeat;
+
+    /*background-color: #e3e3e3ff;*/
     font-size: 14px;
     min-height: 100vh;
 }
@@ -36,7 +40,7 @@ body {
 header {
     display: flex;
     flex-direction: column;
-    background-image: linear-gradient(to bottom right, #301934ff, #163832ff);
+    /*background-image: linear-gradient(to bottom right, #301934ff, #163832ff);*/
     color: #e3e3e3ff;
 }
 
@@ -47,6 +51,7 @@ main {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+
 }
 
 .logo {
