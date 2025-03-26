@@ -2,12 +2,12 @@
 {
     public class Reply
     {
-        public string ReplyId { get; set; }
-        public string ThreadId { get; set; }
-        public string MemberId { get; set; }
+        public int ReplyId { get; set; }
+        public int ThreadId { get; set; }
+        public int MemberId { get; set; }
         public DateTime ReplyDate { get; set; }
-        public string Heading { get; set; }
-        public string ReplyText { get; set; }
-        public string FCategoryId { get; set; }
+        public string? Heading { get; set; }
+        public string? ReplyText { get; set; }
+        public int FCategoryId { get; set; }
     }
 }

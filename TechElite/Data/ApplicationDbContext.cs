@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TechElite.Models;
 
 namespace TechElite.Data
 {
@@ -9,5 +10,9 @@ namespace TechElite.Data
             : base(options)
         {
         }
+        public DbSet<TechElite.Models.User> User { get; set; } = default!;
+
+        public DbSet<ForumCategory> ForumCategory { get; set; }
+        public DbSet<Models.Thread> Thread { get; set; }
     }
 }
