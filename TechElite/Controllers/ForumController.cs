@@ -12,5 +12,20 @@ namespace TechElite.Controllers
         {
             return View();
         }
+
+        public IActionResult LatestThreads()
+        {
+            return View();
+        }
+
+        public IActionResult MyThreads()
+        {
+            return View();
+        }
+
+        public IActionResult Thread()
+        {
+            return View();
+        }
     }
 }

@@ -42,19 +42,19 @@
         <section>
             <h4>Senaste</h4>
             <div>
-                <a class="new-thread" href="#">Söker tips på hållbar laddare till Iphone 13</a>
-                <a class="new-thread" href="#">Supersnabb laptop, rekommenderas verkligen!</a>
-                <a class="new-thread" href="#">Någon som vet vilka hörlurar som har bäst ljud?</a>
-                <a class="show-more" href="#">Visa mer</a>
+                <a class="new-thread" asp-controller="Forum" asp-action="Thread">Söker tips på hållbar laddare till Iphone 13</a>
+                <a class="new-thread" asp-controller="Forum" asp-action="Thread">Supersnabb laptop, rekommenderas verkligen!</a>
+                <a class="new-thread" asp-controller="Forum" asp-action="Thread">Någon som vet vilka hörlurar som har bäst ljud?</a>
+                <a class="show-more" asp-controller="Forum" asp-action="LatestThreads">Visa mer</a>
             </div>
         </section>
         <section>
             <h4>Mina trådar</h4>
             <div>
-                <a class="my-thread" href="#">Söker tips på hållbar laddare till Iphone 13</a>
-                <a class="my-thread" href="#">Bästa köpet jag gjort!</a>
-                <a class="my-thread" href="#">Varför går alltid min laddare sönder?</a>
-                <a class="show-more" href="#">Visa mer</a>
+                <a class="my-thread" asp-controller="Forum" asp-action="Thread">Söker tips på hållbar laddare till Iphone 13</a>
+                <a class="my-thread" asp-controller="Forum" asp-action="Thread">Bästa köpet jag gjort!</a>
+                <a class="my-thread" asp-controller="Forum" asp-action="Thread">Varför går alltid min laddare sönder?</a>
+                <a class="show-more" asp-controller="Forum" asp-action="MyThreads">Visa mer</a>
             </div>
         </section>
     </article>
