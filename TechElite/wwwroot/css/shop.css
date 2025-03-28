@@ -1,38 +1,8 @@
 
-header {
-    min-height: 9vh;
-}
 
 
 h2 {
     font-size: 1.2em;
-}
-
-
-.filter {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-
-.filter {
-    padding: 20px;
-}
-
-.filter img {
-    width: 20px;
-}
-
-.header-content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.img-box {
-    margin-top: 150px;
 }
 
 
@@ -43,10 +13,12 @@ h2 {
 
 article {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 80%;
+    flex-direction: column;
+    max-width: 1200px;
+    width: 100%;
     margin: auto;
+    height: 100%;
+    justify-content: center;
 }
 
 section {
@@ -55,6 +27,8 @@ section {
     padding: 10px;
     margin: 20px;
     border-radius: 5px;
+
+    filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.100));
 }
 
 section button{
@@ -63,14 +37,14 @@ section button{
     background-color: #efefef77;
 }
 
-section div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 200px;
-    width: 150px;
-    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
-}
+    section div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 200px;
+        width: 150px;
+        background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+    }
 
 .products img {
     max-height: 60%;
@@ -83,6 +57,7 @@ section div {
 background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
 display: flex;
 flex-direction: column;
+margin: 20px auto;
 }
 
 .säljtext {
