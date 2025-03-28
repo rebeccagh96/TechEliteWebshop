@@ -3,9 +3,12 @@
     public class Thread
     {
         public int ThreadId { get; set; }
-        public int FCategoryId { get; set; }
-        public int MemberId { get; set; }
+        public required string ThreadName { get; set; }
+        public required string ThreadContent { get; set; }
+        public int ForumCategoryId { get; set; }
+        public int UserId { get; set; }
         public DateTime PublishDate { get; set; }
-        public required string ThreadReplyText { get; set; }
+
+
     }
 }

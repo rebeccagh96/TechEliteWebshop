@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechElite.Data;
 
@@ -11,9 +12,11 @@ using TechElite.Data;
 namespace TechElite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250328103639_secondary")]
+    partial class secondary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -377,8 +380,6 @@ namespace TechElite.Data.Migrations
 
                     b.HasIndex("ThreadId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Replies");
                 });
 
@@ -396,6 +397,9 @@ namespace TechElite.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ProductId1")
+                        .HasColumnType("int");
+
                     b.Property<string>("ReviewText")
                         .HasColumnType("nvarchar(max)");
 
@@ -407,7 +411,7 @@ namespace TechElite.Data.Migrations
 
                     b.HasKey("ReviewId");
 
-                    b.HasIndex("ProductId", "ProductDepartmentId");
+                    b.HasIndex("ProductId1", "ProductDepartmentId");
 
                     b.ToTable("Reviews");
                 });
@@ -538,40 +542,26 @@ namespace TechElite.Data.Migrations
 
             modelBuilder.Entity("TechElite.Models.Reply", b =>
                 {
-                    b.HasOne("TechElite.Models.ForumCategory", "ForumCategory")
+                    b.HasOne("TechElite.Models.ForumCategory", null)
                         .WithMany("Replies")
                         .HasForeignKey("ForumCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TechElite.Models.Thread", "Thread")
+                    b.HasOne("TechElite.Models.Thread", null)
                         .WithMany("Replies")
                         .HasForeignKey("ThreadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("TechElite.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ForumCategory");
-
-                    b.Navigation("Thread");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TechElite.Models.Review", b =>
                 {
-                    b.HasOne("TechElite.Models.Product", "Product")
+                    b.HasOne("TechElite.Models.Product", null)
                         .WithMany("Reviews")
-                        .HasForeignKey("ProductId", "ProductDepartmentId")
+                        .HasForeignKey("ProductId1", "ProductDepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("TechElite.Models.Thread", b =>
