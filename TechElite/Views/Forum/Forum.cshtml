@@ -6,58 +6,60 @@
 </head>
 
 <main>
-    <article class="forum-menu">
-        <img class="notifications" src="~/img/Icons/notifications.svg" onclick="showNotifications()">
-        <img src="~/img/Icons/search_black.svg">
-        <button class="btn" onclick="showForm()">Skapa tråd</button>
-    </article>
-    <article id="notification-article">
-        <section>
-            <h4>Notiser</h4>
-            <div>
-                <p>Nytt inlägg i din tråd: <a class="notification-link" href="#">Varför går alltid min laddare sönder?</a></p>
-                <p>Nytt inlägg i din tråd: <a class="notification-link" href="#">Söker tips på hållbar laddare till Iphone 13</a></p>
-                <p>Nytt inlägg i din tråd: <a class="notification-link" href="#">Bästa köpet jag gjort!</a></p>
-            </div>
-        </section>
-    </article>
-    <article>
-        <form id="create-thread" action="">
-            <h2>Skapa tråd</h2>
-            <label for="thread-category">Kategori</label>
-            <select name="thread-category" id="thread-category" required>
-                <option></option>
-                <option value="products">Produkter</option>
-                <option value="advice">Tips</option>
-                <option value="reviews">Recensioner</option>
-            </select>
-            <label for="title">Titel</label>
-            <input type="text" id="title" name="title" minlength="3" maxlength="30" required>
-            <label for="text">Text</label>
-            <textarea id="text" name="text" rows="5" columns="50"></textarea>
-            <input type="button" class="btn" id="submit" value="Publicera">
-        </form>
-    </article>
-    <article>
-        <section>
-            <h4>Senaste</h4>
-            <div>
-                <a class="new-thread" asp-controller="Forum" asp-action="Thread">Söker tips på hållbar laddare till Iphone 13</a>
-                <a class="new-thread" asp-controller="Forum" asp-action="Thread">Supersnabb laptop, rekommenderas verkligen!</a>
-                <a class="new-thread" asp-controller="Forum" asp-action="Thread">Någon som vet vilka hörlurar som har bäst ljud?</a>
-                <a class="show-more" asp-controller="Forum" asp-action="LatestThreads">Visa mer</a>
-            </div>
-        </section>
-        <section>
-            <h4>Mina trådar</h4>
-            <div>
-                <a class="my-thread" asp-controller="Forum" asp-action="Thread">Söker tips på hållbar laddare till Iphone 13</a>
-                <a class="my-thread" asp-controller="Forum" asp-action="Thread">Bästa köpet jag gjort!</a>
-                <a class="my-thread" asp-controller="Forum" asp-action="Thread">Varför går alltid min laddare sönder?</a>
-                <a class="show-more" asp-controller="Forum" asp-action="MyThreads">Visa mer</a>
-            </div>
-        </section>
-    </article>
+    <div class="forum-container">
+        <article class="forum-menu">
+            <img class="notifications" src="~/img/Icons/notifications.svg" onclick="showNotifications()">
+            <img src="~/img/Icons/search_black.svg">
+            <button class="btn" onclick="showForm()">Skapa tråd</button>
+        </article>
+        <article id="notification-article">
+            <section>
+                <h4>Notiser</h4>
+                <div>
+                    <p>Nytt inlägg i din tråd: <a class="notification-link" href="#">Varför går alltid min laddare sönder?</a></p>
+                    <p>Nytt inlägg i din tråd: <a class="notification-link" href="#">Söker tips på hållbar laddare till Iphone 13</a></p>
+                    <p>Nytt inlägg i din tråd: <a class="notification-link" href="#">Bästa köpet jag gjort!</a></p>
+                </div>
+            </section>
+        </article>
+        <article>
+            <form id="create-thread" action="">
+                <h2>Skapa tråd</h2>
+                <label for="thread-category">Kategori</label>
+                <select name="thread-category" id="thread-category" required>
+                    <option></option>
+                    <option value="products">Produkter</option>
+                    <option value="advice">Tips</option>
+                    <option value="reviews">Recensioner</option>
+                </select>
+                <label for="title">Titel</label>
+                <input type="text" id="title" name="title" minlength="3" maxlength="30" required>
+                <label for="text">Text</label>
+                <textarea id="text" name="text" rows="5" columns="50"></textarea>
+                <input type="button" class="btn" id="submit" value="Publicera">
+            </form>
+        </article>
+        <article>
+            <section>
+                <h4>Senaste</h4>
+                <div>
+                    <a class="new-thread" asp-controller="Forum" asp-action="Thread">Söker tips på hållbar laddare till Iphone 13</a>
+                    <a class="new-thread" asp-controller="Forum" asp-action="Thread">Supersnabb laptop, rekommenderas verkligen!</a>
+                    <a class="new-thread" asp-controller="Forum" asp-action="Thread">Någon som vet vilka hörlurar som har bäst ljud?</a>
+                    <a class="show-more" asp-controller="Forum" asp-action="LatestThreads">Visa mer</a>
+                </div>
+            </section>
+            <section>
+                <h4>Mina trådar</h4>
+                <div>
+                    <a class="my-thread" asp-controller="Forum" asp-action="Thread">Söker tips på hållbar laddare till Iphone 13</a>
+                    <a class="my-thread" asp-controller="Forum" asp-action="Thread">Bästa köpet jag gjort!</a>
+                    <a class="my-thread" asp-controller="Forum" asp-action="Thread">Varför går alltid min laddare sönder?</a>
+                    <a class="show-more" asp-controller="Forum" asp-action="MyThreads">Visa mer</a>
+                </div>
+            </section>
+        </article>
+    </div>
 </main>
 <script>
     function showNotifications() {
