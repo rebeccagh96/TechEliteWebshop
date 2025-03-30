@@ -31,22 +31,20 @@
             <p>Upptäck de senaste teknologierna</p>
             <!-- Shoppa nu knapp -->
             <a href="cart.html" class="shop-now-btn">Shoppa nu</a>
-
         </div>
         <div class="header-content">
             <div class="img-box">
             </div>
-
         </div>
         <div class="links">
-            <a class="" href="#">Nyheter</a>
-            <a class="" href="#">Datorer</a>
-            <a class="" href="#">Tillbehör</a>
-            <a class="" href="#">Bildskärmar</a>
-            <a class="" href="#">Konsoler & tillbehör</a>
-            <a class="" href="#">Telefoner & tablets</a>
-            <a class="" href="#">Datorkomponenter</a>
-            <a class="" href="#">Ljud</a>
+            <a class="" asp-controller="Shop" asp-action="Nyheter">Nyheter</a>
+            <a class="" asp-controller="Shop" asp-action="Datorer">Datorer</a>
+            <a class="" asp-controller="Shop" asp-action="Tillbehor">Tillbehör</a>
+            <a class="" asp-controller="Shop" asp-action="Bildskarmar">Bildskärmar</a>
+            <a class="" asp-controller="Shop" asp-action="KonsolerTillbehor">Konsoler & tillbehör</a>
+            <a class="" asp-controller="Shop" asp-action="TelefonerTablets">Telefoner & tablets</a>
+            <a class="" asp-controller="Shop" asp-action="Datorkomponenter">Datorkomponenter</a>
+            <a class="" asp-controller="Shop" asp-action="Ljud">Ljud</a>
         </div>
     </header>
 
@@ -60,41 +58,41 @@
         <div class="footer-content">
             <div class="categories">
                 <h3>Kategorier</h3>
-                <a class="footer-cat" href="">Nyheter</a>
-                <a class="footer-cat" href="">Datorer</a>
-                <a class="footer-cat" href="">Tillbehör</a>
-                <a class="footer-cat" href="">Bildskärmar</a>
-                <a class="footer-cat" href="">Konsoler & tillbehör</a>
-                <a class="footer-cat" href="">Telefoner & tablets</a>
-                <a class="footer-cat" href="">Datorkomponenter</a>
-                <a class="footer-cat" href="">Ljud</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Nyheter">Nyheter</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Datorer">Datorer</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Tillbehor">Tillbehör</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Bildskarmar">Bildskärmar</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="KonsolerTillbehor">Konsoler & tillbehör</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="TelefonerTablets">Telefoner & tablets</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Datorkomponenter">Datorkomponenter</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Ljud">Ljud</a>
             </div>
             <div class="forum-links">
                 <h3>Forum</h3>
-                <a class="footer-cat" href="">Registrera dig</a>
-                <a class="footer-cat" href="">Logga in</a>
-                <a class="footer-cat" href="">Nyheter</a>
-                <a class="footer-cat" href="">Konto</a>
-                <a class="footer-cat" href="">Användarvillkor</a>
-                <a class="footer-cat" href="">Kontohantering</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="Register">Registrera dig</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="Login">Logga in</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="Nyheter">Nyheter</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="Account">Konto</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="Terms">Användarvillkor</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="AccountManagement">Kontohantering</a>
             </div>
             <div class="About">
                 <h3>Om oss</h3>
-                <a class="footer-cat" href="">Vår historia</a>
-                <a class="footer-cat" href="">Våra medarbetare</a>
-                <a class="footer-cat" href="">Kontaktinformation</a>
-                <a class="footer-cat" href="">Jobba hos oss</a>
-                <a class="footer-cat" href="">Press</a>
-                <a class="footer-cat" href="">Vanliga frågor</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Historia">Vår historia</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Medarbetare">Våra medarbetare</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Kontakt">Kontaktinformation</a>
+                <a class="footer-cat" asp-controller="About" asp-action="JobbaHosOss">Jobba hos oss</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Press">Press</a>
+                <a class="footer-cat" asp-controller="About" asp-action="VanligaFragor">Vanliga frågor</a>
             </div>
             <div class="Handla">
                 <h3>Handla hos oss</h3>
-                <a class="footer-cat" href="">Försäljningsvillkor</a>
-                <a class="footer-cat" href="">Frakt & leverans</a>
-                <a class="footer-cat" href="">Ångerrätt</a>
-                <a class="footer-cat" href="">Garanti</a>
-                <a class="footer-cat" href="">Reklamation</a>
-                <a class="footer-cat" href="">Sekretess & integritet</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="SalesConditions">Försäljningsvillkor</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="ShippingDelivery">Frakt & leverans</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="ReturnPolicy">Ångerrätt</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Warranty">Garanti</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Complaint">Reklamation</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="PrivacyPolicy">Sekretess & integritet</a>
             </div>
             <div class="shortcuts">
                 <h3>Nyhetsbrev</h3>
@@ -103,15 +101,16 @@
                     <input class="btn" type="submit" id="submit" value="Submit">
                 </div>
                 <div class="footer-buttons">
-                    <a class="btn" href="">Sign in</a>
-                    <a class="btn" href="">Register</a>
+                    <a class="btn btn-primary" asp-controller="Profile" asp-action="Login">Sign In</a>
+                    <a class="btn btn-primary" asp-controller="Profile" asp-action="Register">Register</a>
                 </div>
+
                 <div class="socials">
                     <div class="social-media">
-                        <a href="#" class="fa fa-facebook" style="font-size: 20px;"></a>
-                        <a href="#" class="fa fa-linkedin" style="font-size: 20px;"></a>
-                        <a href="#" class="fa fa-instagram" style="font-size: 20px;"></a>
-                        <a href="#" class="fa fa-envelope" style="font-size: 20px;"></a>
+                        <a href="https://www.facebook.com/yourprofile" class="fa fa-facebook" style="font-size: 20px;"></a>
+                        <a href="https://www.linkedin.com/in/yourprofile" class="fa fa-linkedin" style="font-size: 20px;"></a>
+                        <a href="https://www.instagram.com/yourprofile" class="fa fa-instagram" style="font-size: 20px;"></a>
+                        <a href="mailto:your.email@example.com" class="fa fa-envelope" style="font-size: 20px;"></a>
                     </div>
                 </div>
             </div>
