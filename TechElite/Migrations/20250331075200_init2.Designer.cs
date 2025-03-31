@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechElite.Data;
 
@@ -11,9 +12,11 @@ using TechElite.Data;
 namespace TechElite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250331075200_init2")]
+    partial class init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,11 +247,7 @@ namespace TechElite.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -280,7 +279,7 @@ namespace TechElite.Migrations
 
                     b.HasKey("ForumCategoryId");
 
-                    b.ToTable("ForumCategories");
+                    b.ToTable("ForumCategory");
                 });
 
             modelBuilder.Entity("TechElite.Models.ForumThread", b =>
@@ -332,18 +331,8 @@ namespace TechElite.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Delivered")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductPrice")
                         .HasColumnType("int");
@@ -370,8 +359,8 @@ namespace TechElite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
-                    b.Property<byte>("Image")
-                        .HasColumnType("tinyint");
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -391,6 +380,8 @@ namespace TechElite.Migrations
 
                     b.HasKey("ProductId");
 
+                    b.HasIndex("OrderId");
+
                     b.HasIndex("ProductDepartmentId");
 
                     b.ToTable("Products");
@@ -409,7 +400,7 @@ namespace TechElite.Migrations
 
                     b.HasKey("ProductDepartmentId");
 
-                    b.ToTable("ProductDepartments");
+                    b.ToTable("ProductDepartment");
                 });
 
             modelBuilder.Entity("TechElite.Models.Reply", b =>
@@ -573,6 +564,10 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("TechElite.Models.Product", b =>
                 {
+                    b.HasOne("TechElite.Models.Order", null)
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId");
+
                     b.HasOne("TechElite.Models.ProductDepartment", "ProductDepartment")
                         .WithMany("Products")
                         .HasForeignKey("ProductDepartmentId")
@@ -593,7 +588,6 @@ namespace TechElite.Migrations
                     b.HasOne("TechElite.Models.ForumThread", "Thread")
                         .WithMany("Replies")
                         .HasForeignKey("ThreadId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TechElite.Models.ApplicationUser", "User")
@@ -654,6 +648,11 @@ namespace TechElite.Migrations
             modelBuilder.Entity("TechElite.Models.ForumThread", b =>
                 {
                     b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("TechElite.Models.Order", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("TechElite.Models.Product", b =>
