@@ -3,7 +3,7 @@
     public class ForumThread
     {
         public int ForumThreadId { get; set; }
-        public required string ThreadName { get; set; }
+        public required string ThreadTitle { get; set; }
         public required string ThreadContent { get; set; }
         public int ForumCategoryId { get; set; }
         public required string UserId { get; set; }

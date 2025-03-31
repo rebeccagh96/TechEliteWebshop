@@ -5,7 +5,7 @@
         public int ProductId { get; set; }
         public required string ProductName { get; set; }
         public string? ProductDescription { get; set; }
-        public byte[] Image { get; set; } = Array.Empty<byte>();
+        public string? ImagePath { get; set; }
         public int ProductDepartmentId { get; set; }
         public int Stock { get; set; }
         public int Price { get; set; }

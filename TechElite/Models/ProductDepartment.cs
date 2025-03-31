@@ -3,8 +3,7 @@
     public class ProductDepartment
     {
         public int ProductDepartmentId { get; set; }
-        public string DepartmentName { get; set; } = default!;
-        public string? Department {  get; set; }
+        public string DepartmentName { get; set; } = string.Empty;
         public ICollection<Product>? Products { get; set; }
 
     }

@@ -6,7 +6,7 @@
         public required string UserId { get; set;  } 
         public int ProductId { get; set; }
         public required string ReviewContent { get; set; }
-        public int Stars {  get; set; }
+        public int Rating {  get; set; }
         public Product Product { get; set; } = default!;
         public ApplicationUser User { get; set; } = default!; // Saknad nav prop
     }

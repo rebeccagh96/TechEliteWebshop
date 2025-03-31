@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using TechElite.Models;
 
+
 namespace TechElite.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -11,7 +12,6 @@ namespace TechElite.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ForumThread> ForumThreads { get; set; }
@@ -20,6 +20,21 @@ namespace TechElite.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<ForumCategory> ForumCategories { get; set; }
         public DbSet<ProductDepartment> ProductDepartments { get; set; }
+
+        // När ni har hämtat från GH, följ dessa steg för att fullt ut migrera korrekt och få databasen att fungera:
+        // 1. Radera migrationsmappen, OCH databasen, om du har en gammal version av den kvar i SQL-server object explorer
+        // 2. Öppna package manager console
+        // 3. Skriv "Add-Migration InitialCreate" och tryck enter
+        // 4. Skriv "Update-Database" och tryck enter
+        // 5. Kör programmet och se att det fungerar, då seedas även användare från SeedUsers-filen
+        // 6. När detta gjort och du inte fått några errors, gå in i ApplicationDbContext-filen och ta av-kommentera
+        // de delar som är utkommenterade. Alltså customer-seeding, forumthread-seeding och review-seeding
+        // 7. Gå sedan in i databasen, börja med att refresha den, uppe till vänster, gå sedan till:
+        // TechElite>Tables>högerklicka på DboAspNetUsers>"View Data", håll den öppen på sidan om
+        // 8. Gå igenom ApplicationDbContext och byt ut de UserId's som finns till några från din egen databas * viktigt *
+        // jag har försökt göra det tydligt genom att markera vart med kommentarer.
+        // 9. När detta är gjort, gör en ny migration, och uppdatera databasen igen
+        // 10. Refresha databasen, och kolla att det gått korrekt genom att öppna t.ex. ForumThreads och se att det finns data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -86,78 +101,29 @@ namespace TechElite.Data
 
             // Seedar db
 
-            var hasher = new PasswordHasher<ApplicationUser>();
-            modelBuilder.Entity<ApplicationUser>().HasData(
-                new ApplicationUser
-                {
-                    Id = "1",
-                    UserName = "Admin",
-                    NormalizedUserName = "ADMIN",
-                    Email = "admin@techelite.com",
-                    NormalizedEmail = "ADMIN@TECHELITE.COM",
-                    EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Admin123!"),
-                    SecurityStamp = string.Empty,
-                    Role = "Admin"
-                },
-                new ApplicationUser
-                {
-                    Id = "2",
-                    UserName = "Admin2",
-                    NormalizedUserName = "ADMIN",
-                    Email = "admin@techelite.com",
-                    NormalizedEmail = "ADMIN@TECHELITE.COM",
-                    EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Admin123!"),
-                    SecurityStamp = string.Empty,
-                    Role = "Admin"
-                },
-                new ApplicationUser
-                {
-                    Id = "3",
-                    UserName = "User",
-                    NormalizedUserName = "USER",
-                    Email = "user@techelite.com",
-                    NormalizedEmail = "USER@TECHELITE.COM",
-                    EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "User123!"),
-                    SecurityStamp = string.Empty,
-                    Role = "User"
-                },
-                new ApplicationUser
-                {
-                    Id = "4",
-                    UserName = "User2",
-                    NormalizedUserName = "USER2",
-                    Email = "user2@techelite.com",
-                    NormalizedEmail = "USER2@TECHELITE.COM",
-                    EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "User123!"),
-                    SecurityStamp = string.Empty,
-                    Role = "User"
-                });
+            // Flyttat användarseeding till egen fil då det verkar vara problematiskt att seeda användare med lösenordshashing på detta sätt, skapar ny hash varje gång
 
-            modelBuilder.Entity<Customer>().HasData(
-                new Customer
-                {
-                    CustomerId = 1,
-                    UserId = "3",
-                    FirstName = "User",
-                    LastName = "Userson",
-                    Address = "User street 1",
-                    ZipCode = "12345",
-                    City = "User city"
-                },
-                new Customer
-                {
-                    CustomerId = 2,
-                    UserId = "4",
-                    FirstName = "User2",
-                    LastName = "Userson2",
-                    Address = "User street 2",
-                    ZipCode = "54321",
-                    City = "User city"
-                });
+            //modelBuilder.Entity<Customer>().HasData(
+            //    new Customer
+            //    {
+            //        CustomerId = 1,
+            //        UserId = "0db21edc-bccd-41e6-b80f-6d1c769dd7a7", // Byt ut denna userId mot en som finns i din databas
+            //        FirstName = "User1",
+            //        LastName = "Userson",
+            //        Address = "User street 1",
+            //        ZipCode = "12345",
+            //        City = "User city"
+            //    },
+            //    new Customer
+            //    {
+            //        CustomerId = 2,
+            //        UserId = "0bea84fb-9909-4cb7-8a5e-9db0ca44b4f4", // Byt ut denna userId mot en som finns i din databas
+            //        FirstName = "User2",
+            //        LastName = "Userson2",
+            //        Address = "User street 2",
+            //        ZipCode = "54321",
+            //        City = "User city"
+            //    });
 
             modelBuilder.Entity<ProductDepartment>().HasData(
                 new ProductDepartment
@@ -186,66 +152,189 @@ namespace TechElite.Data
                     DepartmentName = "Gaming"
                 });
 
-            byte[] laptop1 = File.ReadAllBytes("wwwroot/images/laptop/laptop1.jpg");
-            byte[] laptop2 = File.ReadAllBytes("wwwroot/images/laptop/laptop2.jpg");
-            byte[] monitor1 = File.ReadAllBytes("wwwroot/images/monitor/monitor1.jpg");
-            byte[] monitor2 = File.ReadAllBytes("wwwroot/images/monitor/monitor2.jpg");
-            byte[] phone1 = File.ReadAllBytes("wwwroot/images/phone/phone1.jpg");
-            byte[] phone2 = File.ReadAllBytes("wwwroot/images/phone/phone2.jpg");
-            byte[] phone3 = File.ReadAllBytes("wwwroot/images/phone/phone3.jpg");
-            byte[] phone4 = File.ReadAllBytes("wwwroot/images/phone/phone4.jpg");
-            byte[] tablet1 = File.ReadAllBytes("wwwroot/images/tablet/tablet1.jpg");
-            byte[] mouse1 = File.ReadAllBytes("wwwroot/images/tablet/mouse1.jpg");
-            byte[] mouse2 = File.ReadAllBytes("wwwroot/images/tablet/mouse2.jpg");
-            byte[] keyboard1 = File.ReadAllBytes("wwwroot/images/tablet/keyboard1.jpg");
-            byte[] keyboard2 = File.ReadAllBytes("wwwroot/images/tablet/keyboard2.jpg");
-            byte[] keyboard3 = File.ReadAllBytes("wwwroot/images/tablet/keyboard3.jpg");
-            byte[] pad1 = File.ReadAllBytes("wwwroot/images/tablet/pad1.jpg");
-            byte[] headphones1 = File.ReadAllBytes("wwwroot/images/headphones/headphones1.jpg");
-            byte[] headphones2 = File.ReadAllBytes("wwwroot/images/headphones/headphones2.jpg");
-            byte[] earbuds1 = File.ReadAllBytes("wwwroot/images/headphones/earbuds1.jpg");
-            byte[] buds2 = File.ReadAllBytes("wwwroot/images/headphones/buds2.jpg");
-            byte[] buds3 = File.ReadAllBytes("wwwroot/images/gaming/buds3.jpg");
-            byte[] buds4 = File.ReadAllBytes("wwwroot/images/gaming/buds4.jpg");
-            byte[] drawingtablet1 = File.ReadAllBytes("wwwroot/images/tablet/dr-tablet1.jpg");
-            byte[] drawingtablet2 = File.ReadAllBytes("wwwroot/images/tablet/dr-tablet2.jpg");
-            byte[] controller1 = File.ReadAllBytes("wwwroot/images/gaming/controller1.jpg");
-            byte[] controller2 = File.ReadAllBytes("wwwroot/images/gaming/controller2.jpg");
-            byte[] controller3 = File.ReadAllBytes("wwwroot/images/gaming/controller3.jpg");
-            byte[] console1 = File.ReadAllBytes("wwwroot/images/gaming/console1.jpg");
-            byte[] console2 = File.ReadAllBytes("wwwroot/images/gaming/console2.jpg");
-            byte[] console3 = File.ReadAllBytes("wwwroot/images/gaming/console3.jpg");
-            byte[] exthdd = File.ReadAllBytes("wwwroot/images/gaming/ext-hdd1.jpg");
-            byte[] fan1 = File.ReadAllBytes("wwwroot/images/gaming/fan1.jpg");
-            byte[] gpu1 = File.ReadAllBytes("wwwroot/images/gaming/gpu1.jpg");
-            byte[] gpu2 = File.ReadAllBytes("wwwroot/images/gaming/gpu2.jpg");
-            byte[] gpu3 = File.ReadAllBytes("wwwroot/images/gaming/gpu3.jpg");
-            byte[] gpu4 = File.ReadAllBytes("wwwroot/images/gaming/gpu4.jpg");
-            byte[] charger1 = File.ReadAllBytes("wwwroot/images/gaming/charger1.jpg");
-            byte[] charger2 = File.ReadAllBytes("wwwroot/images/gaming/charger2.jpg");
-            byte[] plug1 = File.ReadAllBytes("wwwroot/images/gaming/plug1.jpg");
-            byte[] plug2 = File.ReadAllBytes("wwwroot/images/gaming/plug2.jpg");
-
-
-
             modelBuilder.Entity<Product>().HasData(
-                  new Product
-                  {
-                      ProductId = 1,
-                      ProductName = "Laptop",
-                      ProductDescription = "16-tums bärbar dator från Apple",
-                      Image = ,
-                      ProductDepartmentId = 1,
-                      Stock = 10,
-                      Price = 23990
-                  }
-                );
+                new Product
+                {
+                    ProductId = 1,
+                    ProductName = "Laptop, 16 tum",
+                    ProductDescription = "16-tums bärbar dator",
+                    ImagePath = "img/Products/Laptop/Laptop1.svg",
+                    ProductDepartmentId = 1,
+                    Stock = 10,
+                    Price = 5990
+                },
+                new Product
+                {
+                    ProductId = 2,
+                    ProductName = "Laptop, 12 tum",
+                    ProductDescription = "12-tums bärbar dator",
+                    ImagePath = "img/Products/Laptop/Laptop2.svg",
+                    ProductDepartmentId = 1,
+                    Stock = 10,
+                    Price = 3990
+                },
+                new Product
+                {
+                    ProductId = 3,
+                    ProductName = "iPhone 5, 128gb",
+                    ProductDescription = "En iPhone 5",
+                    ImagePath = "img/Products/Phone/Phone1.svg",
+                    ProductDepartmentId = 2,
+                    Stock = 10,
+                    Price = 1990
+                },
+                new Product
+                {
+                    ProductId = 4,
+                    ProductName = "Samsung Galaxy",
+                    ProductDescription = "En Samsung Galaxy",
+                    ImagePath = "img/Products/Phone/Phone4.svg",
+                    ProductDepartmentId = 2,
+                    Stock = 10,
+                    Price = 2990
+                },
+                new Product
+                {
+                    ProductId = 5,
+                    ProductName = "Noice cancelling headset",
+                    ProductDescription = "Ett noice cancelling headset",
+                    ImagePath = "img/Products/Headphones/Headphones1.svg",
+                    ProductDepartmentId = 3,
+                    Stock = 10,
+                    Price = 2990
+                },
+                new Product
+                {
+                    ProductId = 6,
+                    ProductName = "Samsung Galaxy Buds",
+                    ProductDescription = "Trådlösa in-ear-hörlurar",
+                    ImagePath = "img/Products/Earbuds/Buds2.svg",
+                    ProductDepartmentId = 3,
+                    Stock = 10,
+                    Price = 2490
+                },
+                new Product
+                {
+                    ProductId = 7,
+                    ProductName = "Extern hårddisk, 3tb",
+                    ProductDescription = "En extern hårddisk på 3 terrabyte",
+                    ImagePath = "img/Products/Components/Ext-hdd1.svg",
+                    ProductDepartmentId = 4,
+                    Stock = 10,
+                    Price = 1490
+                },
+                new Product
+                {
+                    ProductId = 8,
+                    ProductName = "Grafikkort",
+                    ProductDescription = "Ett grafikkort",
+                    ImagePath = "img/Products/Components/GPU1.svg",
+                    ProductDepartmentId = 4,
+                    Stock = 10,
+                    Price = 4490
+                },
+                new Product
+                {
+                    ProductId = 9,
+                    ProductName = "Sony Playstation",
+                    ProductDescription = "Ett klassiskt Playstation",
+                    ImagePath = "img/Products/Consoles/Console2.svg",
+                    ProductDepartmentId = 5,
+                    Stock = 10,
+                    Price = 2490
+                },
+                new Product
+                {
+                    ProductId = 10,
+                    ProductName = "Dualshock handkontroll",
+                    ProductDescription = "En handkontroll",
+                    ImagePath = "img/Products/Controllers/Controller1.svg",
+                    ProductDepartmentId = 5,
+                    Stock = 10,
+                    Price = 490
+                }
+            );
+
+            // Orders kommer att seedas vid behov
+
+            modelBuilder.Entity<ForumCategory>().HasData(
+                new ForumCategory
+                {
+                    ForumCategoryId = 1,
+                    CategoryName = "Produkter",
+                    CategoryDescription = "Diskutera produkter",
+                },
+                new ForumCategory
+                {
+                    ForumCategoryId = 2,
+                    CategoryName = "Support",
+                    CategoryDescription = "Få hjälp med produkter",
+                },
+                new ForumCategory
+                {
+                    ForumCategoryId = 3,
+                    CategoryName = "Rekommendationer",
+                    CategoryDescription = "Rekommenderationer",
+                },
+                new ForumCategory
+                {
+                    ForumCategoryId = 4,
+                    CategoryName = "Tips",
+                    CategoryDescription = "Tips & tricks",
+                },
+                new ForumCategory
+                {
+                    ForumCategoryId = 5,
+                    CategoryName = "Köp & sälj",
+                    CategoryDescription = "Köp och sälj dina gamla teknikprylar",
+                },
+                new ForumCategory
+                {
+                    ForumCategoryId = 6,
+                    CategoryName = "Övrigt",
+                    CategoryDescription = "Övriga diskussioner",
+                }
+            );
+
+            //modelBuilder.Entity<ForumThread>().HasData(
+            //    new ForumThread
+            //    {
+            //        ForumThreadId = 1,
+            //        ThreadTitle = "Bästa datorn?",
+            //        ThreadContent = "Vilken dator är bäst?",
+            //        PublishDate = new DateTime(2024, 03, 31, 12, 00, 00), //Ändrartillhårdkodat för att inte konstant ändra den seedade datan
+            //        UserId = "4e031e7b-fd2a-47a8-b8a3-88e3f1c7f38d", // Byt ut denna userId mot en som finns i din databas
+            //        ForumCategoryId = 1
+            //    },
+            //    new ForumThread
+            //    {
+            //        ForumThreadId = 2,
+            //        ThreadTitle = "Hjälp med iPhone",
+            //        ThreadContent = "Min iPhone fungerar inte",
+            //        PublishDate = new DateTime(2024, 03, 31, 12, 00, 00),
+            //        UserId = "0bea84fb-9909-4cb7-8a5e-9db0ca44b4f4", // Byt ut denna userId mot en som finns i din databas
+            //        ForumCategoryId = 2
+            //    }
+            //);
+
+            //modelBuilder.Entity<Review>().HasData(
+            //    new Review
+            //    {
+            //        ReviewId = 1,
+            //        ProductId = 1,
+            //        UserId = "0db21edc-bccd-41e6-b80f-6d1c769dd7a7", // Byt ut denna userId mot en som finns i din databas
+            //        ReviewContent = "Bra dator!",
+            //        Rating = 5
+            //    },
+            //    new Review
+            //    {
+            //        ReviewId = 2,
+            //        ProductId = 2,
+            //        UserId = "4e031e7b-fd2a-47a8-b8a3-88e3f1c7f38d", // Byt ut denna userId mot en som finns i din databas
+            //        ReviewContent = "Dålig dator!",
+            //        Rating = 1
+            //    }
+            //);
         }
-
-
-
-
     }
-
-
 }
