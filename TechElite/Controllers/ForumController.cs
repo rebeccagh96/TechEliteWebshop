@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using AspNetCoreGeneratedDocument;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TechElite.Data;
@@ -19,7 +18,7 @@ namespace TechElite.Controllers
         {
             if (_context is not null)
             {
-                for (int i = 0; i < _context.Threads.Count(); i++)
+                for (int i = 0; i < _context.ForumThreads.Count(); i++)
                 {
                     return View(i);
                 }
