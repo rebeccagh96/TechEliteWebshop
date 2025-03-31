@@ -1,75 +1,76 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using TechElite.Models;
 
 namespace TechElite.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
-        public DbSet<Customer> Customer { get; set; }
-        public DbSet<ForumCategory> ForumCategory { get; set; }
-        public DbSet<Order> Order { get; set; }
-        public DbSet<Product> Product { get; set; }
-        public DbSet<ProductDepartment> ProductDepartment { get; set; }
-        public DbSet<Reply> Reply { get; set; }
-        public DbSet<Review> Review { get; set; }
-        public DbSet<Models.Thread> Thread { get; set; }
-        public DbSet<TechElite.Models.User> User { get; set; } = default!;
-
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<ForumThread> ForumThreads { get; set; }
+        public DbSet<Reply> Replies { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Define composite key and relationships
-            modelBuilder.Entity<Product>()
-                .HasKey(p => new { p.ProductId, p.ProductDepartmentId });
 
-            modelBuilder.Entity<Product>()
-                .HasMany(p => p.Reviews)
-                .WithOne(r => r.Product)
-                .HasForeignKey(r => new { r.ProductId, r.ProductDepartmentId })
+            modelBuilder.Entity<Customer>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Customers)
+                .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ProductDepartment>()
-                .HasMany(pd => pd.Products);
-
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Customer)
-                .WithMany(c => c.Orders);
-
-            modelBuilder.Entity<Models.Thread>()
-                .HasMany(r => r.Replies);
-
-            modelBuilder.Entity<ForumCategory>()
-                .HasMany(t => t.Threads);
-
-            modelBuilder.Entity<Reply>()
-                .HasKey(r => new { r.ReplyId, r.ThreadId });
 
             modelBuilder.Entity<Review>()
-                .HasOne(p => p.Product)
-                .HasForeignKey(r => new { r.ProductDepartmentId })
+                .HasOne(r => r.User)
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
 
 
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Product)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(r => r.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
 
+            modelBuilder.Entity<ForumThread>()
+                .HasOne(ft => ft.User)
+                .WithMany(u => u.Threads)
+                .HasForeignKey(ft => ft.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
 
+            modelBuilder.Entity<Reply>()
+                .HasOne(r => r.User)
+                .WithMany(u => u.Replies)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
 
+            modelBuilder.Entity<Reply>()
+                .HasOne(r => r.Thread)
+                .WithMany(ft => ft.Replies)
+                .HasForeignKey(r => r.ThreadId)
+                .OnDelete((DeleteBehavior)ReferentialAction.NoAction);
 
         }
+
+
 
 
     }
