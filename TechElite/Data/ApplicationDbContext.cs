@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using TechElite.Models;
@@ -67,6 +68,38 @@ namespace TechElite.Data
                 .WithMany(ft => ft.Replies)
                 .HasForeignKey(r => r.ThreadId)
                 .OnDelete((DeleteBehavior)ReferentialAction.NoAction);
+
+
+            // Seedar db
+
+            var hasher = new PasswordHasher<ApplicationUser>();
+            modelBuilder.Entity<ApplicationUser>().HasData(
+                new ApplicationUser
+                {
+                    Id = "1",
+                    UserName = "Admin",
+                    NormalizedUserName = "ADMIN",
+                    Email = "admin@techelite.com",
+                    NormalizedEmail = "ADMIN@TECHELITE.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "Admin123!"),
+                    SecurityStamp = string.Empty,
+                    Role = "Admin"
+                },
+                new ApplicationUser
+                {
+                    Id = "2",
+                    UserName = "User",
+                    NormalizedUserName = "USER",
+                    Email = "user@techelite.com",
+                    NormalizedEmail = "USER@TECHELITE.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "User123!"),
+                    SecurityStamp = string.Empty,
+                    Role = "User"
+                });
+
+
 
         }
 
