@@ -201,10 +201,6 @@ namespace TechElite.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -265,6 +261,28 @@ namespace TechElite.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 1,
+                            Address = "User street 1",
+                            City = "User city",
+                            FirstName = "User1",
+                            LastName = "Userson",
+                            UserId = "0db21edc-bccd-41e6-b80f-6d1c769dd7a7",
+                            ZipCode = "12345"
+                        },
+                        new
+                        {
+                            CustomerId = 2,
+                            Address = "User street 2",
+                            City = "User city",
+                            FirstName = "User2",
+                            LastName = "Userson2",
+                            UserId = "0bea84fb-9909-4cb7-8a5e-9db0ca44b4f4",
+                            ZipCode = "54321"
+                        });
                 });
 
             modelBuilder.Entity("TechElite.Models.ForumCategory", b =>
@@ -275,12 +293,53 @@ namespace TechElite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ForumCategoryId"));
 
-                    b.Property<string>("Category")
+                    b.Property<string>("CategoryDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ForumCategoryId");
 
                     b.ToTable("ForumCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            ForumCategoryId = 1,
+                            CategoryDescription = "Diskutera produkter",
+                            CategoryName = "Produkter"
+                        },
+                        new
+                        {
+                            ForumCategoryId = 2,
+                            CategoryDescription = "Få hjälp med produkter",
+                            CategoryName = "Support"
+                        },
+                        new
+                        {
+                            ForumCategoryId = 3,
+                            CategoryDescription = "Rekommenderationer",
+                            CategoryName = "Rekommendationer"
+                        },
+                        new
+                        {
+                            ForumCategoryId = 4,
+                            CategoryDescription = "Tips & tricks",
+                            CategoryName = "Tips"
+                        },
+                        new
+                        {
+                            ForumCategoryId = 5,
+                            CategoryDescription = "Köp och sälj dina gamla teknikprylar",
+                            CategoryName = "Köp & sälj"
+                        },
+                        new
+                        {
+                            ForumCategoryId = 6,
+                            CategoryDescription = "Övriga diskussioner",
+                            CategoryName = "Övrigt"
+                        });
                 });
 
             modelBuilder.Entity("TechElite.Models.ForumThread", b =>
@@ -301,7 +360,7 @@ namespace TechElite.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ThreadName")
+                    b.Property<string>("ThreadTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -316,6 +375,26 @@ namespace TechElite.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ForumThreads");
+
+                    b.HasData(
+                        new
+                        {
+                            ForumThreadId = 1,
+                            ForumCategoryId = 1,
+                            PublishDate = new DateTime(2024, 3, 31, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            ThreadContent = "Vilken dator är bäst?",
+                            ThreadTitle = "Bästa datorn?",
+                            UserId = "4e031e7b-fd2a-47a8-b8a3-88e3f1c7f38d"
+                        },
+                        new
+                        {
+                            ForumThreadId = 2,
+                            ForumCategoryId = 2,
+                            PublishDate = new DateTime(2024, 3, 31, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            ThreadContent = "Min iPhone fungerar inte",
+                            ThreadTitle = "Hjälp med iPhone",
+                            UserId = "0bea84fb-9909-4cb7-8a5e-9db0ca44b4f4"
+                        });
                 });
 
             modelBuilder.Entity("TechElite.Models.Order", b =>
@@ -370,8 +449,8 @@ namespace TechElite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
-                    b.Property<byte>("Image")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -394,6 +473,108 @@ namespace TechElite.Migrations
                     b.HasIndex("ProductDepartmentId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            ImagePath = "img/Products/Laptop/Laptop1.svg",
+                            Price = 5990,
+                            ProductDepartmentId = 1,
+                            ProductDescription = "16-tums bärbar dator",
+                            ProductName = "Laptop, 16 tum",
+                            Stock = 10
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            ImagePath = "img/Products/Laptop/Laptop2.svg",
+                            Price = 3990,
+                            ProductDepartmentId = 1,
+                            ProductDescription = "16-tums bärbar dator",
+                            ProductName = "Laptop, 12 tum",
+                            Stock = 10
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            ImagePath = "img/Products/Phone/Phone1.svg",
+                            Price = 1990,
+                            ProductDepartmentId = 2,
+                            ProductDescription = "En iPhone 5",
+                            ProductName = "iPhone 5, 128gb",
+                            Stock = 10
+                        },
+                        new
+                        {
+                            ProductId = 4,
+                            ImagePath = "img/Products/Phone/Phone4.svg",
+                            Price = 2990,
+                            ProductDepartmentId = 2,
+                            ProductDescription = "En Samsung Galaxy",
+                            ProductName = "Samsung Galaxy",
+                            Stock = 10
+                        },
+                        new
+                        {
+                            ProductId = 5,
+                            ImagePath = "img/Products/Headphones/Headphones1.svg",
+                            Price = 2990,
+                            ProductDepartmentId = 3,
+                            ProductDescription = "Ett noice cancelling headset",
+                            ProductName = "Noice cancelling headset",
+                            Stock = 10
+                        },
+                        new
+                        {
+                            ProductId = 6,
+                            ImagePath = "img/Products/Earbuds/Buds2.svg",
+                            Price = 2490,
+                            ProductDepartmentId = 3,
+                            ProductDescription = "Trådlösa in-ear-hörlurar",
+                            ProductName = "Samsung Galaxy Buds",
+                            Stock = 10
+                        },
+                        new
+                        {
+                            ProductId = 7,
+                            ImagePath = "img/Products/Components/Ext-hdd1.svg",
+                            Price = 1490,
+                            ProductDepartmentId = 4,
+                            ProductDescription = "En extern hårddisk på 3 terrabyte",
+                            ProductName = "Extern hårddisk, 3tb",
+                            Stock = 10
+                        },
+                        new
+                        {
+                            ProductId = 8,
+                            ImagePath = "img/Products/Components/GPU1.svg",
+                            Price = 4490,
+                            ProductDepartmentId = 4,
+                            ProductDescription = "Ett grafikkort",
+                            ProductName = "Grafikkort",
+                            Stock = 10
+                        },
+                        new
+                        {
+                            ProductId = 9,
+                            ImagePath = "img/Products/Consoles/Console2.svg",
+                            Price = 2490,
+                            ProductDepartmentId = 5,
+                            ProductDescription = "Ett klassiskt Playstation",
+                            ProductName = "Sony Playstation",
+                            Stock = 10
+                        },
+                        new
+                        {
+                            ProductId = 10,
+                            ImagePath = "img/Products/Controllers/Controller1.svg",
+                            Price = 490,
+                            ProductDepartmentId = 5,
+                            ProductDescription = "En handkontroll",
+                            ProductName = "Dualshock handkontroll",
+                            Stock = 10
+                        });
                 });
 
             modelBuilder.Entity("TechElite.Models.ProductDepartment", b =>
@@ -404,12 +585,40 @@ namespace TechElite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductDepartmentId"));
 
-                    b.Property<string>("Department")
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProductDepartmentId");
 
                     b.ToTable("ProductDepartments");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductDepartmentId = 1,
+                            DepartmentName = "Datorer & Skärmar"
+                        },
+                        new
+                        {
+                            ProductDepartmentId = 2,
+                            DepartmentName = "Telefoner & Tablets"
+                        },
+                        new
+                        {
+                            ProductDepartmentId = 3,
+                            DepartmentName = "Hörlurar & HiFi"
+                        },
+                        new
+                        {
+                            ProductDepartmentId = 4,
+                            DepartmentName = "Tillbehör & Komponenter"
+                        },
+                        new
+                        {
+                            ProductDepartmentId = 5,
+                            DepartmentName = "Gaming"
+                        });
                 });
 
             modelBuilder.Entity("TechElite.Models.Reply", b =>
@@ -459,12 +668,12 @@ namespace TechElite.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
                     b.Property<string>("ReviewContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Stars")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -477,6 +686,24 @@ namespace TechElite.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
+
+                    b.HasData(
+                        new
+                        {
+                            ReviewId = 1,
+                            ProductId = 1,
+                            Rating = 5,
+                            ReviewContent = "Bra dator!",
+                            UserId = "0db21edc-bccd-41e6-b80f-6d1c769dd7a7"
+                        },
+                        new
+                        {
+                            ReviewId = 2,
+                            ProductId = 2,
+                            Rating = 1,
+                            ReviewContent = "Dålig dator!",
+                            UserId = "4e031e7b-fd2a-47a8-b8a3-88e3f1c7f38d"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
