@@ -2,7 +2,9 @@
 {
     public class ProductDepartment
     {
-        public int DepartmentId { get; set; }
-        public string? Department {  get; set; }
+        public int ProductDepartmentId { get; set; }
+        public string DepartmentName { get; set; } = string.Empty;
+        public ICollection<Product>? Products { get; set; }
+
     }
 }

@@ -2,7 +2,10 @@
 {
     public class ForumCategory
     {
-        public int FCategoryId { get; set; }
-        public string? FCategory {  get; set; }
+        public int ForumCategoryId { get; set; }
+        public string? CategoryName {  get; set; }
+        public string? CategoryDescription { get; set; }
+        public ICollection<ForumThread>? Threads { get; set; }
+        public ICollection<Reply>? Replies { get; set; }
     }
 }

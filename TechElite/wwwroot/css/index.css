@@ -9,24 +9,28 @@ Rosa-lila #a948b3ff
 */
 
 
-header {
+.hero-container {
     min-height: 60vh;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    color: #e3e3e3ff;
+    width: 100%;
 }
+
 
 
 h2 {
     font-size: 1.2em;
+
 }
 
 
 .filter {
     display: flex;
     flex-direction: row;
+    width: 100%;
     justify-content: space-between;
-}
-
-
-.filter {
     padding: 20px;
 }
 
@@ -74,33 +78,37 @@ h2 {
     margin-top: 0; /* Tar bort eventuell extra marginal ovanför beskrivningen */
 }
 .shop-now-btn {
-    display: inline-block;
-    background-color: #301934ff; /* En härlig färg för knappen */
-    color: white; /* Vit text */
     padding: 15px 30px; /* Lite padding för att göra knappen större */
     font-size: 1.2rem; /* Gör texten lite större */
-    text-align: center;
-    text-decoration: none; /* Ta bort understrykning på länken */
-    border-radius: 5px; /* Rundade hörn för en modern känsla */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition för hover-effekter */
+    
 }
 
-.shop-now-btn:hover {
-    background-color: #ff4b3a; /* Mörkare nyans vid hover */
-    transform: translateY(-5px); /* Liten "pop" effekt när man hovrar */
-}
+    .shop-now-btn:hover {
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition för hover-effekter */
+    }
 
-.shop-now-btn:active {
-    transform: translateY(0); /* Återgår till originalposition när man klickar */
-}
+    .shop-now-btn:active {
+        transform: translateY(0); /* Återgår till originalposition när man klickar */
+    }
+
 article {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 80%;
+    flex-direction: column;
+    max-width: 1200px;
+    width: 100%;
     margin: auto;
-    align-items: center;
+    height: 100%;
     justify-content: center;
+
+}
+
+
+.product-view {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    height: 100%;
+    align-items: start;
 }
 
 section {
@@ -109,6 +117,7 @@ section {
     padding: 10px;
     margin: 20px;
     border-radius: 5px;
+    filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.100));
 }
 
 section div {

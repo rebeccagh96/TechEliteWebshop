@@ -5,46 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TechElite</title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+@*     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+@*     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=shopping_cart" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body>
     <header>
         <div class="menu">
-            <a href="index.html"><img class="logo" src="~/img/Logos/TechElite.grey.svg" alt="Logotyp"></a>
+            <a asp-controller="Home" asp-action="Index">
+                <img class="logo" src="~/img/Logos/TechElite.grey.svg" alt="Logotyp">
+            </a>
             <nav>
                 <a asp-controller="Home" asp-action="Index">Start</a>
-                <a asp-controller="Shop" asp-action="Shop">Shop</a>
-                <a asp-controller="Forum" asp-action="Forum">Forum</a>
-                <a asp-controller="About" asp-action="About">Om oss</a>
+                <a asp-controller="Shop" asp-action="Index">Shop</a>
+                <a asp-controller="Forum" asp-action="Index">Forum</a>
+                <a asp-controller="About" asp-action="Index">Om oss</a>
             </nav>
             <div class="icons">
                 <a href="#"><img src="~/img/Icons/search.svg" alt="Sök"></a>
                 <a href="#"><img src="~/img/Icons/cart.svg" alt="Varukorg"></a>
                 <a asp-controller="Profile" asp-action="Profile"><img src="~/img/Icons/account.svg" alt="Logga in"></a>
             </div>
-        </div>
-        <div class="hero-image">
-            <h1>Välkommen till TechElite</h1>
-            <p>Upptäck de senaste teknologierna</p>
-            <!-- Shoppa nu knapp -->
-            <a href="cart.html" class="shop-now-btn">Shoppa nu</a>
-        </div>
-        <div class="header-content">
-            <div class="img-box">
-            </div>
-        </div>
-        <div class="links">
-            <a class="" asp-controller="Shop" asp-action="Nyheter">Nyheter</a>
-            <a class="" asp-controller="Shop" asp-action="Datorer">Datorer</a>
-            <a class="" asp-controller="Shop" asp-action="Tillbehor">Tillbehör</a>
-            <a class="" asp-controller="Shop" asp-action="Bildskarmar">Bildskärmar</a>
-            <a class="" asp-controller="Shop" asp-action="KonsolerTillbehor">Konsoler & tillbehör</a>
-            <a class="" asp-controller="Shop" asp-action="TelefonerTablets">Telefoner & tablets</a>
-            <a class="" asp-controller="Shop" asp-action="Datorkomponenter">Datorkomponenter</a>
-            <a class="" asp-controller="Shop" asp-action="Ljud">Ljud</a>
         </div>
     </header>
 
@@ -120,6 +107,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/controlTabs.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
