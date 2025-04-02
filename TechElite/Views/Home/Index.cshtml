@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var itemCount = ViewBag.CartItemCount ?? 0; // Cart item count from the controller
 }
 
 <main>
@@ -9,90 +10,28 @@
             <img src="~/img/Icons/category_blck.svg" alt="icon">
             <img src="~/img/Icons/filter_blck.svg" alt="icon">
         </div>
-        <img src="~/img/Icons/cart_blck.svg" alt="cart">
+
+        <!-- Cart Icon and Item Count -->
+        <a href="@Url.Action("Index", "Order")">
+            <img src="~/img/Icons/cart_blck.svg" alt="cart">
+            <span class="cart-item-count">@itemCount</span> <!-- Display cart item count here -->
+        </a>
     </div>
+
+    <!-- Product Listings -->
     <article>
         <section>
             <div class="products">
-                <img src="~/img/Products/Charger/Charger2.svg" alt="">
+                <img src="~/img/Products/Charger/Charger2.svg" alt="Charger">
             </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
+            <p>Charger</p>
+            <p><b>$19.99</b></p>
             <p>Body text</p>
+            <a href="@Url.Action("AddToCart", "Order", new { productId = 1, name = "Charger", price = 19.99, quantity = 1 })" class="btn btn-primary">
+                Add to Cart
+            </a>
+
         </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Consoles/Console2.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Earbuds/Buds2.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Laptop/Laptop1.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Headphones/Headphones1.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-    </article>
-    <article>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Keyboard/Keyboard1.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Consoles/Console1.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Controllers/Controller3.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Mouse/Mouse1.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Components/GPU3.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
+        <!-- Add more products similarly -->
     </article>
 </main>

@@ -14,6 +14,14 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+// **Session Configuration** - Add session support
+builder.Services.AddDistributedMemoryCache(); // In-memory cache for session storage
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout duration
+    options.Cookie.IsEssential = true; // Essential session cookie
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,6 +38,9 @@ else
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+// **Enable session middleware**
+app.UseSession();  // Use session middleware
 
 app.UseAuthorization();
 
