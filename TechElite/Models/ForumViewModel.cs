@@ -1,10 +1,10 @@
-﻿namespace TechElite.Models
+﻿
+namespace TechElite.Models
 {
-    public class ForumViewModel
-    {
-        public ICollection<ForumCategory>? forumCategories { get; set; }
-        public ICollection<ForumThread>? Threads { get; set; }
-        public ICollection<Reply>? Replys { get; set; }
-
-    }
+    public record ForumViewModel
+    (
+        ICollection<ForumCategory> ForumCategories,
+        ICollection<ForumThread> ForumThreads,
+        ICollection<Reply> Replies
+    );
 }

@@ -103,27 +103,27 @@ namespace TechElite.Data
 
             // Flyttat användarseeding till egen fil då det verkar vara problematiskt att seeda användare med lösenordshashing på detta sätt, skapar ny hash varje gång
 
-            //modelBuilder.Entity<Customer>().HasData(
-            //    new Customer
-            //    {
-            //        CustomerId = 1,
-            //        UserId = "0db21edc-bccd-41e6-b80f-6d1c769dd7a7", // Byt ut denna userId mot en som finns i din databas
-            //        FirstName = "User1",
-            //        LastName = "Userson",
-            //        Address = "User street 1",
-            //        ZipCode = "12345",
-            //        City = "User city"
-            //    },
-            //    new Customer
-            //    {
-            //        CustomerId = 2,
-            //        UserId = "0bea84fb-9909-4cb7-8a5e-9db0ca44b4f4", // Byt ut denna userId mot en som finns i din databas
-            //        FirstName = "User2",
-            //        LastName = "Userson2",
-            //        Address = "User street 2",
-            //        ZipCode = "54321",
-            //        City = "User city"
-            //    });
+            modelBuilder.Entity<Customer>().HasData(
+                new Customer
+                {
+                    CustomerId = 1,
+                    UserId = "6d57f11a-0f49-4c6f-bb67-ee7b04cfe80f", // Byt ut denna userId mot en som finns i din databas
+                    FirstName = "User1",
+                    LastName = "Userson",
+                    Address = "User street 1",
+                    ZipCode = "12345",
+                    City = "User city"
+                },
+                new Customer
+                {
+                    CustomerId = 2,
+                    UserId = "80ad6ff6-2f2a-432c-8437-d53f2f821df5", // Byt ut denna userId mot en som finns i din databas
+                    FirstName = "User2",
+                    LastName = "Userson2",
+                    Address = "User street 2",
+                    ZipCode = "54321",
+                    City = "User city"
+                });
 
             modelBuilder.Entity<ProductDepartment>().HasData(
                 new ProductDepartment
@@ -296,45 +296,45 @@ namespace TechElite.Data
                 }
             );
 
-            //modelBuilder.Entity<ForumThread>().HasData(
-            //    new ForumThread
-            //    {
-            //        ForumThreadId = 1,
-            //        ThreadTitle = "Bästa datorn?",
-            //        ThreadContent = "Vilken dator är bäst?",
-            //        PublishDate = new DateTime(2024, 03, 31, 12, 00, 00), //Ändrartillhårdkodat för att inte konstant ändra den seedade datan
-            //        UserId = "4e031e7b-fd2a-47a8-b8a3-88e3f1c7f38d", // Byt ut denna userId mot en som finns i din databas
-            //        ForumCategoryId = 1
-            //    },
-            //    new ForumThread
-            //    {
-            //        ForumThreadId = 2,
-            //        ThreadTitle = "Hjälp med iPhone",
-            //        ThreadContent = "Min iPhone fungerar inte",
-            //        PublishDate = new DateTime(2024, 03, 31, 12, 00, 00),
-            //        UserId = "0bea84fb-9909-4cb7-8a5e-9db0ca44b4f4", // Byt ut denna userId mot en som finns i din databas
-            //        ForumCategoryId = 2
-            //    }
-            //);
+            modelBuilder.Entity<ForumThread>().HasData(
+                new ForumThread
+                {
+                    ForumThreadId = 1,
+                    ThreadTitle = "Bästa datorn?",
+                    ThreadContent = "Vilken dator är bäst?",
+                    PublishDate = new DateTime(2024, 03, 31, 12, 00, 00), //Ändrartillhårdkodat för att inte konstant ändra den seedade datan
+                    UserId = "80ad6ff6-2f2a-432c-8437-d53f2f821df5", // Byt ut denna userId mot en som finns i din databas
+                    ForumCategoryId = 1
+                },
+                new ForumThread
+                {
+                    ForumThreadId = 2,
+                    ThreadTitle = "Hjälp med iPhone",
+                    ThreadContent = "Min iPhone fungerar inte",
+                    PublishDate = new DateTime(2024, 03, 31, 12, 00, 00),
+                    UserId = "d6011b66-39ae-4dcb-9fac-c0dff7e5bbbd", // Byt ut denna userId mot en som finns i din databas
+                    ForumCategoryId = 2
+                }
+            );
 
-            //modelBuilder.Entity<Review>().HasData(
-            //    new Review
-            //    {
-            //        ReviewId = 1,
-            //        ProductId = 1,
-            //        UserId = "0db21edc-bccd-41e6-b80f-6d1c769dd7a7", // Byt ut denna userId mot en som finns i din databas
-            //        ReviewContent = "Bra dator!",
-            //        Rating = 5
-            //    },
-            //    new Review
-            //    {
-            //        ReviewId = 2,
-            //        ProductId = 2,
-            //        UserId = "4e031e7b-fd2a-47a8-b8a3-88e3f1c7f38d", // Byt ut denna userId mot en som finns i din databas
-            //        ReviewContent = "Dålig dator!",
-            //        Rating = 1
-            //    }
-            //);
+            modelBuilder.Entity<Review>().HasData(
+                new Review
+                {
+                    ReviewId = 1,
+                    ProductId = 1,
+                    UserId = "d6011b66-39ae-4dcb-9fac-c0dff7e5bbbd", // Byt ut denna userId mot en som finns i din databas
+                    ReviewContent = "Bra dator!",
+                    Rating = 5
+                },
+                new Review
+                {
+                    ReviewId = 2,
+                    ProductId = 2,
+                    UserId = "d967b630-a3e2-4a08-9762-0f74293a4591", // Byt ut denna userId mot en som finns i din databas
+                    ReviewContent = "Dålig dator!",
+                    Rating = 1
+                }
+            );
         }
     }
 }
