@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var itemCount = ViewBag.CartItemCount ?? 0; // Get item count from ViewBag
 }
 
 <main>
@@ -9,90 +10,47 @@
             <img src="~/img/Icons/category_blck.svg" alt="icon">
             <img src="~/img/Icons/filter_blck.svg" alt="icon">
         </div>
-        <img src="~/img/Icons/cart_blck.svg" alt="cart">
+
+        <!-- Cart Icon and Item Count -->
+        <a href="@Url.Action("Index", "Cart")">
+            <img src="~/img/Icons/cart_blck.svg" alt="cart">
+            <span class="cart-item-count">@itemCount</span>
+        </a>
     </div>
+
+    <!-- Product Listings -->
     <article>
         <section>
             <div class="products">
-                <img src="~/img/Products/Charger/Charger2.svg" alt="">
+                <img src="~/img/Products/Charger/Charger2.svg" alt="Charger">
             </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
+            <p>Charger</p>
+            <p><b>$19.99</b></p>
             <p>Body text</p>
+            <a href="@Url.Action("AddToCart", "Cart", new { productId = 1, name = "Charger", price = 19.99, quantity = 1 })" class="btn btn-primary">Add to Cart</a>
         </section>
+
         <section>
             <div class="products">
-                <img src="~/img/Products/Consoles/Console2.svg" alt="">
+                <img src="~/img/Products/Consoles/Console2.svg" alt="Console">
             </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
+            <p>Console</p>
+            <p><b>$299.99</b></p>
             <p>Body text</p>
+            <a href="@Url.Action("AddToCart", "Cart", new { productId = 2, name = "Console", price = 299.99, quantity = 1 })" class="btn btn-primary">Add to Cart</a>
         </section>
+
         <section>
             <div class="products">
-                <img src="~/img/Products/Earbuds/Buds2.svg" alt="">
+                <img src="~/img/Products/Earbuds/Buds2.svg" alt="Earbuds">
             </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
+            <p>Earbuds</p>
+            <p><b>$39.99</b></p>
             <p>Body text</p>
+            <a href="@Url.Action("AddToCart", "Cart", new { productId = 3, name = "Earbuds", price = 39.99, quantity = 1 })" class="btn btn-primary">Add to Cart</a>
         </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Laptop/Laptop1.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Headphones/Headphones1.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-    </article>
-    <article>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Keyboard/Keyboard1.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Consoles/Console1.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Controllers/Controller3.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Mouse/Mouse1.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
-        <section>
-            <div class="products">
-                <img src="~/img/Products/Components/GPU3.svg" alt="">
-            </div>
-            <p>Text</p>
-            <p><b>$0</b></p>
-            <p>Body text</p>
-        </section>
+
+        <!-- Add more products here... -->
+
     </article>
 </main>

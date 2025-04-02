@@ -149,3 +149,14 @@ Rosa-lila #a948b3ff
 .listCard .count {
   margin: 0 10px;
 }
+
+.cart-item-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    padding: 5px;
+    border-radius: 50%;
+    font-size: 14px;
+}
