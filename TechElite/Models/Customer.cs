@@ -7,8 +7,8 @@ namespace TechElite.Models
     public class Customer
     {
         [Key]
-        [Column("CustomerId")]
-        public required string CustomerId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int CustomerId { get; set; }
 
         [Required] // Denna annotation gör fältet obligatoriskt ifrån vyn, inte bara i DB
         [RegularExpression("[A-Za-zÅÄÖåäö.'´-]+")]
@@ -36,7 +36,7 @@ namespace TechElite.Models
         public ICollection<Order> Orders { get; set; } = new List<Order>(); // Lista av ordrar kopplade till användaren
 
         [ForeignKey("ApplicationUser")]
-        public string? CustomUserId { get; set; }
+        public string? ApplicationUserId { get; set; }
         public ApplicationUser? ApplicationUser { get; set; }
         public string? UserName { get; set; } = string.Empty;
 

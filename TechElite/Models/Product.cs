@@ -6,11 +6,11 @@ namespace TechElite.Models
     public class Product
     {
         [Key]
-        [Column("ProductId")]
-        public required string ProductId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ProductId { get; set; }
 
         [ForeignKey("Department")]
-        public required string DepartmentId { get; set; } 
+        public int DepartmentId { get; set; } 
         public Department? Department { get; set; } 
 
         [Required] // Denna annotation gör fältet obligatoriskt ifrån vyn, inte bara i DB

@@ -9,7 +9,8 @@ namespace TechElite.Models
     public class ForumThread
     {
         [Key]
-        public required string ThreadId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ThreadId { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -21,11 +22,11 @@ namespace TechElite.Models
         public DateTime PublishDate{ get; set; } = DateTime.Now;
 
         [ForeignKey("ForumCategory")]
-        public required string CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public ForumCategory? Category { get; set; }
 
-        [ForeignKey("ApplicationUser")]
-        public required string CustomUserId { get; set; } 
+        [ForeignKey(nameof(ApplicationUser))]
+        public required string ApplicationUserId { get; set; }
         public ApplicationUser? ApplicationUser { get; set; }
         public required string UserName { get; set; } = string.Empty;
 

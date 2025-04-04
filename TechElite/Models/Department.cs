@@ -5,8 +5,9 @@ namespace TechElite.Models
 {
     public class Department
     {
-        [Key]
-        public required string DepartmentId { get; set; }
+        [Key] 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int DepartmentId { get; set; }
 
         [Required] // Denna annotation gör fältet obligatoriskt ifrån vyn, inte bara i DB
         [StringLength(40)]

@@ -8,10 +8,11 @@ namespace TechElite.Models
     public class Review
     {
         [Key]
-        public required string ReviewId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ReviewId { get; set; }
 
         [ForeignKey("Product")]
-        public string? ProductId { get; set; } // Nullable för att kunna skapa recensioner utan att ha en produkt kopplad
+        public int ProductId { get; set; } // Nullable för att kunna skapa recensioner utan att ha en produkt kopplad
         public Product? Product { get; set; }  // Navigeringsegenskap
 
         [Required]
@@ -34,9 +35,9 @@ namespace TechElite.Models
 
         public DateTime ReviewDate { get; set; } = DateTime.Now;
 
-        [ForeignKey("ApplicationUser")]
-        public required string CustomUserId { get; set; } 
-        public ApplicationUser? ApplicationUser { get; set; } 
+        [ForeignKey(nameof(ApplicationUser))]
+        public required string ApplicationUserId { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
 
     }
 }

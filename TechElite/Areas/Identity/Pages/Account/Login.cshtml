@@ -1,5 +1,5 @@
 ﻿@page
-@model LoginModel
+@model TechElite.Areas.Identity.Pages.Account.LoginModel
 
 @{
     ViewData["Title"] = "Log in";
@@ -50,7 +50,7 @@
         <section>
             <h3>Use another service to log in.</h3>
             <hr />
-            @{
+            @* @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
                     <div>
@@ -73,7 +73,7 @@
                         </div>
                     </form>
                 }
-            }
+            } *@
         </section>
     </div>
 </div>

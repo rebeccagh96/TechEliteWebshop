@@ -30,7 +30,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<Customer>()
             .HasOne(c => c.ApplicationUser)
             .WithOne(u => u.Customer)
-            .HasForeignKey<Customer>(c => c.CustomUserId)
+            .HasForeignKey<Customer>(c => c.ApplicationUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Review>()
@@ -42,7 +42,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<Review>()
             .HasOne(r => r.ApplicationUser)
             .WithMany()
-            .HasForeignKey(r => r.CustomUserId)
+            .HasForeignKey(r => r.ApplicationUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Order>()
@@ -66,7 +66,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<ForumThread>()
             .HasOne(ft => ft.ApplicationUser)
             .WithMany()
-            .HasForeignKey(ft => ft.CustomUserId)
+            .HasForeignKey(ft => ft.ApplicationUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<ForumReply>()
@@ -78,15 +78,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<ForumReply>()
             .HasOne(fr => fr.ApplicationUser)
             .WithMany()
-            .HasForeignKey(fr => fr.CustomUserId)
+            .HasForeignKey(fr => fr.ApplicationUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Skapa statiska variabler för att kunna referera till dem vid relationer
-        var dept1Id = "DPT-00000001";
-        var dept2Id = "DPT-00000002";
-        var dept3Id = "DPT-00000003";
-        var dept4Id = "DPT-00000004";
-        var dept5Id = "DPT-00000005";
+        var dept1Id = 1;
+        var dept2Id = 2;
+        var dept3Id = 3;
+        var dept4Id = 4;
+        var dept5Id = 5;
 
         modelBuilder.Entity<Department>().HasData(
             new Department
@@ -121,12 +121,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        var cat1Id = "CAT-00000001";
-        var cat2Id = "CAT-00000002";
-        var cat3Id = "CAT-00000003";
-        var cat4Id = "CAT-00000004";
-        var cat5Id = "CAT-00000005";
-        var cat6Id = "CAT-00000006";
+        var cat1Id = 1;
+        var cat2Id = 2;
+        var cat3Id = 3;
+        var cat4Id = 4;
+        var cat5Id = 5;
+        var cat6Id = 6;
 
         modelBuilder.Entity<ForumCategory>().HasData(
             new ForumCategory
@@ -167,7 +167,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        var product1Id = "PRD-00000001";
+        var product1Id = 1;
         modelBuilder.Entity<Product>().HasData(
             new Product
             {
@@ -184,9 +184,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         // behöver vi referera till en seedad användare. Vi sätter statiska ID:n för användare.
         // Användare med ID "USER1-STATIC-ID" kommer att användas.
         var user1StaticId = "USER1-STATIC-ID";
-        var customer1StaticId = "CUSTOMER1-STATIC-ID";
+        var customer1StaticId = 1;
 
-        // Seed en användare
+        // Seedar en användare
         modelBuilder.Entity<ApplicationUser>().HasData(
             new ApplicationUser
             {
@@ -200,7 +200,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 ConcurrencyStamp = string.Empty,
                 FirstName = "Anna",
                 LastName = "Andersson",
-                CustomUserId = user1StaticId
             }
         );
 
@@ -214,13 +213,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Address = "Exempelgatan 1",
                 ZipCode = "12345",
                 City = "Exempelstad",
-                CustomUserId = user1StaticId,
+                ApplicationUserId = user1StaticId,
                 UserName = "user1"
+
             }
         );
 
         // Seed en ForumThread
-        var thread1Id = "THR-00000001";
+        var thread1Id = 1;
         modelBuilder.Entity<ForumThread>().HasData(
             new ForumThread
             {
@@ -229,13 +229,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 ThreadContent = "Detta är den första tråden.",
                 PublishDate = new DateTime(2025, 1, 1),
                 CategoryId = cat1Id,
-                CustomUserId = user1StaticId,
-                UserName = "user1"
+                UserName = "user1",
+                ApplicationUserId = user1StaticId // Referens till den seedade användaren
+
             }
         );
 
         // Seed en ForumReply
-        var reply1Id = "RPL-00000001";
+        var reply1Id = 1;
         modelBuilder.Entity<ForumReply>().HasData(
             new ForumReply
             {
@@ -243,13 +244,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Content = "Tack för välkomnandet!",
                 PublishDate = new DateTime(2025, 1, 1),
                 ThreadId = thread1Id,
-                CustomUserId = user1StaticId,
-                UserName = "user1"
+                UserName = "user1",
+                ApplicationUserId = user1StaticId // Referens till den seedade användaren
+
             }
         );
 
         // Seed en Review
-        var review1Id = "REV-00000001";
+        var review1Id = 1;
         modelBuilder.Entity<Review>().HasData(
             new Review
             {
@@ -260,12 +262,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Rating = 5,
                 ReviewText = "Jag gillar den verkligen!",
                 ReviewDate = new DateTime(2025, 1, 1),
-                CustomUserId = user1StaticId
+                ApplicationUserId = user1StaticId // Referens till den seedade användaren
             }
         );
 
         // Seed en Order
-        var order1Id = "ORD-00000001";
+        var order1Id = 1;
         modelBuilder.Entity<Order>().HasData(
             new Order
             {
@@ -294,7 +296,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         }
 
-        // Seedar användare med statiska ID:n
+        // Seedar användare med statiska ID:n (Identity ID är string)
         var user1 = new ApplicationUser
         {
             Id = "USER1-STATIC-ID",
@@ -302,7 +304,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             Email = "user1@example.com",
             FirstName = "Anna",
             LastName = "Andersson",
-            CustomUserId = "USER1-STATIC-ID",
             EmailConfirmed = true
         };
         var user2 = new ApplicationUser
@@ -312,7 +313,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             Email = "user2@example.com",
             FirstName = "Bernt",
             LastName = "Berntsson",
-            CustomUserId = "USER2-STATIC-ID",
             EmailConfirmed = true
         };
         var admin1 = new ApplicationUser
@@ -322,7 +322,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             Email = "admin1@example.com",
             FirstName = "Admin",
             LastName = "Adminson",
-            CustomUserId = "ADMIN1-STATIC-ID",
             EmailConfirmed = true
         };
 

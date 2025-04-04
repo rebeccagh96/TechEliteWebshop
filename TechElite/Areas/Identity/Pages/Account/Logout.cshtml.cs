@@ -13,6 +13,7 @@ using TechElite.Areas.Identity.Data;
 
 namespace TechElite.Areas.Identity.Pages.Account
 {
+    [AllowAnonymous]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

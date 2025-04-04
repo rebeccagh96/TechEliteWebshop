@@ -12,7 +12,8 @@ namespace TechElite.Models
     public class ForumReply
     {
         [Key]
-        public required string ReplyId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ReplyId { get; set; }
 
         [Required]
         public required string Content { get; set; } = string.Empty;
@@ -20,12 +21,12 @@ namespace TechElite.Models
         public DateTime PublishDate { get; set; } = DateTime.Now;
 
         [ForeignKey("ForumThread")]
-        public string? ThreadId { get; set; }
+        public int ThreadId { get; set; }
         public ForumThread? Thread { get; set; }
 
-        [ForeignKey("ApplicationUser")]
-        public string? CustomUserId { get; set; } 
-        public ApplicationUser? ApplicationUser { get; set; } 
+        [ForeignKey(nameof(ApplicationUser))]
+        public required string ApplicationUserId { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
         public string? UserName { get; set; } = string.Empty;
 
     }

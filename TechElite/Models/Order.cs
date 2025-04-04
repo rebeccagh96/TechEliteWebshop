@@ -6,11 +6,11 @@ namespace TechElite.Models
     public class Order
     {
         [Key]
-        [Column("OrderId")]
-        public required string OrderId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int OrderId { get; set; }
 
         [ForeignKey("Customer")]
-        public required string CustomerId { get; set; } 
+        public int CustomerId { get; set; } 
         public Customer? Customer { get; set; }
         public required string UserName { get; set; } = string.Empty; // Användarnamn kopplat till ordern
         public required DateTime OrderDate { get; set; }
