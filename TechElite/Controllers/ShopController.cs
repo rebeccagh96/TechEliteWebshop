@@ -4,7 +4,7 @@ namespace TechElite.Controllers
 {
     public class ShopController : Controller
     {
-        public IActionResult Shop()
+        public IActionResult Index()
         {
             return View();
         }

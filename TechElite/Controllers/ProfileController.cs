@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using TechElite.Data;
 using TechElite.Models;
 
 namespace TechElite.Controllers

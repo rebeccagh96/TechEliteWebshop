@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TechElite.Data;
+using TechElite;
 
 #nullable disable
 
@@ -159,7 +159,22 @@ namespace TechElite.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TechElite.Models.ApplicationUser", b =>
+            modelBuilder.Entity("OrderProduct", b =>
+                {
+                    b.Property<string>("OrdersOrderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductsProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("OrdersOrderId", "ProductsProductId");
+
+                    b.HasIndex("ProductsProductId");
+
+                    b.ToTable("OrderProduct");
+                });
+
+            modelBuilder.Entity("TechElite.Areas.Identity.Data.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -171,12 +186,26 @@ namespace TechElite.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CustomUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -222,136 +251,247 @@ namespace TechElite.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "USER1-STATIC-ID",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "",
+                            CustomUserId = "USER1-STATIC-ID",
+                            Email = "user1@example.com",
+                            EmailConfirmed = true,
+                            FirstName = "Anna",
+                            LastName = "Andersson",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "USER1@EXAMPLE.COM",
+                            NormalizedUserName = "USER1",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "user1"
+                        });
                 });
 
             modelBuilder.Entity("TechElite.Models.Customer", b =>
                 {
-                    b.Property<int>("CustomerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("CustomerId");
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CustomUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ZipCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.HasKey("CustomerId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CustomUserId")
+                        .IsUnique()
+                        .HasFilter("[CustomUserId] IS NOT NULL");
 
                     b.ToTable("Customers");
 
                     b.HasData(
                         new
                         {
-                            CustomerId = 1,
-                            Address = "User street 1",
-                            City = "User city",
-                            FirstName = "User1",
-                            LastName = "Userson",
-                            UserId = "0db21edc-bccd-41e6-b80f-6d1c769dd7a7",
+                            CustomerId = "CUSTOMER1-STATIC-ID",
+                            Address = "Exempelgatan 1",
+                            City = "Exempelstad",
+                            CustomUserId = "USER1-STATIC-ID",
+                            FirstName = "Anna",
+                            LastName = "Andersson",
+                            UserName = "user1",
                             ZipCode = "12345"
+                        });
+                });
+
+            modelBuilder.Entity("TechElite.Models.Department", b =>
+                {
+                    b.Property<string>("DepartmentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DepartmentDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasKey("DepartmentId");
+
+                    b.ToTable("Departments");
+
+                    b.HasData(
+                        new
+                        {
+                            DepartmentId = "DPT-00000001",
+                            DepartmentDescription = "Telefoner och surfplattor för alla syften",
+                            DepartmentName = "Telefoner & Tablets"
                         },
                         new
                         {
-                            CustomerId = 2,
-                            Address = "User street 2",
-                            City = "User city",
-                            FirstName = "User2",
-                            LastName = "Userson2",
-                            UserId = "0bea84fb-9909-4cb7-8a5e-9db0ca44b4f4",
-                            ZipCode = "54321"
+                            DepartmentId = "DPT-00000002",
+                            DepartmentDescription = "Laptops och skärmar för både hemmet och kontoret",
+                            DepartmentName = "Laptops & Skärmar"
+                        },
+                        new
+                        {
+                            DepartmentId = "DPT-00000003",
+                            DepartmentDescription = "Hörlurar och hifi-utrustning",
+                            DepartmentName = "Hörlurar & Hifi"
+                        },
+                        new
+                        {
+                            DepartmentId = "DPT-00000004",
+                            DepartmentDescription = "Tillbehör och komponenter för alla behov",
+                            DepartmentName = "Tillbehör & komponenter"
+                        },
+                        new
+                        {
+                            DepartmentId = "DPT-00000005",
+                            DepartmentDescription = "Gaming-utrustning och tillbehör",
+                            DepartmentName = "Gaming"
                         });
                 });
 
             modelBuilder.Entity("TechElite.Models.ForumCategory", b =>
                 {
-                    b.Property<int>("ForumCategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ForumCategoryId"));
-
-                    b.Property<string>("CategoryDescription")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("ForumCategoryId");
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("CategoryId");
 
                     b.ToTable("ForumCategories");
 
                     b.HasData(
                         new
                         {
-                            ForumCategoryId = 1,
-                            CategoryDescription = "Diskutera produkter",
-                            CategoryName = "Produkter"
+                            CategoryId = "CAT-00000001",
+                            CategoryName = "Rekommendationer",
+                            Description = "Rekommendera dina favoriter"
                         },
                         new
                         {
-                            ForumCategoryId = 2,
-                            CategoryDescription = "Få hjälp med produkter",
-                            CategoryName = "Support"
+                            CategoryId = "CAT-00000002",
+                            CategoryName = "Tips och hjälp",
+                            Description = "Be om hjälp"
                         },
                         new
                         {
-                            ForumCategoryId = 3,
-                            CategoryDescription = "Rekommenderationer",
-                            CategoryName = "Rekommendationer"
+                            CategoryId = "CAT-00000003",
+                            CategoryName = "Produkter",
+                            Description = "Diskutera produkter"
                         },
                         new
                         {
-                            ForumCategoryId = 4,
-                            CategoryDescription = "Tips & tricks",
-                            CategoryName = "Tips"
+                            CategoryId = "CAT-00000004",
+                            CategoryName = "Support",
+                            Description = "Få support"
                         },
                         new
                         {
-                            ForumCategoryId = 5,
-                            CategoryDescription = "Köp och sälj dina gamla teknikprylar",
-                            CategoryName = "Köp & sälj"
+                            CategoryId = "CAT-00000005",
+                            CategoryName = "Köp & Sälj",
+                            Description = "Köp och sälj produkter"
                         },
                         new
                         {
-                            ForumCategoryId = 6,
-                            CategoryDescription = "Övriga diskussioner",
-                            CategoryName = "Övrigt"
+                            CategoryId = "CAT-00000006",
+                            CategoryName = "Övrigt",
+                            Description = "Diskutera övriga ämnen"
+                        });
+                });
+
+            modelBuilder.Entity("TechElite.Models.ForumReply", b =>
+                {
+                    b.Property<string>("ReplyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("PublishDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ThreadId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReplyId");
+
+                    b.HasIndex("CustomUserId");
+
+                    b.HasIndex("ThreadId");
+
+                    b.ToTable("ForumReplies");
+
+                    b.HasData(
+                        new
+                        {
+                            ReplyId = "RPL-00000001",
+                            Content = "Tack för välkomnandet!",
+                            CustomUserId = "USER1-STATIC-ID",
+                            PublishDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ThreadId = "THR-00000001",
+                            UserName = "user1"
                         });
                 });
 
             modelBuilder.Entity("TechElite.Models.ForumThread", b =>
                 {
-                    b.Property<int>("ForumThreadId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("ThreadId")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ForumThreadId"));
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ForumCategoryId")
-                        .HasColumnType("int");
+                    b.Property<string>("CustomUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
@@ -362,347 +502,176 @@ namespace TechElite.Migrations
 
                     b.Property<string>("ThreadTitle")
                         .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.HasKey("ThreadId");
 
-                    b.HasKey("ForumThreadId");
+                    b.HasIndex("CategoryId");
 
-                    b.HasIndex("ForumCategoryId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("CustomUserId");
 
                     b.ToTable("ForumThreads");
 
                     b.HasData(
                         new
                         {
-                            ForumThreadId = 1,
-                            ForumCategoryId = 1,
-                            PublishDate = new DateTime(2024, 3, 31, 12, 0, 0, 0, DateTimeKind.Unspecified),
-                            ThreadContent = "Vilken dator är bäst?",
-                            ThreadTitle = "Bästa datorn?",
-                            UserId = "4e031e7b-fd2a-47a8-b8a3-88e3f1c7f38d"
-                        },
-                        new
-                        {
-                            ForumThreadId = 2,
-                            ForumCategoryId = 2,
-                            PublishDate = new DateTime(2024, 3, 31, 12, 0, 0, 0, DateTimeKind.Unspecified),
-                            ThreadContent = "Min iPhone fungerar inte",
-                            ThreadTitle = "Hjälp med iPhone",
-                            UserId = "0bea84fb-9909-4cb7-8a5e-9db0ca44b4f4"
+                            ThreadId = "THR-00000001",
+                            CategoryId = "CAT-00000001",
+                            CustomUserId = "USER1-STATIC-ID",
+                            PublishDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ThreadContent = "Detta är den första tråden.",
+                            ThreadTitle = "Välkommen till forumet",
+                            UserName = "user1"
                         });
                 });
 
             modelBuilder.Entity("TechElite.Models.Order", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("OrderId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Delivered")
-                        .HasColumnType("bit");
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ProductName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
-                    b.Property<int>("ProductPrice")
+                    b.Property<int>("TotalPrice")
                         .HasColumnType("int");
 
-                    b.Property<string>("ShippingMethod")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Total")
-                        .HasColumnType("int");
 
                     b.HasKey("OrderId");
 
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = "ORD-00000001",
+                            CustomerId = "CUSTOMER1-STATIC-ID",
+                            OrderDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductName = "Exempelprodukt",
+                            TotalPrice = 100,
+                            UserName = "user1"
+                        });
                 });
 
             modelBuilder.Entity("TechElite.Models.Product", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("ProductId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+                    b.Property<string>("DepartmentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ImagePath")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("image");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductDepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductDescription")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ProductName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
-                    b.Property<int>("Stock")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("ProductId");
 
-                    b.HasIndex("ProductDepartmentId");
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
-                            ProductId = 1,
-                            ImagePath = "img/Products/Laptop/Laptop1.svg",
-                            Price = 5990,
-                            ProductDepartmentId = 1,
-                            ProductDescription = "16-tums bärbar dator",
-                            ProductName = "Laptop, 16 tum",
-                            Stock = 10
-                        },
-                        new
-                        {
-                            ProductId = 2,
-                            ImagePath = "img/Products/Laptop/Laptop2.svg",
-                            Price = 3990,
-                            ProductDepartmentId = 1,
-                            ProductDescription = "16-tums bärbar dator",
-                            ProductName = "Laptop, 12 tum",
-                            Stock = 10
-                        },
-                        new
-                        {
-                            ProductId = 3,
-                            ImagePath = "img/Products/Phone/Phone1.svg",
-                            Price = 1990,
-                            ProductDepartmentId = 2,
-                            ProductDescription = "En iPhone 5",
-                            ProductName = "iPhone 5, 128gb",
-                            Stock = 10
-                        },
-                        new
-                        {
-                            ProductId = 4,
-                            ImagePath = "img/Products/Phone/Phone4.svg",
-                            Price = 2990,
-                            ProductDepartmentId = 2,
-                            ProductDescription = "En Samsung Galaxy",
-                            ProductName = "Samsung Galaxy",
-                            Stock = 10
-                        },
-                        new
-                        {
-                            ProductId = 5,
-                            ImagePath = "img/Products/Headphones/Headphones1.svg",
-                            Price = 2990,
-                            ProductDepartmentId = 3,
-                            ProductDescription = "Ett noice cancelling headset",
-                            ProductName = "Noice cancelling headset",
-                            Stock = 10
-                        },
-                        new
-                        {
-                            ProductId = 6,
-                            ImagePath = "img/Products/Earbuds/Buds2.svg",
-                            Price = 2490,
-                            ProductDepartmentId = 3,
-                            ProductDescription = "Trådlösa in-ear-hörlurar",
-                            ProductName = "Samsung Galaxy Buds",
-                            Stock = 10
-                        },
-                        new
-                        {
-                            ProductId = 7,
-                            ImagePath = "img/Products/Components/Ext-hdd1.svg",
-                            Price = 1490,
-                            ProductDepartmentId = 4,
-                            ProductDescription = "En extern hårddisk på 3 terrabyte",
-                            ProductName = "Extern hårddisk, 3tb",
-                            Stock = 10
-                        },
-                        new
-                        {
-                            ProductId = 8,
-                            ImagePath = "img/Products/Components/GPU1.svg",
-                            Price = 4490,
-                            ProductDepartmentId = 4,
-                            ProductDescription = "Ett grafikkort",
-                            ProductName = "Grafikkort",
-                            Stock = 10
-                        },
-                        new
-                        {
-                            ProductId = 9,
-                            ImagePath = "img/Products/Consoles/Console2.svg",
-                            Price = 2490,
-                            ProductDepartmentId = 5,
-                            ProductDescription = "Ett klassiskt Playstation",
-                            ProductName = "Sony Playstation",
-                            Stock = 10
-                        },
-                        new
-                        {
-                            ProductId = 10,
-                            ImagePath = "img/Products/Controllers/Controller1.svg",
-                            Price = 490,
-                            ProductDepartmentId = 5,
-                            ProductDescription = "En handkontroll",
-                            ProductName = "Dualshock handkontroll",
-                            Stock = 10
+                            ProductId = "PRD-00000001",
+                            DepartmentId = "DPT-00000001",
+                            Description = "Beskrivning av exempelprodukten",
+                            Price = 100,
+                            ProductName = "Exempelprodukt",
+                            Quantity = 10
                         });
-                });
-
-            modelBuilder.Entity("TechElite.Models.ProductDepartment", b =>
-                {
-                    b.Property<int>("ProductDepartmentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductDepartmentId"));
-
-                    b.Property<string>("DepartmentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ProductDepartmentId");
-
-                    b.ToTable("ProductDepartments");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductDepartmentId = 1,
-                            DepartmentName = "Datorer & Skärmar"
-                        },
-                        new
-                        {
-                            ProductDepartmentId = 2,
-                            DepartmentName = "Telefoner & Tablets"
-                        },
-                        new
-                        {
-                            ProductDepartmentId = 3,
-                            DepartmentName = "Hörlurar & HiFi"
-                        },
-                        new
-                        {
-                            ProductDepartmentId = 4,
-                            DepartmentName = "Tillbehör & Komponenter"
-                        },
-                        new
-                        {
-                            ProductDepartmentId = 5,
-                            DepartmentName = "Gaming"
-                        });
-                });
-
-            modelBuilder.Entity("TechElite.Models.Reply", b =>
-                {
-                    b.Property<int>("ReplyId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReplyId"));
-
-                    b.Property<int>("ForumCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ReplyContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ReplyDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ThreadId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ReplyId");
-
-                    b.HasIndex("ForumCategoryId");
-
-                    b.HasIndex("ThreadId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Replies");
                 });
 
             modelBuilder.Entity("TechElite.Models.Review", b =>
                 {
-                    b.Property<int>("ReviewId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("ReviewId")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
+                    b.Property<string>("CustomUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("ReviewContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("ReviewDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("ReviewText")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ReviewTitle")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("ReviewerName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("ReviewId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("CustomUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Reviews");
 
                     b.HasData(
                         new
                         {
-                            ReviewId = 1,
-                            ProductId = 1,
+                            ReviewId = "REV-00000001",
+                            CustomUserId = "USER1-STATIC-ID",
+                            ProductId = "PRD-00000001",
                             Rating = 5,
-                            ReviewContent = "Bra dator!",
-                            UserId = "0db21edc-bccd-41e6-b80f-6d1c769dd7a7"
-                        },
-                        new
-                        {
-                            ReviewId = 2,
-                            ProductId = 2,
-                            Rating = 1,
-                            ReviewContent = "Dålig dator!",
-                            UserId = "4e031e7b-fd2a-47a8-b8a3-88e3f1c7f38d"
+                            ReviewDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReviewText = "Jag gillar den verkligen!",
+                            ReviewTitle = "Bra produkt",
+                            ReviewerName = "Anna"
                         });
                 });
 
@@ -717,7 +686,7 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("TechElite.Models.ApplicationUser", null)
+                    b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -726,7 +695,7 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("TechElite.Models.ApplicationUser", null)
+                    b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -741,7 +710,7 @@ namespace TechElite.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TechElite.Models.ApplicationUser", null)
+                    b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -750,41 +719,72 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("TechElite.Models.ApplicationUser", null)
+                    b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TechElite.Models.Customer", b =>
+            modelBuilder.Entity("OrderProduct", b =>
                 {
-                    b.HasOne("TechElite.Models.ApplicationUser", "User")
-                        .WithMany("Customers")
-                        .HasForeignKey("UserId")
+                    b.HasOne("TechElite.Models.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.HasOne("TechElite.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TechElite.Models.Customer", b =>
+                {
+                    b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
+                        .WithOne("Customer")
+                        .HasForeignKey("TechElite.Models.Customer", "CustomUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("TechElite.Models.ForumReply", b =>
+                {
+                    b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("CustomUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("TechElite.Models.ForumThread", "Thread")
+                        .WithMany("Replies")
+                        .HasForeignKey("ThreadId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Thread");
                 });
 
             modelBuilder.Entity("TechElite.Models.ForumThread", b =>
                 {
-                    b.HasOne("TechElite.Models.ForumCategory", "ForumCategory")
+                    b.HasOne("TechElite.Models.ForumCategory", "Category")
                         .WithMany("Threads")
-                        .HasForeignKey("ForumCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TechElite.Models.ApplicationUser", "User")
-                        .WithMany("Threads")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("CustomUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("ForumCategory");
+                    b.Navigation("ApplicationUser");
 
-                    b.Navigation("User");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("TechElite.Models.Order", b =>
@@ -792,7 +792,7 @@ namespace TechElite.Migrations
                     b.HasOne("TechElite.Models.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Customer");
@@ -800,70 +800,36 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("TechElite.Models.Product", b =>
                 {
-                    b.HasOne("TechElite.Models.ProductDepartment", "ProductDepartment")
+                    b.HasOne("TechElite.Models.Department", "Department")
                         .WithMany("Products")
-                        .HasForeignKey("ProductDepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("ProductDepartment");
-                });
-
-            modelBuilder.Entity("TechElite.Models.Reply", b =>
-                {
-                    b.HasOne("TechElite.Models.ForumCategory", "ForumCategory")
-                        .WithMany("Replies")
-                        .HasForeignKey("ForumCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TechElite.Models.ForumThread", "Thread")
-                        .WithMany("Replies")
-                        .HasForeignKey("ThreadId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("TechElite.Models.ApplicationUser", "User")
-                        .WithMany("Replies")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ForumCategory");
-
-                    b.Navigation("Thread");
-
-                    b.Navigation("User");
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("TechElite.Models.Review", b =>
                 {
+                    b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("CustomUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("TechElite.Models.Product", "Product")
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("TechElite.Models.ApplicationUser", "User")
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TechElite.Models.ApplicationUser", b =>
+            modelBuilder.Entity("TechElite.Areas.Identity.Data.ApplicationUser", b =>
                 {
-                    b.Navigation("Customers");
-
-                    b.Navigation("Replies");
-
-                    b.Navigation("Reviews");
-
-                    b.Navigation("Threads");
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("TechElite.Models.Customer", b =>
@@ -871,10 +837,13 @@ namespace TechElite.Migrations
                     b.Navigation("Orders");
                 });
 
+            modelBuilder.Entity("TechElite.Models.Department", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("TechElite.Models.ForumCategory", b =>
                 {
-                    b.Navigation("Replies");
-
                     b.Navigation("Threads");
                 });
 
@@ -886,11 +855,6 @@ namespace TechElite.Migrations
             modelBuilder.Entity("TechElite.Models.Product", b =>
                 {
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("TechElite.Models.ProductDepartment", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

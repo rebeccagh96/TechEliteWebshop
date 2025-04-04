@@ -1,11 +1,24 @@
-﻿namespace TechElite.Models
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace TechElite.Models
 {
     public class ForumCategory
     {
-        public int ForumCategoryId { get; set; }
-        public string? CategoryName {  get; set; }
-        public string? CategoryDescription { get; set; }
-        public ICollection<ForumThread>? Threads { get; set; }
-        public ICollection<Reply>? Replies { get; set; }
+        [Key]
+        public required string CategoryId { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public required string CategoryName { get; set; } = string.Empty;
+
+        [StringLength(200)]
+        public string? Description { get; set; }
+
+        public ICollection<ForumThread> Threads { get; set; } = new List<ForumThread>();
+
     }
 }
+
+
+

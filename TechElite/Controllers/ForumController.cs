@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using TechElite.Data;
+using TechElite.Areas.Identity.Data;
 using TechElite.Models;
 
 namespace TechElite.Controllers
@@ -20,49 +20,80 @@ namespace TechElite.Controllers
             _context = context;
             _userManager = userManager;
         }
+
+
         public IActionResult Index()
         {
             ForumViewModel model = new (
                 ForumCategories: _context.ForumCategories.ToList(),
                 ForumThreads: _context.ForumThreads.ToList(),
-                Replies: _context.Replies.ToList()
+                ForumReplies: _context.ForumReplies.ToList()
                 );
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddThread(ForumThread forumThread)
-        {
-            if (ModelState.IsValid)
-            {
-                var userId = _userManager.GetUserId(User);
-                forumThread.UserId = userId;
-                if (userId == null)
-                {
-                    return View();
-                }
+        //[HttpPost]
+        //public async Task<IActionResult> AddThread(ForumThread forumThread)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var userId = _userManager.GetUserId(User);
+        //        forumThread.UserId = userId;
+        //        if (userId == null)
+        //        {
+        //            return View();
+        //        }
 
-                var publishDate = DateTime.Now;
-                forumThread.PublishDate = publishDate;
+        //        var publishDate = DateTime.Now;
+        //        forumThread.PublishDate = publishDate;
 
-                _context.Add(forumThread);
-                await _context.SaveChangesAsync();
+        //        _context.Add(forumThread);
+        //        await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                return View(); 
-            }
-            
-        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    else
+        //    {
+        //        return View(); 
+        //    }
+
+        //}
+
+        // Ej testat men kanske fungerar att göra så här istället? / J
+
+        //[HttpPost]
+        //public async Task<IActionResult> AddThread(ForumThread forumThread)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var userName = _userManager.GetUserName(User);
+        //        forumThread.UserName = userName;
+        //        if (userName == null)
+        //        {
+        //            return View();
+        //        }
+
+        //        var publishDate = DateTime.Now;
+        //        forumThread.PublishDate = publishDate;
+
+        //        _context.Add(forumThread);
+        //        await _context.SaveChangesAsync();
+
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    else
+        //    {
+        //        return View();
+        //    }
+
+        //}
 
         public IActionResult LatestThreads()
         {
             ForumViewModel model = new(
             ForumCategories: _context.ForumCategories.ToList(),
             ForumThreads: _context.ForumThreads.ToList(),
-            Replies: _context.Replies.ToList()
+            ForumReplies: _context.ForumReplies.ToList()
             );
             return View(model);
         }
@@ -96,19 +127,21 @@ namespace TechElite.Controllers
             return View();
         }
 
-        public IActionResult DeleteThread(int id)
-        {
-            using (var context = _context)
-            {
-                var thread = context.ForumThreads.SingleOrDefault(t => t.ForumThreadId == id);
-                if (thread != null)
-                {
-                    context.ForumThreads.Remove(thread);
-                    context.SaveChanges();
-                }
-            }
-            return View();
-        }
+        // Vet ej hur detta ska lösas just nu. TheradId är numer en string / J
+
+        //public IActionResult DeleteThread(int id)
+        //{
+        //    using (var context = _context)
+        //    {
+        //        var thread = context.ForumThreads.SingleOrDefault(t => t.ThreadId == id);
+        //        if (thread != null)
+        //        {
+        //            context.ForumThreads.Remove(thread);
+        //            context.SaveChanges();
+        //        }
+        //    }
+        //    return View();
+        //}
 
         public IActionResult MyThreads()
         {
@@ -121,7 +154,7 @@ namespace TechElite.Controllers
             {
                 return BadRequest("You must pass in a ThreadId.");
             }
-            
+          
             return View();
         }
     }
