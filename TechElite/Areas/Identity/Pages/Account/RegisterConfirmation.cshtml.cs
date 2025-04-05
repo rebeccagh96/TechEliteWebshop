@@ -39,14 +39,12 @@ namespace TechElite.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
-                return NotFound($"Unable to load user with email '{email}'.");
+                return NotFound($"Kunde inte ladda användare med e-mejladress '{email}'.");
             }
 
             Email = email;
-            // Always display the confirmation link on this page
             DisplayConfirmAccountLink = true;
 
-            // Use the passed callbackUrl if provided; otherwise, generate it.
             if (string.IsNullOrEmpty(callbackUrl))
             {
                 var userId = await _userManager.GetUserIdAsync(user);

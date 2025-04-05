@@ -4,18 +4,25 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav">
+@* <ul class="navbar-nav"> *@
     @if (SignInManager.IsSignedIn(User))
     {
-        <span>Hello @UserManager.GetUserName(User)!</span>
-        <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" method="post">
-            <button type="submit" class="btn btn-link">Logout</button>
+        <a asp-controller="Profile" asp-action="Profile">
+            <img class="icon" src="~/img/Icons/account.svg" alt="Visa profil">
+            <span>@UserManager.GetUserName(User)</span>
+        </a>
+
+        <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" method="post" class="d-inline">
+            <button type="submit" class="logout-btn">
+                <img class="icon" src="~/img/Icons/logout.svg" alt="logga ut">
+            </button>
         </form>
     }
     else
     {
-        <a asp-area="Identity" asp-page="/Account/Login">Login</a>
-        <a asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a asp-area="Identity" asp-page="/Account/Register"><img class="icon" src="~/img/Icons/signup.svg" alt="registrera"></a>
+        <a asp-area="Identity" asp-page="/Account/Login"><img class="icon" src="~/img/Icons/login.svg" alt="login"></a>
+        
     }
 
-</ul>
+@* </ul> *@

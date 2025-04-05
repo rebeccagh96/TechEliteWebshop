@@ -33,16 +33,9 @@
                 <a asp-controller="About" asp-action="Index">Om oss</a>
             </nav>
             <div class="icons">
-                <a href="#"><img src="~/img/Icons/search.svg" alt="Sök"></a>
-                <a href="#"><img src="~/img/Icons/cart.svg" alt="Varukorg"></a>
-@*                 <a asp-controller="Profile" asp-action="Profile"><img src="~/img/Icons/account.svg" alt="Logga in"></a> *@
+                <a href="#"><img class="icon" src="~/img/Icons/search.svg" alt="Sök"></a>
+                <a href="#"><img class="icon "src="~/img/Icons/cart.svg" alt="Varukorg"></a>
                 <partial name="_LoginPartial" />
-@*                 @if (SignInManager.IsSignedIn(User))
-                {
-                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" method="post">
-                        <button type="submit" class="btn btn-link nav-link" style="cursor:pointer;">Logout</button>
-                    </form>
-                } *@
             </div>
         </div>
     </header>

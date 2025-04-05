@@ -1,25 +1,35 @@
 ﻿@page
-@model ResendEmailConfirmationModel
+@model TechElite.Areas.Identity.Pages.Account.ResendEmailConfirmationModel
 @{
     ViewData["Title"] = "Resend email confirmation";
 }
 
 <h1>@ViewData["Title"]</h1>
-<h2>Enter your email.</h2>
+<h2>Skriv in din e-mejladress.</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email" class="form-label"></label>
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Resend</button>
+            <button type="submit" class="btn btn-primary">Återsänd</button>
         </form>
     </div>
 </div>
+
+@if (Model.DisplayConfirmAccountLink)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <p>
+                <a asp-page="/Account/ConfirmEmail" asp-route-userId="@Model.UserId" asp-route-code="@Model.Code">Bekräfta konto</a>
+            </p>
+        </div>
+    </div>
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
