@@ -161,11 +161,11 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("OrderProduct", b =>
                 {
-                    b.Property<string>("OrdersOrderId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("OrdersOrderId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ProductsProductId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProductsProductId")
+                        .HasColumnType("int");
 
                     b.HasKey("OrdersOrderId", "ProductsProductId");
 
@@ -184,10 +184,6 @@ namespace TechElite.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CustomUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -258,7 +254,6 @@ namespace TechElite.Migrations
                             Id = "USER1-STATIC-ID",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "",
-                            CustomUserId = "USER1-STATIC-ID",
                             Email = "user1@example.com",
                             EmailConfirmed = true,
                             FirstName = "Anna",
@@ -275,22 +270,24 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("TechElite.Models.Customer", b =>
                 {
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("CustomerId");
+                    b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CustomUserId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -312,19 +309,19 @@ namespace TechElite.Migrations
 
                     b.HasKey("CustomerId");
 
-                    b.HasIndex("CustomUserId")
+                    b.HasIndex("ApplicationUserId")
                         .IsUnique()
-                        .HasFilter("[CustomUserId] IS NOT NULL");
+                        .HasFilter("[ApplicationUserId] IS NOT NULL");
 
                     b.ToTable("Customers");
 
                     b.HasData(
                         new
                         {
-                            CustomerId = "CUSTOMER1-STATIC-ID",
+                            CustomerId = 1,
                             Address = "Exempelgatan 1",
+                            ApplicationUserId = "USER1-STATIC-ID",
                             City = "Exempelstad",
-                            CustomUserId = "USER1-STATIC-ID",
                             FirstName = "Anna",
                             LastName = "Andersson",
                             UserName = "user1",
@@ -334,8 +331,11 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("TechElite.Models.Department", b =>
                 {
-                    b.Property<string>("DepartmentId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("DepartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
 
                     b.Property<string>("DepartmentDescription")
                         .HasColumnType("nvarchar(max)");
@@ -352,31 +352,31 @@ namespace TechElite.Migrations
                     b.HasData(
                         new
                         {
-                            DepartmentId = "DPT-00000001",
+                            DepartmentId = 1,
                             DepartmentDescription = "Telefoner och surfplattor för alla syften",
                             DepartmentName = "Telefoner & Tablets"
                         },
                         new
                         {
-                            DepartmentId = "DPT-00000002",
+                            DepartmentId = 2,
                             DepartmentDescription = "Laptops och skärmar för både hemmet och kontoret",
                             DepartmentName = "Laptops & Skärmar"
                         },
                         new
                         {
-                            DepartmentId = "DPT-00000003",
+                            DepartmentId = 3,
                             DepartmentDescription = "Hörlurar och hifi-utrustning",
                             DepartmentName = "Hörlurar & Hifi"
                         },
                         new
                         {
-                            DepartmentId = "DPT-00000004",
+                            DepartmentId = 4,
                             DepartmentDescription = "Tillbehör och komponenter för alla behov",
                             DepartmentName = "Tillbehör & komponenter"
                         },
                         new
                         {
-                            DepartmentId = "DPT-00000005",
+                            DepartmentId = 5,
                             DepartmentDescription = "Gaming-utrustning och tillbehör",
                             DepartmentName = "Gaming"
                         });
@@ -384,8 +384,11 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("TechElite.Models.ForumCategory", b =>
                 {
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
@@ -403,37 +406,37 @@ namespace TechElite.Migrations
                     b.HasData(
                         new
                         {
-                            CategoryId = "CAT-00000001",
+                            CategoryId = 1,
                             CategoryName = "Rekommendationer",
                             Description = "Rekommendera dina favoriter"
                         },
                         new
                         {
-                            CategoryId = "CAT-00000002",
+                            CategoryId = 2,
                             CategoryName = "Tips och hjälp",
                             Description = "Be om hjälp"
                         },
                         new
                         {
-                            CategoryId = "CAT-00000003",
+                            CategoryId = 3,
                             CategoryName = "Produkter",
                             Description = "Diskutera produkter"
                         },
                         new
                         {
-                            CategoryId = "CAT-00000004",
+                            CategoryId = 4,
                             CategoryName = "Support",
                             Description = "Få support"
                         },
                         new
                         {
-                            CategoryId = "CAT-00000005",
+                            CategoryId = 5,
                             CategoryName = "Köp & Sälj",
                             Description = "Köp och sälj produkter"
                         },
                         new
                         {
-                            CategoryId = "CAT-00000006",
+                            CategoryId = 6,
                             CategoryName = "Övrigt",
                             Description = "Diskutera övriga ämnen"
                         });
@@ -441,28 +444,32 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("TechElite.Models.ForumReply", b =>
                 {
-                    b.Property<string>("ReplyId")
+                    b.Property<int>("ReplyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReplyId"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CustomUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ThreadId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ThreadId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReplyId");
 
-                    b.HasIndex("CustomUserId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ThreadId");
 
@@ -471,27 +478,29 @@ namespace TechElite.Migrations
                     b.HasData(
                         new
                         {
-                            ReplyId = "RPL-00000001",
+                            ReplyId = 1,
+                            ApplicationUserId = "USER1-STATIC-ID",
                             Content = "Tack för välkomnandet!",
-                            CustomUserId = "USER1-STATIC-ID",
                             PublishDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ThreadId = "THR-00000001",
+                            ThreadId = 1,
                             UserName = "user1"
                         });
                 });
 
             modelBuilder.Entity("TechElite.Models.ForumThread", b =>
                 {
-                    b.Property<string>("ThreadId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ThreadId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("CategoryId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThreadId"));
+
+                    b.Property<string>("ApplicationUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CustomUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
@@ -511,18 +520,18 @@ namespace TechElite.Migrations
 
                     b.HasKey("ThreadId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("CustomUserId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("ForumThreads");
 
                     b.HasData(
                         new
                         {
-                            ThreadId = "THR-00000001",
-                            CategoryId = "CAT-00000001",
-                            CustomUserId = "USER1-STATIC-ID",
+                            ThreadId = 1,
+                            ApplicationUserId = "USER1-STATIC-ID",
+                            CategoryId = 1,
                             PublishDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ThreadContent = "Detta är den första tråden.",
                             ThreadTitle = "Välkommen till forumet",
@@ -532,13 +541,14 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("TechElite.Models.Order", b =>
                 {
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("OrderId");
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -564,8 +574,8 @@ namespace TechElite.Migrations
                     b.HasData(
                         new
                         {
-                            OrderId = "ORD-00000001",
-                            CustomerId = "CUSTOMER1-STATIC-ID",
+                            OrderId = 1,
+                            CustomerId = 1,
                             OrderDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ProductName = "Exempelprodukt",
                             TotalPrice = 100,
@@ -575,13 +585,14 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("TechElite.Models.Product", b =>
                 {
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("ProductId");
+                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("DepartmentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -611,8 +622,8 @@ namespace TechElite.Migrations
                     b.HasData(
                         new
                         {
-                            ProductId = "PRD-00000001",
-                            DepartmentId = "DPT-00000001",
+                            ProductId = 1,
+                            DepartmentId = 1,
                             Description = "Beskrivning av exempelprodukten",
                             Price = 100,
                             ProductName = "Exempelprodukt",
@@ -622,15 +633,18 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("TechElite.Models.Review", b =>
                 {
-                    b.Property<string>("ReviewId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("CustomUserId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
+
+                    b.Property<string>("ApplicationUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
@@ -655,7 +669,7 @@ namespace TechElite.Migrations
 
                     b.HasKey("ReviewId");
 
-                    b.HasIndex("CustomUserId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ProductId");
 
@@ -664,9 +678,9 @@ namespace TechElite.Migrations
                     b.HasData(
                         new
                         {
-                            ReviewId = "REV-00000001",
-                            CustomUserId = "USER1-STATIC-ID",
-                            ProductId = "PRD-00000001",
+                            ReviewId = 1,
+                            ApplicationUserId = "USER1-STATIC-ID",
+                            ProductId = 1,
                             Rating = 5,
                             ReviewDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ReviewText = "Jag gillar den verkligen!",
@@ -745,7 +759,7 @@ namespace TechElite.Migrations
                 {
                     b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
                         .WithOne("Customer")
-                        .HasForeignKey("TechElite.Models.Customer", "CustomUserId")
+                        .HasForeignKey("TechElite.Models.Customer", "ApplicationUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ApplicationUser");
@@ -755,13 +769,15 @@ namespace TechElite.Migrations
                 {
                     b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("CustomUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("TechElite.Models.ForumThread", "Thread")
                         .WithMany("Replies")
                         .HasForeignKey("ThreadId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("ApplicationUser");
 
@@ -770,15 +786,15 @@ namespace TechElite.Migrations
 
             modelBuilder.Entity("TechElite.Models.ForumThread", b =>
                 {
-                    b.HasOne("TechElite.Models.ForumCategory", "Category")
-                        .WithMany("Threads")
-                        .HasForeignKey("CategoryId")
+                    b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("CustomUserId")
+                    b.HasOne("TechElite.Models.ForumCategory", "Category")
+                        .WithMany("Threads")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -813,14 +829,15 @@ namespace TechElite.Migrations
                 {
                     b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("CustomUserId")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TechElite.Models.Product", "Product")
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("ApplicationUser");
 

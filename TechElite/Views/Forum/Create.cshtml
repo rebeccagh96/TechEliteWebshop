@@ -1,0 +1,28 @@
+﻿@model TechElite.Models.ForumThread
+@{
+    ViewData["Title"] = "Create";
+}
+<head>
+    <link rel="stylesheet" href="~/css/forum.css" />
+</head>
+<article>
+    <form asp-action="Create" method="post" id="create-thread">
+        @Html.AntiForgeryToken()
+        <h2>Skapa tråd</h2>
+        <label for="CategoryId">Kategori</label>
+        <select for="CategoryId" name="categoryId" id="thread-category" required>
+            <option value="">Välj Kategori</option>
+            <option value="1">Rekommendationer</option>
+            <option value="2">Tips & hjälp</option>
+            <option value="3">Produkter</option>
+            <option value="4">Support</option>
+            <option value="5">Köp & Sälj</option>
+            <option value="6">Övrigt</option>
+        </select>
+        <label for="ThreadTitle">Titel</label>
+        <input for="ThreadTitle" type="text" name="threadTitle" id="title" minlength="3" maxlength="30" required>
+        <label for="ThreadContent">Text</label>
+        <textarea for="ThreadContent" id="text" name="threadContent" rows="5" columns="50" required></textarea>
+        <button type="submit" class="btn" id="submit">Publicera</button>
+    </form>
+</article>

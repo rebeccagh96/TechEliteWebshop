@@ -11,43 +11,26 @@
         <article class="forum-menu">
             <img class="notifications" src="~/img/Icons/notifications.svg" onclick="showNotifications()">
             <img src="~/img/Icons/search_black.svg">
-            <button class="btn" onclick="showForm()">Skapa tråd</button>
+            <a class="btn" asp-controller="Forum" asp-action="Create">Skapa tråd</a>
         </article>
         <article id="notification-article">
             <section>
                 <h4>Notiser</h4>
                 <div>
-                    <p>Nytt inlägg i din tråd: <a class="notification-link" href="#">Varför går alltid min laddare sönder?</a></p>
-                    <p>Nytt inlägg i din tråd: <a class="notification-link" href="#">Söker tips på hållbar laddare till Iphone 13</a></p>
-                    <p>Nytt inlägg i din tråd: <a class="notification-link" href="#">Bästa köpet jag gjort!</a></p>
+                    @foreach (ForumThread t in Model.ForumThreads)
+                    {
+                        <p>Nytt inlägg i din tråd: <a class="notification-link" asp-controller="Forum" asp-action="Thread" asp-route-id="@t.ThreadId">@t.ThreadTitle</a></p>
+                    }
                 </div>
             </section>
-        </article>
-        <article>
-            <form method="post" id="create-thread" asp-action="AddThread">
-                <h2>Skapa tråd</h2>
-                <label for="ForumCategoryId">Kategori</label>
-                <select name="ForumCategoryId" id="thread-category" required>
-                    <option value="">Välj kategori</option>
-                    @foreach (var category in Model.ForumCategories)
-                    {
-                        <option value="@category.CategoryId">@category.CategoryName</option>
-                    }
-                </select>
-                <label for="ThreadTitle">Titel</label>
-                <input type="text" id="title" name="ThreadTitle" minlength="3" maxlength="30" required>
-                <label for="ThreadContent">Text</label>
-                <textarea id="text" name="ThreadContent" rows="5" columns="50"></textarea>
-                <input type="submit" class="btn" id="submit" value="Publicera">
-            </form>
         </article>
         <article>
             <section>
                 <h4>Senaste</h4>
                 <div>
-                    @foreach (var forumThread in Model.ForumThreads)
+                    @foreach (ForumThread t in Model.ForumThreads)
                     {
-                        <a class="new-thread" asp-controller="Forum" asp-action="Thread">@forumThread.ThreadTitle</a>
+                        <a class="new-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@t.ThreadId">@t.ThreadTitle</a>
                     }
                     <a class="show-more" asp-controller="Forum" asp-action="LatestThreads">Visa mer</a>
                 </div>
@@ -65,7 +48,7 @@
                         }
                         else //Inloggad
                         {
-                            <a class="my-thread" asp-controller="Forum" asp-action="Thread">@myThread.ThreadTitle</a>
+                            <a class="my-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@myThread.ThreadId">@myThread.ThreadTitle</a>
                         }
                     }
 
@@ -80,10 +63,5 @@
         var notis = document.getElementById("notification-article");
         if (notis.style.display == "flex") notis.style.display = "none";
         else notis.style.display = "flex";
-    }
-    function showForm() {
-        var create = document.getElementById("create-thread");
-        if (create.style.display == "flex") create.style.display = "none";
-        else create.style.display = "flex";
     }
 </script>
