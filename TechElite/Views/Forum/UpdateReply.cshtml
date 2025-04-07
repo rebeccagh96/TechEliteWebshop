@@ -1,0 +1,19 @@
+﻿@using TechElite.Models
+@model ForumReply
+@{
+	ViewData["Title"] = "Update Reply";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/forum.css" />
+    <link rel="stylesheet" href="~/css/thread.css" />
+</head>
+<article>
+    <form method="post" id="create-post" asp-action="UpdateReply">
+        <h3>Updatera inlägg</h3>
+        <input type="hidden" name="id" value="@Model.ReplyId" />
+        <label for="replyContent">Inlägg</label>
+        <textarea id="text" name="replyContent" rows="5" columns="50">@Model.Content</textarea>
+        <button type="submit" class="btn" id="submit">Publicera</button>
+    </form>
+</article>

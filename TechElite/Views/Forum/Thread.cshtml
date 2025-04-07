@@ -39,6 +39,8 @@
                             <p class="date">@reply.PublishDate</p>
                         </span>
                         <p>@reply.Content</p>
+                        <a class="btn" asp-controller="Forum" asp-action="UpdateReply" asp-route-id="@reply.ReplyId">Uppdatera inlägg</a>
+                        <a class="btn" asp-controller="Forum" asp-action="DeleteReply" asp-route-id="@reply.ReplyId">Radera inlägg</a>
                     </div>
                 </section>
             }
@@ -46,13 +48,13 @@
         <article>
             <form method="post" id="create-post" asp-action="AddReply">
                 <h3>Skapa inlägg</h3>
-                <input for="ThreadId" type="hidden" name="threadId" value="@Model.ThreadId" />
-                <input for="ThreadTitle" type="hidden" name="threadTitle" value="@Model.ThreadTitle" />
-                <input for="ThreadContent" type="hidden" name="threadContent" value="@Model.ThreadContent" />
-                <label for="ReplyContent">Inlägg</label>
-                <textarea for="ReplyContent" id="text" name="replyContent" rows="5" columns="50"></textarea>
-                <input for="ForumThread" type="hidden" name="forumThread" value="@Model" />
-                <input for="CategoryId" type="hidden" name="categoryId" value="@Model.CategoryId" />
+                <input type="hidden" name="threadId" value="@Model.ThreadId" />
+                <input type="hidden" name="threadTitle" value="@Model.ThreadTitle" />
+                <input type="hidden" name="threadContent" value="@Model.ThreadContent" />
+                <label for="replyContent">Inlägg</label>
+                <textarea id="text" name="replyContent" rows="5" columns="50"></textarea>
+                <input type="hidden" name="forumThread" value="@Model" />
+                <input type="hidden" name="categoryId" value="@Model.CategoryId" />
                 <button type="submit" class="btn" id="submit">Publicera</button>
             </form>
         </article>

@@ -2,4 +2,23 @@
 @{
 	ViewData["Title"] = "My threads";
 }
-<h1>Mina trådar</h1>
+<head>
+    <link rel="stylesheet" href="~/css/forum.css" />
+    <link rel="stylesheet" href="~/css/thread.css" />
+</head>
+
+<main>
+    <div class="forum-container">
+        <article>
+            <section>
+                <h4>Mina trådar</h4>
+                <div>
+                    @foreach (var t in Model)
+                    {
+                        <a class="new-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@t.ThreadId">@t.ThreadTitle</a>
+                    }
+                </div>
+            </section>
+        </article>
+    </div>
+</main>

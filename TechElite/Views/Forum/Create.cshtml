@@ -1,4 +1,5 @@
 ﻿@model TechElite.Models.ForumThread
+@using TechElite.Areas.Identity.Data
 @{
     ViewData["Title"] = "Create";
 }
@@ -9,8 +10,8 @@
     <form asp-action="Create" method="post" id="create-thread">
         @Html.AntiForgeryToken()
         <h2>Skapa tråd</h2>
-        <label for="CategoryId">Kategori</label>
-        <select for="CategoryId" name="categoryId" id="thread-category" required>
+        <label for="categoryId">Kategori</label>
+        <select name="categoryId" id="thread-category" required>
             <option value="">Välj Kategori</option>
             <option value="1">Rekommendationer</option>
             <option value="2">Tips & hjälp</option>
@@ -19,10 +20,10 @@
             <option value="5">Köp & Sälj</option>
             <option value="6">Övrigt</option>
         </select>
-        <label for="ThreadTitle">Titel</label>
-        <input for="ThreadTitle" type="text" name="threadTitle" id="title" minlength="3" maxlength="30" required>
-        <label for="ThreadContent">Text</label>
-        <textarea for="ThreadContent" id="text" name="threadContent" rows="5" columns="50" required></textarea>
+        <label for="threadTitle">Titel</label>
+        <input type="text" name="threadTitle" id="title" minlength="3" maxlength="30" required>
+        <label for="threadContent">Text</label>
+        <textarea id="text" name="threadContent" rows="5" columns="50" required></textarea>
         <button type="submit" class="btn" id="submit">Publicera</button>
     </form>
 </article>
