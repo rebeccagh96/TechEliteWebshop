@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
+using System.Threading;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Identity.Client;
 using TechElite.Areas.Identity.Data;
 using TechElite.Models;
 
@@ -48,14 +50,15 @@ namespace TechElite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int categoryId, string threadTitle, string threadContent)
         {
+            var user = await _userManager.GetUserAsync(User);
             List<ForumThread> forumThreads = await _context.ForumThreads.ToListAsync();
             var forumThread = new ForumThread
             {
                 CategoryId = categoryId,
                 ThreadTitle = threadTitle,
                 ThreadContent = threadContent,
-                ApplicationUserId = "USER1-STATIC-ID",
-                UserName = "user1",
+                ApplicationUserId = user.Id,
+                UserName = user.UserName,
                 PublishDate = DateTime.Now
             };
             _context.ForumThreads.Add(forumThread);
@@ -74,16 +77,17 @@ namespace TechElite.Controllers
         }
 
         [HttpGet]
-        public IActionResult MyThreads()
+        public async Task<IActionResult> MyThreads()
         {
-            string? id = User.Identity?.Name;
-            if (id is null)
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user is null)
             {
                 return BadRequest("You must be logged in.");
             }
-            var forumThreads = _context.ForumThreads
-                .Where(ft => ft.ApplicationUserId == id)
-                .ToList();
+            var forumThreads = await _context.ForumThreads
+                .Where(ft => ft.ApplicationUserId == user.Id)
+                .ToListAsync();
             return View(forumThreads);
         }
 
@@ -108,13 +112,15 @@ namespace TechElite.Controllers
         [HttpPost]
         public async Task<IActionResult> AddReply(int threadId, string replyContent, string threadTitle, string threadContent, int categoryId)
         {
+            var user = await _userManager.GetUserAsync(User);
             ForumThread? model = _context.ForumThreads
                 .SingleOrDefault(t => t.ThreadId == threadId);
             List<ForumReply> forumReplies = await _context.ForumReplies.ToListAsync();
             var reply = new ForumReply
             {
                 ThreadId = threadId,
-                ApplicationUserId = "USER1-STATIC-ID",
+                ApplicationUserId = user.Id,
+                UserName = user.UserName,
                 PublishDate = DateTime.Now,
                 Content = replyContent,
                 Thread = model
@@ -122,7 +128,7 @@ namespace TechElite.Controllers
 
             _context.ForumReplies.Add(reply);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Thread", new { threadId = model.ThreadId });
+            return RedirectToAction("Thread", new { id = model.ThreadId });
         }
 
         [HttpGet]
@@ -161,6 +167,39 @@ namespace TechElite.Controllers
             return RedirectToAction("Thread", new { id = forumThread.ThreadId });
         }
 
+        [HttpGet]
+        public IActionResult UpdateReply(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest("You must pass in a ReplyId.");
+            }
+            var model = _context.ForumReplies
+                .Include(r => r.ApplicationUser)
+                .FirstOrDefault(r => r.ReplyId == id);
+            if (model == null)
+            {
+                return NotFound($"Reply with ID {id} was not found.");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateReply(int id, string replyContent)
+        {
+            var forumReply = await _context.ForumReplies
+                .FirstOrDefaultAsync(r => r.ReplyId == id);
+            if (forumReply == null)
+            {
+                return NotFound("Reply not found.");
+            }
+            forumReply.Content = replyContent;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Thread", new { id = forumReply.ThreadId });
+        }
+
         public async Task<IActionResult> DeleteThread(int? id)
         {
             var thread = await _context.ForumThreads
@@ -176,7 +215,23 @@ namespace TechElite.Controllers
                 _context.ForumThreads.Remove(thread);
                 await _context.SaveChangesAsync();
             }
-            return View();
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> DeleteReply(int? id) 
+        {
+            var reply = await _context.ForumReplies
+                .FirstOrDefaultAsync(r => r.ReplyId == id);
+            if (reply == null)
+            {
+                return NotFound("Reply not found");
+            }
+            if (reply != null)
+            {
+                _context.ForumReplies.Remove(reply);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Thread", new { id = reply.ThreadId});
         }
 
     }
