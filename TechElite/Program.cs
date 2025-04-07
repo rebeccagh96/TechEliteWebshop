@@ -16,7 +16,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = false;
-    options.SignIn.RequireConfirmedAccount = true; // För att kunna testa login, ska ändras till true
+    options.SignIn.RequireConfirmedAccount = true; 
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -27,7 +27,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
     options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 })
-.AddCookie() // This registers the cookie scheme for Identity
+.AddCookie() 
 .AddNegotiate("Negotiate", options => { });
 
 
@@ -36,12 +36,6 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
-
-//builder.Services.AddAuthorization(options =>
-//{
-//    // By default, all incoming requests will be authorized according to the default policy.
-//    options.FallbackPolicy = options.DefaultPolicy;
-//});
 
 var app = builder.Build();
 

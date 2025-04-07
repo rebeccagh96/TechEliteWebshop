@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TechElite.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class fixedroleissue : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,7 +34,6 @@ namespace TechElite.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    CustomUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -59,7 +58,8 @@ namespace TechElite.Migrations
                 name: "Departments",
                 columns: table => new
                 {
-                    DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DepartmentName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     DepartmentDescription = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -72,7 +72,8 @@ namespace TechElite.Migrations
                 name: "ForumCategories",
                 columns: table => new
                 {
-                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
                 },
@@ -191,21 +192,22 @@ namespace TechElite.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ZipCode = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CustomUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerId);
                     table.ForeignKey(
-                        name: "FK_Customers_AspNetUsers_CustomUserId",
-                        column: x => x.CustomUserId,
+                        name: "FK_Customers_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -215,8 +217,9 @@ namespace TechElite.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
@@ -238,20 +241,21 @@ namespace TechElite.Migrations
                 name: "ForumThreads",
                 columns: table => new
                 {
-                    ThreadId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ThreadId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ThreadTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ThreadContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PublishDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ForumThreads", x => x.ThreadId);
                     table.ForeignKey(
-                        name: "FK_ForumThreads_AspNetUsers_CustomUserId",
-                        column: x => x.CustomUserId,
+                        name: "FK_ForumThreads_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -267,8 +271,9 @@ namespace TechElite.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    OrderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
@@ -289,21 +294,22 @@ namespace TechElite.Migrations
                 name: "Reviews",
                 columns: table => new
                 {
-                    ReviewId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ReviewId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     ReviewerName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     ReviewTitle = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     ReviewText = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     ReviewDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CustomUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.ReviewId);
                     table.ForeignKey(
-                        name: "FK_Reviews_AspNetUsers_CustomUserId",
-                        column: x => x.CustomUserId,
+                        name: "FK_Reviews_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -319,19 +325,20 @@ namespace TechElite.Migrations
                 name: "ForumReplies",
                 columns: table => new
                 {
-                    ReplyId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReplyId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PublishDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ThreadId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CustomUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ThreadId = table.Column<int>(type: "int", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ForumReplies", x => x.ReplyId);
                     table.ForeignKey(
-                        name: "FK_ForumReplies_AspNetUsers_CustomUserId",
-                        column: x => x.CustomUserId,
+                        name: "FK_ForumReplies_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -347,8 +354,8 @@ namespace TechElite.Migrations
                 name: "OrderProduct",
                 columns: table => new
                 {
-                    OrdersOrderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductsProductId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    OrdersOrderId = table.Column<int>(type: "int", nullable: false),
+                    ProductsProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -369,19 +376,19 @@ namespace TechElite.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CustomUserId", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "USER1-STATIC-ID", 0, "", "USER1-STATIC-ID", "user1@example.com", true, "Anna", "Andersson", false, null, "USER1@EXAMPLE.COM", "USER1", null, null, false, "", false, "user1" });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "USER1-STATIC-ID", 0, "", "user1@example.com", true, "Anna", "Andersson", false, null, "USER1@EXAMPLE.COM", "USER1", null, null, false, "", false, "user1" });
 
             migrationBuilder.InsertData(
                 table: "Departments",
                 columns: new[] { "DepartmentId", "DepartmentDescription", "DepartmentName" },
                 values: new object[,]
                 {
-                    { "DPT-00000001", "Telefoner och surfplattor för alla syften", "Telefoner & Tablets" },
-                    { "DPT-00000002", "Laptops och skärmar för både hemmet och kontoret", "Laptops & Skärmar" },
-                    { "DPT-00000003", "Hörlurar och hifi-utrustning", "Hörlurar & Hifi" },
-                    { "DPT-00000004", "Tillbehör och komponenter för alla behov", "Tillbehör & komponenter" },
-                    { "DPT-00000005", "Gaming-utrustning och tillbehör", "Gaming" }
+                    { 1, "Telefoner och surfplattor för alla syften", "Telefoner & Tablets" },
+                    { 2, "Laptops och skärmar för både hemmet och kontoret", "Laptops & Skärmar" },
+                    { 3, "Hörlurar och hifi-utrustning", "Hörlurar & Hifi" },
+                    { 4, "Tillbehör och komponenter för alla behov", "Tillbehör & komponenter" },
+                    { 5, "Gaming-utrustning och tillbehör", "Gaming" }
                 });
 
             migrationBuilder.InsertData(
@@ -389,43 +396,43 @@ namespace TechElite.Migrations
                 columns: new[] { "CategoryId", "CategoryName", "Description" },
                 values: new object[,]
                 {
-                    { "CAT-00000001", "Rekommendationer", "Rekommendera dina favoriter" },
-                    { "CAT-00000002", "Tips och hjälp", "Be om hjälp" },
-                    { "CAT-00000003", "Produkter", "Diskutera produkter" },
-                    { "CAT-00000004", "Support", "Få support" },
-                    { "CAT-00000005", "Köp & Sälj", "Köp och sälj produkter" },
-                    { "CAT-00000006", "Övrigt", "Diskutera övriga ämnen" }
+                    { 1, "Rekommendationer", "Rekommendera dina favoriter" },
+                    { 2, "Tips och hjälp", "Be om hjälp" },
+                    { 3, "Produkter", "Diskutera produkter" },
+                    { 4, "Support", "Få support" },
+                    { 5, "Köp & Sälj", "Köp och sälj produkter" },
+                    { 6, "Övrigt", "Diskutera övriga ämnen" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Customers",
-                columns: new[] { "CustomerId", "Address", "City", "CustomUserId", "FirstName", "LastName", "UserName", "ZipCode" },
-                values: new object[] { "CUSTOMER1-STATIC-ID", "Exempelgatan 1", "Exempelstad", "USER1-STATIC-ID", "Anna", "Andersson", "user1", "12345" });
+                columns: new[] { "CustomerId", "Address", "ApplicationUserId", "City", "FirstName", "LastName", "UserName", "ZipCode" },
+                values: new object[] { 1, "Exempelgatan 1", "USER1-STATIC-ID", "Exempelstad", "Anna", "Andersson", "user1", "12345" });
 
             migrationBuilder.InsertData(
                 table: "ForumThreads",
-                columns: new[] { "ThreadId", "CategoryId", "CustomUserId", "PublishDate", "ThreadContent", "ThreadTitle", "UserName" },
-                values: new object[] { "THR-00000001", "CAT-00000001", "USER1-STATIC-ID", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Detta är den första tråden.", "Välkommen till forumet", "user1" });
+                columns: new[] { "ThreadId", "ApplicationUserId", "CategoryId", "PublishDate", "ThreadContent", "ThreadTitle", "UserName" },
+                values: new object[] { 1, "USER1-STATIC-ID", 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Detta är den första tråden.", "Välkommen till forumet", "user1" });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "ProductId", "DepartmentId", "Description", "Image", "Price", "ProductName", "Quantity" },
-                values: new object[] { "PRD-00000001", "DPT-00000001", "Beskrivning av exempelprodukten", null, 100, "Exempelprodukt", 10 });
+                values: new object[] { 1, 1, "Beskrivning av exempelprodukten", null, 100, "Exempelprodukt", 10 });
 
             migrationBuilder.InsertData(
                 table: "ForumReplies",
-                columns: new[] { "ReplyId", "Content", "CustomUserId", "PublishDate", "ThreadId", "UserName" },
-                values: new object[] { "RPL-00000001", "Tack för välkomnandet!", "USER1-STATIC-ID", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "THR-00000001", "user1" });
+                columns: new[] { "ReplyId", "ApplicationUserId", "Content", "PublishDate", "ThreadId", "UserName" },
+                values: new object[] { 1, "USER1-STATIC-ID", "Tack för välkomnandet!", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "user1" });
 
             migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "OrderId", "CustomerId", "OrderDate", "ProductName", "TotalPrice", "UserName" },
-                values: new object[] { "ORD-00000001", "CUSTOMER1-STATIC-ID", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Exempelprodukt", 100, "user1" });
+                values: new object[] { 1, 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Exempelprodukt", 100, "user1" });
 
             migrationBuilder.InsertData(
                 table: "Reviews",
-                columns: new[] { "ReviewId", "CustomUserId", "ProductId", "Rating", "ReviewDate", "ReviewText", "ReviewTitle", "ReviewerName" },
-                values: new object[] { "REV-00000001", "USER1-STATIC-ID", "PRD-00000001", 5, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jag gillar den verkligen!", "Bra produkt", "Anna" });
+                columns: new[] { "ReviewId", "ApplicationUserId", "ProductId", "Rating", "ReviewDate", "ReviewText", "ReviewTitle", "ReviewerName" },
+                values: new object[] { 1, "USER1-STATIC-ID", 1, 5, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jag gillar den verkligen!", "Bra produkt", "Anna" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -467,16 +474,16 @@ namespace TechElite.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_CustomUserId",
+                name: "IX_Customers_ApplicationUserId",
                 table: "Customers",
-                column: "CustomUserId",
+                column: "ApplicationUserId",
                 unique: true,
-                filter: "[CustomUserId] IS NOT NULL");
+                filter: "[ApplicationUserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ForumReplies_CustomUserId",
+                name: "IX_ForumReplies_ApplicationUserId",
                 table: "ForumReplies",
-                column: "CustomUserId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ForumReplies_ThreadId",
@@ -484,14 +491,14 @@ namespace TechElite.Migrations
                 column: "ThreadId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ForumThreads_ApplicationUserId",
+                table: "ForumThreads",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ForumThreads_CategoryId",
                 table: "ForumThreads",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ForumThreads_CustomUserId",
-                table: "ForumThreads",
-                column: "CustomUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderProduct_ProductsProductId",
@@ -509,9 +516,9 @@ namespace TechElite.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_CustomUserId",
+                name: "IX_Reviews_ApplicationUserId",
                 table: "Reviews",
-                column: "CustomUserId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_ProductId",

@@ -215,7 +215,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 City = "Exempelstad",
                 ApplicationUserId = user1StaticId,
                 UserName = "user1"
-
             }
         );
 
@@ -286,13 +285,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-        // Seed roller
+        // Seeda roller
         var roles = new[] { "Admin", "User" };
         foreach (var role in roles)
         {
             if (!await roleManager.RoleExistsAsync(role))
             {
-                await roleManager.CreateAsync(new IdentityRole(role));
+                var roleResult = await roleManager.CreateAsync(new IdentityRole(role));
+                if (!roleResult.Succeeded)
+                {
+                    var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                    Console.WriteLine($"Roll kunde inte skapas {role}: {errors}");
+                }
             }
         }
 
@@ -331,18 +335,23 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         {
             if (await userManager.FindByEmailAsync(user.Email) == null)
             {
-                await userManager.CreateAsync(user, "Password123!");
-                // Tilldela roller: om användarnamnet innehåller "admin" får användaren Admin-rollen, annars User
-                // Vi behöver fixa så att användare som registrerar sig via formuläret inte kan använda
-                // namnet admin
-                if (user.UserName.ToLower().Contains("admin"))
+                var createUserResult = await userManager.CreateAsync(user, "Password123!");
+                if (createUserResult.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, "Admin");
+                    var roleToAssign = user.UserName.Equals("admin1", StringComparison.OrdinalIgnoreCase) ? "Admin" : "User";
+                    var addRoleResult = await userManager.AddToRoleAsync(user, roleToAssign);
+                    if (!addRoleResult.Succeeded)
+                    {
+                        var errors = string.Join(", ", addRoleResult.Errors.Select(e => e.Description));
+                        Console.WriteLine($"{user.UserName} kunde inte tilldelas rollen: {roleToAssign}. {errors}");
+                    }
                 }
                 else
                 {
-                    await userManager.AddToRoleAsync(user, "User");
+                    var errors = string.Join(", ", createUserResult.Errors.Select(e => e.Description));
+                    Console.WriteLine($"{user.UserName} kunde inte skapas: {errors}");
                 }
+
             }
         }
     }

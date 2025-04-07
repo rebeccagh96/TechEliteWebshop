@@ -26,11 +26,11 @@ article {
     background-image: linear-gradient(to bottom right, #301934ff, #163832ff, #301934ff);
 }
 
-.profile-container {
+.account-container {
     padding: 15px;
 }
 
-.profile-panel {
+.account-panel {
     width: 240px;
     height: 100%;
     min-height: 600px;
@@ -95,7 +95,7 @@ input[type="radio"] {
 
     .marker #bottom, .marker #top {
         background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
-        ;
+        
         filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.171));
     }
 
@@ -118,13 +118,9 @@ input[type="radio"] {
   #tab7:checked ~ .marker{transform: translateY(calc(3 * 46px))} */
 
 
-#tab1:checked ~ .marker {
-    transform: translateY(calc(-3.5 * 55.1px));
-}
+#tab1:checked ~ .marker{transform: translateY(calc(-3.6 * 55px));}
 
-#tab2:checked ~ .marker {
-    transform: translateY(calc(-2.5 * 55px));
-}
+#tab2:checked ~ .marker {transform: translateY(calc(-2.5 * 55px));}
 
 #tab3:checked ~ .marker {
     transform: translateY(calc(-1.5 * 55px));
@@ -155,13 +151,13 @@ input[type="radio"] {
     flex-grow: 1;
 }
 
-.prof-tab {
+.account-tab {
     display: flex;
     flex-flow: row wrap;
     gap: 10px;
 }
 
-.welcome, .favorites {
+.welcome, .users {
     border-radius: 5px;
     background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
     
