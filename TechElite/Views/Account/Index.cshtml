@@ -1,0 +1,161 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using TechElite.Models
+
+@inject UserManager<ApplicationUser> UserManager
+
+@model IEnumerable<TechElite.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = "Account";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+</head>
+
+
+<main>
+    <div id="account-root" data-is-admin="@User.IsInRole("Admin").ToString().ToLower()">
+    <div class="account-container">
+        <article>
+            <div class="account-panel">
+                <div class="tabs">
+                    <input type="radio" id="tab1" name="tab" checked="true">
+                    <label for="tab1"></label>
+                    <input type="radio" id="tab2" name="tab">
+                    <label for="tab2"></label>
+                    <input type="radio" id="tab3" name="tab">
+                    <label for="tab3"></label>
+                    <input type="radio" id="tab4" name="tab">
+                    <label for="tab4"></label>
+                    <input type="radio" id="tab5" name="tab">
+                    <label for="tab5"></label>
+                    <input type="radio" id="tab6" name="tab">
+                    <label for="tab6"></label>
+                    <input type="radio" id="tab7" name="tab">
+                    <label for="tab7"></label>
+                    <div class="marker">
+                        <div id="top"></div>
+                        <div id="bottom"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                @if (User.IsInRole("Admin"))
+                {
+                    <partial name="_AdminAccountView" model="Model" />
+
+                }
+                else
+                {
+                    <partial name="_UserAccountView" model="Model" />
+                }
+            </div>
+        </article>
+    </div>
+</main>
+
+
+
+@* 
+<main>
+    <div class="account-container">
+        <article>
+            <div class="account-panel">
+                <div class="tabs">
+                    <input type="radio" id="tab1" name="tab" checked="true">
+                    <label for="tab1">Användare</label>
+                    <input type="radio" id="tab2" name="tab">
+                    <label for="tab2">Orderhistorik</label>
+                    <input type="radio" id="tab3" name="tab">
+                    <label for="tab3">Lagersaldo</label>
+                    <input type="radio" id="tab4" name="tab">
+                    <label for="tab4">Inställningar</label>
+                    <input type="radio" id="tab5" name="tab">
+                    <label for="tab5">Kundregister</label>
+                    <input type="radio" id="tab6" name="tab">
+                    <label for="tab6">Notiser</label>
+                    <input type="radio" id="tab7" name="tab">
+                    <label for="tab7">Övrigt</label>
+                    <div class="marker">
+                        <div id="top"></div>
+                        <div id="bottom"></div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="content">
+                <div class="first account-tab">
+                    <div class="welcome">
+                        <h1>Välkommen @UserManager.GetUserName(User)!</h1>
+                    </div>
+                    <div class="users">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>UserName</th>
+                                    <th>Email</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Roles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model)
+                                {
+                                    <tr>
+                                        <td>@user.UserName</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.FirstName</td>
+                                        <td>@user.LastName</td>
+                                        <td>
+                                            @if (user.Roles != null && user.Roles.Any())
+                                            {
+                                                @string.Join(", ", user.Roles)
+                                            }
+                                            else
+                                            {
+                                                <em>No Role Assigned</em>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+                <div class="second account-tab">
+                    <div class="">
+                    </div>
+                </div>
+                <div class="third account-tab">
+                    <div class="">
+                    </div>
+                </div>
+                <div class="fourth account-tab">
+                    <div class="">
+                        <h2>fourth tab</h2>
+                    </div>
+                </div>
+                <div class="fifth account-tab">
+                    <div class="">
+                    </div>
+                </div>
+                <div class="sixth account-tab">
+                    <div class="">
+                    </div>
+                </div>
+                <div class="seventh account-tab">
+                    <div class="">
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+    
+</main> *@

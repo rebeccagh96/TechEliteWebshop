@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using System.Linq
+
+@inject UserManager<ApplicationUser> UserManager
+
+@model IEnumerable<TechElite.Models.UserViewModel>
+
+<div class="content">
+    <div class="first account-tab">
+        <div class="welcome">
+            <h1>Välkommen @UserManager.GetUserName(User)!</h1>
+        </div>
+        <div class="users">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>UserName</th>
+                        <th>Email</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Roles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>
+                                @if (user.Roles != null && user.Roles.Any())
+                                {
+                                    @string.Join(", ", user.Roles)
+                                }
+                                else
+                                {
+                                    <em>No Role Assigned</em>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+    <div class="second account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="third account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="fourth account-tab">
+        <div class="">
+            <h2>fourth tab</h2>
+        </div>
+    </div>
+    <div class="fifth account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="sixth account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="seventh account-tab">
+        <div class="">
+        </div>
+    </div>
+</div>

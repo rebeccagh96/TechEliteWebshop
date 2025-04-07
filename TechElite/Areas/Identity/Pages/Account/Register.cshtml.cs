@@ -120,12 +120,12 @@ namespace TechElite.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser  // Create ApplicationUser directly
+                var user = new ApplicationUser  // Skapar ApplicationUser direkt
                 {
                     UserName = Input.Username,
                     Email = Input.Email,
                     FirstName = Input.FirstName,
-                    LastName = Input.LastName
+                    LastName = Input.LastName,
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -133,6 +133,9 @@ namespace TechElite.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("Ny användare skapad.");
+
+                    //Tilldelar alla nya användare rollen "User"
+                    await _userManager.AddToRoleAsync(user, "User");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -143,7 +146,7 @@ namespace TechElite.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Bekräfta e-majl",
+                    await _emailSender.SendEmailAsync(Input.Email, "Bekräfta e-post",
                         $"Vänligen bekräfta ditt konto genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
