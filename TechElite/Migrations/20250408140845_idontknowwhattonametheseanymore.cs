@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TechElite.Migrations
 {
     /// <inheritdoc />
-    public partial class fixedroleissue : Migration
+    public partial class idontknowwhattonametheseanymore : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -247,7 +247,7 @@ namespace TechElite.Migrations
                     ThreadContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PublishDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>

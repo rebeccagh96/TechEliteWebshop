@@ -31,7 +31,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(c => c.ApplicationUser)
             .WithOne(u => u.Customer)
             .HasForeignKey<Customer>(c => c.ApplicationUserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict); 
 
         modelBuilder.Entity<Review>()
             .HasOne(r => r.Product)
@@ -43,7 +43,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(r => r.ApplicationUser)
             .WithMany()
             .HasForeignKey(r => r.ApplicationUserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict); 
 
         modelBuilder.Entity<Order>()
             .HasOne(o => o.Customer)
@@ -67,7 +67,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(ft => ft.ApplicationUser)
             .WithMany()
             .HasForeignKey(ft => ft.ApplicationUserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict); 
 
         modelBuilder.Entity<ForumReply>()
             .HasOne(fr => fr.Thread)
@@ -203,7 +203,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        // Seed en Customer (kopplad till user1)
+        // Seeda en Customer (kopplad till user1)
         modelBuilder.Entity<Customer>().HasData(
             new Customer
             {
@@ -218,7 +218,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        // Seed en ForumThread
+        // Seeda en ForumThread
         var thread1Id = 1;
         modelBuilder.Entity<ForumThread>().HasData(
             new ForumThread
@@ -234,7 +234,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        // Seed en ForumReply
+        // Seeda en ForumReply
         var reply1Id = 1;
         modelBuilder.Entity<ForumReply>().HasData(
             new ForumReply
@@ -249,7 +249,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        // Seed en Review
+        // Seeda en Review
         var review1Id = 1;
         modelBuilder.Entity<Review>().HasData(
             new Review
@@ -265,7 +265,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        // Seed en Order
+        // Seeda en Order
         var order1Id = 1;
         modelBuilder.Entity<Order>().HasData(
             new Order
@@ -343,7 +343,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                     if (!addRoleResult.Succeeded)
                     {
                         var errors = string.Join(", ", addRoleResult.Errors.Select(e => e.Description));
-                        Console.WriteLine($"{user.UserName} kunde inte tilldelas rollen: {roleToAssign}. {errors}");
+                        Console.WriteLine($"{user.UserName} kunde inte tilldelas rollen: {roleToAssign}.{errors}");
                     }
                 }
                 else

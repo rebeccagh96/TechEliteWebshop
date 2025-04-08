@@ -42,7 +42,7 @@ article {
     flex-direction: column;
 }
 
-label {
+.tab-label {
     font-size: 24px;
     font-weight: 400;
     text-transform: uppercase;
@@ -59,16 +59,16 @@ label {
     padding: 12px 0 12px 24px;
 }
 
-input[type="radio"] {
+.tabs input[type="radio"] {
     display: none;
 }
 
-    label:hover, input[type="radio"]:checked + label {
+    .tabs label:hover, .tabs input[type="radio"]:checked + label {
         opacity: 1;
         font-weight: 700;
     }
 
-    input[type="radio"]:checked + label {
+    .tabs input[type="radio"]:checked + label {
         color: #efefef;
     }
 
@@ -109,14 +109,6 @@ input[type="radio"] {
         height: calc(50% - 55px);
         border-radius: 0 32px 32px 0;
     }
-/* #tab1:checked ~ .marker{transform: translateY(calc(1 - 55px));}
-  #tab2:checked ~ .marker{transform: translateY(calc(-2 * 55px));}
-  #tab3:checked ~ .marker{transform: translateY(calc(-1 * 55px));}
-  #tab4:checked ~ .marker{transform: translateY(calc(0 * 55px));}
-  #tab5:checked ~ .marker{transform: translateY(calc(1 * 55px));}
-  #tab6:checked ~ .marker{transform: translateY(calc(2 * 55px));}
-  #tab7:checked ~ .marker{transform: translateY(calc(3 * 46px))} */
-
 
 #tab1:checked ~ .marker{transform: translateY(calc(-3.6 * 55px));}
 
@@ -160,7 +152,49 @@ input[type="radio"] {
 .welcome, .users {
     border-radius: 5px;
     background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
-    
     padding: 10px;
     margin-bottom: 15px;
+}
+
+.user-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 20px;
+    margin: auto;
+    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+    border-radius: 5px;
+    filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.171));
+    width: 100%;
+}
+
+thead {
+    width: 100%;
+}
+
+th, td {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+}
+
+.user-table {
+    width: 100%;
+
+
+}
+
+.user-table tr {
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+
+}
+
+.user-table td {
+    display: flex;
+    flex-direction: row; 
 }

@@ -12,8 +12,8 @@ using TechElite;
 namespace TechElite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250407123700_fixed-role-issue")]
-    partial class fixedroleissue
+    [Migration("20250408140845_idontknowwhattonametheseanymore")]
+    partial class idontknowwhattonametheseanymore
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -499,7 +499,6 @@ namespace TechElite.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThreadId"));
 
                     b.Property<string>("ApplicationUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CategoryId")
@@ -792,8 +791,7 @@ namespace TechElite.Migrations
                     b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("TechElite.Models.ForumCategory", "Category")
                         .WithMany("Threads")
