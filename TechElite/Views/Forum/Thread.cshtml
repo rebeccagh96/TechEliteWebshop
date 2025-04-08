@@ -24,8 +24,11 @@
                     <p class="date">@Model.PublishDate</p>
                 </span>
                 <p>@Model.ThreadContent</p>
-                <a class="btn" asp-controller="Forum" asp-action="UpdateThread" asp-route-id="@Model.ThreadId">Uppdatera tråd</a>
-                <a class="btn" asp-controller="Forum" asp-action="DeleteThread" asp-route-id="@Model.ThreadId">Radera tråd</a>
+                @if (Model.ApplicationUser?.UserName == User.Identity?.Name)
+                {
+                    <a class="btn" asp-controller="Forum" asp-action="UpdateThread" asp-route-id="@Model.ThreadId">Uppdatera tråd</a>
+                    <a class="btn" asp-controller="Forum" asp-action="DeleteThread" asp-route-id="@Model.ThreadId">Radera tråd</a>
+                }
             </div>
         </section>
         @if (Model.Replies is not null)
@@ -39,24 +42,30 @@
                             <p class="date">@reply.PublishDate</p>
                         </span>
                         <p>@reply.Content</p>
+                        @if (reply.ApplicationUser?.UserName == User.Identity?.Name)
+                        {
                         <a class="btn" asp-controller="Forum" asp-action="UpdateReply" asp-route-id="@reply.ReplyId">Uppdatera inlägg</a>
                         <a class="btn" asp-controller="Forum" asp-action="DeleteReply" asp-route-id="@reply.ReplyId">Radera inlägg</a>
+                        }
                     </div>
                 </section>
             }
         }
-        <article>
-            <form method="post" id="create-post" asp-action="AddReply">
-                <h3>Skapa inlägg</h3>
-                <input type="hidden" name="threadId" value="@Model.ThreadId" />
-                <input type="hidden" name="threadTitle" value="@Model.ThreadTitle" />
-                <input type="hidden" name="threadContent" value="@Model.ThreadContent" />
-                <label for="replyContent">Inlägg</label>
-                <textarea id="text" name="replyContent" rows="5" columns="50"></textarea>
-                <input type="hidden" name="forumThread" value="@Model" />
-                <input type="hidden" name="categoryId" value="@Model.CategoryId" />
-                <button type="submit" class="btn" id="submit">Publicera</button>
-            </form>
-        </article>
+        @if (User.Identity.Name != null)
+        {
+            <article>
+                <form method="post" id="create-post" asp-action="AddReply">
+                    <h3>Skapa inlägg</h3>
+                    <input type="hidden" name="threadId" value="@Model.ThreadId" />
+                    <input type="hidden" name="threadTitle" value="@Model.ThreadTitle" />
+                    <input type="hidden" name="threadContent" value="@Model.ThreadContent" />
+                    <label for="replyContent">Inlägg</label>
+                    <textarea id="text" name="replyContent" rows="5" columns="50"></textarea>
+                    <input type="hidden" name="forumThread" value="@Model" />
+                    <input type="hidden" name="categoryId" value="@Model.CategoryId" />
+                    <button type="submit" class="btn" id="submit">Publicera</button>
+                </form>
+            </article>
+        }
     </div>
 </main>
