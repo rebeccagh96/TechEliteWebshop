@@ -277,5 +277,36 @@ namespace TechElite.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string search)
+        {
+            if (string.IsNullOrEmpty(search))
+            {
+                return BadRequest("Hittade inget sökord.");
+            }
+
+            var categories = await _context.ForumCategories.ToListAsync();
+            var forumThreads = await _context.ForumThreads.ToListAsync();
+            var replies = await _context.ForumReplies.ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
+
+            var filteredThreads = forumThreads.
+                Where(t => t.ThreadTitle.Contains(search, StringComparison.OrdinalIgnoreCase) 
+                || t.ThreadContent.Contains(search, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var filteredReplies = replies.
+                Where(r => r.Content.Contains(search, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var forumViewModel = new ForumViewModel(
+                ForumCategories: categories,
+                ForumThreads: filteredThreads,
+                ForumReplies: filteredReplies,
+                CurrentUser: user
+                );
+            return View(forumViewModel);
+        }
     }
 }

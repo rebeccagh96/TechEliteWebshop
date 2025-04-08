@@ -1,0 +1,43 @@
+﻿@model ForumViewModel
+@{
+	ViewData["Title"] = "Search";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/forum.css" />
+    <link rel="stylesheet" href="~/css/thread.css" />
+</head>
+
+<main>
+    <div class="forum-container">
+        <article>
+            <section>
+                <h4>Alla trådar med ditt sökord:</h4>
+                <div>
+                    @if (Model.ForumThreads.Any())
+                    {
+                        @foreach (var t in Model.ForumThreads)
+                        {
+                            <a class="new-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@t.ThreadId">@t.ThreadTitle</a>
+                        }
+                    }
+                    else
+                    {
+                        <p>Inga trådar hittades..</p>
+                    }
+                    @if (Model.ForumReplies.Any())
+                    {
+                        @foreach (var r in Model.ForumReplies)
+                        {
+                            <a class="new-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@r.ThreadId">@r.Content</a>
+                        }
+                    }
+                    else
+                    {
+                        <p>Inga inlägg hittades..</p>
+                    }
+                </div>
+            </section>
+        </article>
+    </div>
+</main>
