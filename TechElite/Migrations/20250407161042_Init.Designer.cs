@@ -12,7 +12,7 @@ using TechElite;
 namespace TechElite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250406045546_Init")]
+    [Migration("20250407161042_Init")]
     partial class Init
     {
         /// <inheritdoc />
