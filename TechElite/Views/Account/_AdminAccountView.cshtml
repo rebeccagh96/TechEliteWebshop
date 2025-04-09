@@ -77,14 +77,19 @@
                 <tbody>
                     @foreach (var order in Model.Orders)
                     {
-                        <tr>
-                            <td>@order.OrderId</td>
-                            <td>@order.Customer</td>
-                            <td>@order.OrderDate</td>
-							<td>@order.ProductName</td>
-                            <td>@order.TotalPrice</td>
-                            <td><button class="manage-order-btn">Hantera</button></td>
-                        </tr>
+                        @foreach (var product in order.Products)
+                        {
+                            <tr>
+                                <td>@order.OrderId</td>
+                                <td>@order.CustomerId</td>
+                                <td>@product.ProductName</td>
+                                <td>@product.Price</td>
+@* 								<td>@product.Quantity</td> *@
+                                <td>@order.TotalPrice</td>
+                                <td>@order.OrderDate</td>
+                                <td><button class="manage-order-btn">Hantera</button></td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
@@ -94,7 +99,36 @@
         </div>
     </div>
     <div class="third account-tab">
-        <div class="">
+        <div class="inventory-management">
+			<h2>Hantera lager</h2>
+			<table class="inventory-table">
+				<thead>
+					<tr>
+						<th>Produktnamn</th>
+						<th>Antal i lager</th>
+                        <th>Pris</th>
+						<th>Avdelning</th>
+						<th>Beskrivning</th>
+						<th>Bild</th>
+						<th>Recensioner</th>
+						<th>Åtgärder</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var product in Model.Products)
+					{
+						<tr>
+							<td>@product.ProductName</td>
+							<td>@product.Quantity</td>
+							<td>@product.Price</td>
+							<td>@product.Department</td>
+							<td>@product.Description</td>
+							<td>@product.Image</td>
+							<td><button class="manage-product-btn">Hantera</button></td>
+						</tr>
+					}
+				</tbody>
+			</table>
         </div>
     </div>
     <div class="fourth account-tab">
