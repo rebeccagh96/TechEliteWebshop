@@ -135,6 +135,31 @@ nav a {
         width: 20px;
     }
 
+    .search {
+        --pading: 24px
+        width: max-content;
+        display: flex;
+        align-items: center;
+        padding: var(--padding);
+        border-radius: 28px;
+        background: #f6f6f6; 
+        width: 200px;
+    }
+    .search-input {
+        font-size: 16px;
+        font-family: 'lexend' , sans-serif;
+        color: #333333;
+        margin-left: var(--padding);
+        outline:none;
+        border:none;
+        background:transparent;
+        flex:1;
+    }
+    .search-input::placeholder {
+        color: rgba(0,0,0,0.25);
+    }
+
+
 .links {
     display: flex;
     flex-direction: row;

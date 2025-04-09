@@ -1,4 +1,11 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿document.addEventListener("DOMContentLoaded", function () {
+    const searchIcon = document.querySelector(".search-icon");
+    const searchInput = document.querySelector(".search-input");
+    const searchContainer = document.querySelector(".search");
 
-// Write your JavaScript code.
+    // Visa eller dölj sökfältet när sökikonen klickas
+    searchIcon.addEventListener("click", function () {
+        searchContainer.classList.toggle("show-search");
+        searchInput.focus(); // Sätt fokus på inputfältet när det visas
+    });
+});
