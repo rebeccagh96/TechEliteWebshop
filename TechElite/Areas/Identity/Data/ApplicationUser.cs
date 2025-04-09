@@ -31,5 +31,6 @@ public class ApplicationUser : IdentityUser
     public required string LastName { get; set; }
     public Customer? Customer { get; set; } // Navigeringsegenskap för att koppla till Customer-modellen, OM användaren även är customer kan man tack vare detta navigera till customertabellen
 
+    public ICollection<Notification> Notifications { get; set; }
 
 }

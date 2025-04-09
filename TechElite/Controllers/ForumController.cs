@@ -44,18 +44,24 @@ namespace TechElite.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            var forumCategories = await _context.ForumCategories.ToListAsync();
+            var forumThreads = await _context.ForumThreads.ToListAsync();
+            var forumReplies = await _context.ForumReplies.ToListAsync();
             var user = await _userManager.GetUserAsync(User);
+
             if (user is null)
             {
                 return BadRequest("You must be logged in.");
             }
-            var categories = await _context.ForumCategories.ToListAsync();
-            if (categories == null || !categories.Any())
-            {
-                Console.WriteLine("Inga kategorier hittades.");
-            }
-            ViewBag.Categories = categories;
-            return View();
+
+            ForumViewModel model = new(
+                ForumCategories: forumCategories,
+                ForumThreads: forumThreads,
+                ForumReplies: forumReplies,
+                CurrentUser: user
+                );
+
+            return View(model);
         }
 
         [HttpPost]
