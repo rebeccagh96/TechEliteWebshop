@@ -1,0 +1,222 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using System.Linq
+@using TechElite.Models
+
+@inject UserManager<ApplicationUser> UserManager
+
+@model IEnumerable<TechElite.Models.UserViewModel>
+
+<div class="content">
+    <div class="first account-tab">
+        <div class="welcome">
+            <h1>Välkommen @UserManager.GetUserName(User)!</h1>
+        </div>
+        <div class="users">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Användarnamn</th>
+                        <th>Roll</th>
+                        <th>E-post</th>
+                        <th>Förnamn</th>
+                        <th>Efternamn</th>
+                        <th>Åtgärder</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.UserName</td>
+                            <td>
+                                @if (user.Roles != null && user.Roles.Any())
+                                {
+                                    foreach (var role in user.Roles)
+                                    {
+                                        <span>@role</span>
+                                    }
+                                }
+                            </td>
+                            <td>@user.Email</td>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>
+                                <button class="manage-user-btn" data-user-id="@user.Id"
+                                        data-user-username="@user.UserName"
+                                        data-user-email="@user.Email"
+                                        data-user-firstname="@user.FirstName"
+                                        data-user-lastname="@user.LastName">
+                                    Hantera
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="user-actions">
+            <form id="edit-user-form" style="display: none;" method="post" action="/Account/Edit">
+                <input type="hidden" id="edit-user-id" name="Id" />
+                <div>
+                    <label for="edit-user-username">Användarnamn</label>
+                    <input type="text" id="edit-user-username" name="UserName" />
+                </div>
+                <div>
+                    <label for="edit-user-roles">Roller</label>
+                    <div>
+                        <input type="radio" id="role-admin" name="Roles" value="Admin" />
+                        <label for="role-admin">Admin</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="role-user" name="Roles" value="User" />
+                        <label for="role-user">User</label>
+                    </div>
+                </div>
+                <div>
+                    <label for="edit-user-email">E-post</label>
+                    <input type="email" id="edit-user-email" name="Email" />
+                </div>
+                <div>
+                    <label for="edit-user-firstname">Förnamn</label>
+                    <input type="text" id="edit-user-firstname" name="FirstName" />
+                </div>
+                <div>
+                    <label for="edit-user-lastname">Efternamn</label>
+                    <input type="text" id="edit-user-lastname" name="LastName" />
+                </div>
+                <button type="submit" id="save-edit">Spara</button>
+                <button type="button" id="cancel-edit">Avbryt</button>
+                <button type="button" id="delete-user">Radera</button>
+            </form>
+            <p id="edit-placeholder">Välj en användare att redigera.</p>
+        </div>
+    </div>
+    <div class="second account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="third account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="fourth account-tab">
+        <div class="">
+            <h2>fourth tab</h2>
+        </div>
+    </div>
+    <div class="fifth account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="sixth account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="seventh account-tab">
+        <div class="">
+        </div>
+    </div>
+</div>
+
+<script>
+    // Borde kanske flytta detta till egen fil imorgon
+    document.addEventListener("DOMContentLoaded", function () {
+        const manageButtons = document.querySelectorAll(".manage-user-btn");
+        const editForm = document.getElementById("edit-user-form");
+        const editPlaceholder = document.getElementById("edit-placeholder");
+        const cancelButton = document.getElementById("cancel-edit");
+        const deleteButton = document.getElementById("delete-user");
+
+        // Hantera "Hantera"-knappen
+        manageButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const userId = this.getAttribute("data-user-id");
+                const userName = this.getAttribute("data-user-username");
+                const email = this.getAttribute("data-user-email");
+                const firstName = this.getAttribute("data-user-firstname");
+                const lastName = this.getAttribute("data-user-lastname");
+
+                document.getElementById("edit-user-id").value = userId;
+                document.getElementById("edit-user-username").value = userName;
+                document.getElementById("edit-user-email").value = email;
+                document.getElementById("edit-user-firstname").value = firstName;
+                document.getElementById("edit-user-lastname").value = lastName;
+
+                // Visa redigeringsformuläret och dölj placeholdern
+                editForm.style.display = "block";
+                editPlaceholder.style.display = "none";
+            });
+        });
+
+        // Hantera "Avbryt"-knappen
+        cancelButton.addEventListener("click", function () {
+            editForm.style.display = "none";
+            editPlaceholder.style.display = "block";
+        });
+
+        // Hantera formulärinlämning för redigering
+        editForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(editForm);
+
+            fetch("/Account/Edit", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert("Misslyckades med att uppdatera användaren.");
+                }
+            })
+            .catch(error => {
+                console.error("Fel:", error);
+                alert("Ett fel inträffade: " + error.message);
+            });
+        });
+
+        // Hantera "Radera"-knappen
+        deleteButton.addEventListener("click", function () {
+            const userId = document.getElementById("edit-user-id").value;
+
+            if (confirm("Är du säker på att du vill radera användaren?")) {
+                fetch("/Account/Delete", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ id: userId })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert("Misslyckades med att radera användaren.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Fel:", error);
+                    alert("Ett fel inträffade: " + error.message);
+                });
+            }
+        });
+    });
+</script>
+ 

@@ -24,19 +24,31 @@ namespace TechElite.Controllers
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var forumCategories = await _context.ForumCategories.ToListAsync();
+            var forumThreads = await _context.ForumThreads.ToListAsync();
+            var forumReplies = await _context.ForumReplies.ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
+
             ForumViewModel model = new (
-                ForumCategories: _context.ForumCategories.ToList(),
-                ForumThreads: _context.ForumThreads.ToList(),
-                ForumReplies: _context.ForumReplies.ToList()
+                ForumCategories: forumCategories,
+                ForumThreads: forumThreads,
+                ForumReplies: forumReplies,
+                CurrentUser: user
                 );
+                
             return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user is null)
+            {
+                return BadRequest("You must be logged in.");
+            }
             var categories = await _context.ForumCategories.ToListAsync();
             if (categories == null || !categories.Any())
             {
@@ -51,6 +63,10 @@ namespace TechElite.Controllers
         public async Task<IActionResult> Create(int categoryId, string threadTitle, string threadContent)
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user is null)
+            {
+                return BadRequest("You must be logged in.");
+            }
             List<ForumThread> forumThreads = await _context.ForumThreads.ToListAsync();
             var forumThread = new ForumThread
             {
@@ -64,16 +80,6 @@ namespace TechElite.Controllers
             _context.ForumThreads.Add(forumThread);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult LatestThreads()
-        {
-            ForumViewModel model = new(
-            ForumCategories: _context.ForumCategories.ToList(),
-            ForumThreads: _context.ForumThreads.ToList(),
-            ForumReplies: _context.ForumReplies.ToList()
-            );
-            return View(model);
         }
 
         [HttpGet]
@@ -92,16 +98,16 @@ namespace TechElite.Controllers
         }
 
         [HttpGet]
-        public IActionResult Thread(int? id)
+        public async Task<IActionResult> Thread(int? id)
         {
             if (id is null)
             {
                 return BadRequest("You must pass in a ThreadId.");
             }
-            var model = _context.ForumThreads
+            var model = await _context.ForumThreads
                 .Include(t => t.Replies)
                 .ThenInclude(r => r.ApplicationUser)
-                .FirstOrDefault(t => t.ThreadId == id);
+                .FirstOrDefaultAsync(t => t.ThreadId == id);
             if (model == null)
             {
                 return NotFound($"Forum thread with ID {id} was not found.");
@@ -113,6 +119,10 @@ namespace TechElite.Controllers
         public async Task<IActionResult> AddReply(int threadId, string replyContent, string threadTitle, string threadContent, int categoryId)
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user is null)
+            {
+                return BadRequest("You must be logged in.");
+            }
             ForumThread? model = _context.ForumThreads
                 .SingleOrDefault(t => t.ThreadId == threadId);
             List<ForumReply> forumReplies = await _context.ForumReplies.ToListAsync();
@@ -151,7 +161,7 @@ namespace TechElite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateThread(int id, int categoryId, string threadTitle, string threadContent)
+        public async Task<IActionResult> UpdateThread(int id, string threadTitle, string threadContent)
         {
             var forumThread = await _context.ForumThreads
                 .FirstOrDefaultAsync(t => t.ThreadId == id);
@@ -161,7 +171,6 @@ namespace TechElite.Controllers
             }
             forumThread.ThreadTitle = threadTitle;
             forumThread.ThreadContent = threadContent;
-            forumThread.CategoryId = categoryId;
 
             await _context.SaveChangesAsync();
             return RedirectToAction("Thread", new { id = forumThread.ThreadId });
@@ -234,5 +243,70 @@ namespace TechElite.Controllers
             return RedirectToAction("Thread", new { id = reply.ThreadId});
         }
 
+        public async Task<IActionResult> LatestThreads()
+        {
+            var forumCategories = await _context.ForumCategories.ToListAsync();
+            var forumThreads = await _context.ForumThreads.ToListAsync();
+            var forumReplies = await _context.ForumReplies.ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
+
+            ForumViewModel model = new(
+                ForumCategories: forumCategories,
+                ForumThreads: forumThreads,
+                ForumReplies: forumReplies,
+                CurrentUser: user
+                );
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FilterThreads(int? id)
+        {
+            if (id is null)
+            {
+                return BadRequest("You must pass in a CategoryId.");
+            }
+
+            var model = await _context.ForumThreads
+                .Where(c => c.CategoryId == id)
+                .ToListAsync();
+            if (model == null)
+            {
+                return NotFound($"Forum category with ID {id} was not found.");
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string search)
+        {
+            if (string.IsNullOrEmpty(search))
+            {
+                return BadRequest("Hittade inget sökord.");
+            }
+
+            var categories = await _context.ForumCategories.ToListAsync();
+            var forumThreads = await _context.ForumThreads.ToListAsync();
+            var replies = await _context.ForumReplies.ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
+
+            var filteredThreads = forumThreads.
+                Where(t => t.ThreadTitle.Contains(search, StringComparison.OrdinalIgnoreCase) 
+                || t.ThreadContent.Contains(search, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var filteredReplies = replies.
+                Where(r => r.Content.Contains(search, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var forumViewModel = new ForumViewModel(
+                ForumCategories: categories,
+                ForumThreads: filteredThreads,
+                ForumReplies: filteredReplies,
+                CurrentUser: user
+                );
+            return View(forumViewModel);
+        }
     }
 }

@@ -34,3 +34,39 @@ span {
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #efefef77;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #efefef77;
+    }
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown button {
+    background-color: #efefef77;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}

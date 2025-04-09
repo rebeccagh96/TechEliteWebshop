@@ -25,8 +25,8 @@ namespace TechElite.Models
         public int CategoryId { get; set; }
         public ForumCategory? Category { get; set; }
 
-        [ForeignKey(nameof(ApplicationUser))]
-        public required string ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUser")]
+        public string? ApplicationUserId { get; set; }
         public ApplicationUser? ApplicationUser { get; set; }
         public required string UserName { get; set; } = string.Empty;
 

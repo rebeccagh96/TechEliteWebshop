@@ -31,7 +31,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(c => c.ApplicationUser)
             .WithOne(u => u.Customer)
             .HasForeignKey<Customer>(c => c.ApplicationUserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict); 
 
         modelBuilder.Entity<Review>()
             .HasOne(r => r.Product)
@@ -43,7 +43,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(r => r.ApplicationUser)
             .WithMany()
             .HasForeignKey(r => r.ApplicationUserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict); 
 
         modelBuilder.Entity<Order>()
             .HasOne(o => o.Customer)
@@ -67,7 +67,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(ft => ft.ApplicationUser)
             .WithMany()
             .HasForeignKey(ft => ft.ApplicationUserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict); 
 
         modelBuilder.Entity<ForumReply>()
             .HasOne(fr => fr.Thread)
@@ -203,7 +203,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        // Seed en Customer (kopplad till user1)
+        // Seeda en Customer (kopplad till user1)
         modelBuilder.Entity<Customer>().HasData(
             new Customer
             {
@@ -215,11 +215,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 City = "Exempelstad",
                 ApplicationUserId = user1StaticId,
                 UserName = "user1"
-
             }
         );
 
-        // Seed en ForumThread
+        // Seeda en ForumThread
         var thread1Id = 1;
         modelBuilder.Entity<ForumThread>().HasData(
             new ForumThread
@@ -235,7 +234,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        // Seed en ForumReply
+        // Seeda en ForumReply
         var reply1Id = 1;
         modelBuilder.Entity<ForumReply>().HasData(
             new ForumReply
@@ -250,7 +249,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        // Seed en Review
+        // Seeda en Review
         var review1Id = 1;
         modelBuilder.Entity<Review>().HasData(
             new Review
@@ -266,7 +265,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        // Seed en Order
+        // Seeda en Order
         var order1Id = 1;
         modelBuilder.Entity<Order>().HasData(
             new Order
@@ -286,13 +285,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-        // Seed roller
+        // Seeda roller
         var roles = new[] { "Admin", "User" };
         foreach (var role in roles)
         {
             if (!await roleManager.RoleExistsAsync(role))
             {
-                await roleManager.CreateAsync(new IdentityRole(role));
+                var roleResult = await roleManager.CreateAsync(new IdentityRole(role));
+                if (!roleResult.Succeeded)
+                {
+                    var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                    Console.WriteLine($"Roll kunde inte skapas {role}: {errors}");
+                }
             }
         }
 
@@ -327,23 +331,28 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         var users = new[] { user1, user2, admin1 };
 
-        foreach (var user in users)
-        {
-            if (await userManager.FindByEmailAsync(user.Email) == null)
-            {
-                await userManager.CreateAsync(user, "Password123!");
-                // Tilldela roller: om användarnamnet innehåller "admin" får användaren Admin-rollen, annars User
-                // Vi behöver fixa så att användare som registrerar sig via formuläret inte kan använda
-                // namnet admin
-                if (user.UserName.ToLower().Contains("admin"))
-                {
-                    await userManager.AddToRoleAsync(user, "Admin");
-                }
-                else
-                {
-                    await userManager.AddToRoleAsync(user, "User");
-                }
-            }
-        }
+        //foreach (var user in users)
+        //{
+        //    if (await userManager.FindByEmailAsync(user.Email) == null)
+        //    {
+        //        var createUserResult = await userManager.CreateAsync(user, "Password123!");
+        //        if (createUserResult.Succeeded)
+        //        {
+        //            var roleToAssign = user.UserName.Equals("admin1", StringComparison.OrdinalIgnoreCase) ? "Admin" : "User";
+        //            var addRoleResult = await userManager.AddToRoleAsync(user, roleToAssign);
+        //            if (!addRoleResult.Succeeded)
+        //            {
+        //                var errors = string.Join(", ", addRoleResult.Errors.Select(e => e.Description));
+        //                Console.WriteLine($"{user.UserName} kunde inte tilldelas rollen: {roleToAssign}.{errors}");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            var errors = string.Join(", ", createUserResult.Errors.Select(e => e.Description));
+        //            Console.WriteLine($"{user.UserName} kunde inte skapas: {errors}");
+        //        }
+
+        //    }
+        //}
     }
 }

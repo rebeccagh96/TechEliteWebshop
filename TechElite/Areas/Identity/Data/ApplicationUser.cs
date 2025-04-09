@@ -6,10 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TechElite.Models;
+using TechElite.Areas.Identity;
 
 namespace TechElite.Areas.Identity.Data;
 
-// Add profile data for application users by adding properties to the ApplicationUser class
 public class ApplicationUser : IdentityUser
 {
     // IdentityUser inkluderar följande egenskaper:

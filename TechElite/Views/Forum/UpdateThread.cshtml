@@ -11,16 +11,6 @@
             @Html.AntiForgeryToken()
             <h2>Uppdatera tråd</h2>
             <input type="hidden" name="threadId" value="@Model.ThreadId" />
-            <label for="categoryId">Kategori</label>
-            <select name="categoryId" id="thread-category" required>
-                <option value="">Välj kategori</option>
-                <option value="1">Rekommendationer</option>
-                <option value="2">Tips & hjälp</option>
-                <option value="3">Produkter</option>
-                <option value="4">Support</option>
-                <option value="5">Köp & Sälj</option>
-                <option value="6">Övrigt</option>
-            </select>
             <label for="threadTitle">Titel</label>
             <textarea name="threadTitle" id="title" minlength="3" maxlength="30" required>@Model.ThreadTitle</textarea>
             <label for="threadContent">Text</label>

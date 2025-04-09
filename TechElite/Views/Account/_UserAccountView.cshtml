@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+
+
+@inject UserManager<ApplicationUser> UserManager
+
+@model IEnumerable<TechElite.Models.UserViewModel>
+
+<!-- https://codewithmukesh.com/blog/user-management-in-aspnet-core-mvc/
+använd denna kanske
+-->
+
+<div class="content">
+    <div class="first account-tab">
+        <div class="welcome">
+            <h1>Välkommen @UserManager.GetUserName(User)!</h1>
+        </div>
+        <div class="users">
+
+            <p>testtext</p>
+
+        </div>
+    </div>
+    <div class="second account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="third account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="fourth account-tab">
+        <div class="">
+            <h2>fourth tab</h2>
+        </div>
+    </div>
+    <div class="fifth account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="sixth account-tab">
+        <div class="">
+        </div>
+    </div>
+    <div class="seventh account-tab">
+        <div class="">
+        </div>
+    </div>
+</div>

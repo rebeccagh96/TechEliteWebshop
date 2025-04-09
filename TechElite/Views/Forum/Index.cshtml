@@ -1,4 +1,5 @@
-﻿@model ForumViewModel
+﻿@using TechElite.Models
+@model ForumViewModel
 @{
     ViewData["Title"] = "Forum";
 }
@@ -10,8 +11,14 @@
     <div class="forum-container">
         <article class="forum-menu">
             <img class="notifications" src="~/img/Icons/notifications.svg" onclick="showNotifications()">
-            <img src="~/img/Icons/search_black.svg">
+            <a asp-controller="Forum" asp-action="Search"><img src="~/img/Icons/search_black.svg"></a>
             <a class="btn" asp-controller="Forum" asp-action="Create">Skapa tråd</a>
+        </article>
+        <article>
+            <form asp-action="Search" method="get">
+                <input type="text" name="search" placeholder="Sök..."/>
+                <button type="submit">Sök</button>
+            </form>
         </article>
         <article id="notification-article">
             <section>
@@ -38,18 +45,16 @@
             <section>
                 <h4>Mina trådar</h4>
                 <div>
+                    @if (Model.CurrentUser != null)
+                    {
                     @foreach (var myThread in Model.ForumThreads)
                     {
-                        if (myThread is null)//Inte inloggad
-                        {
-                            <a class="my-thread" asp-controller="Forum" asp-action="Thread">Söker tips på hållbar laddare till Iphone 13</a>
-                            <a class="my-thread" asp-controller="Forum" asp-action="Thread">Bästa köpet jag gjort!</a>
-                            <a class="my-thread" asp-controller="Forum" asp-action="Thread">Varför går alltid min laddare sönder?</a>
-                        }
-                        else //Inloggad
-                        {
-                            <a class="my-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@myThread.ThreadId">@myThread.ThreadTitle</a>
-                        }
+                        <a class="my-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@myThread.ThreadId">@myThread.ThreadTitle</a>
+                    }
+                    }
+                    else
+                    {
+                        <p>Du måste vara inloggad för att se dina trådar.</p>
                     }
 
                     <a class="show-more" asp-controller="Forum" asp-action="MyThreads">Visa mer</a>
