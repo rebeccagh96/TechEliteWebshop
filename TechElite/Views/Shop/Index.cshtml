@@ -6,7 +6,7 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/Style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/SpecShopStyle.css" asp-append-version="true" />
 </head>
 
 <article class="Feature">
@@ -14,7 +14,6 @@
 </article>
 
 <main>
-    <div class="shop-container">
         <article>
             <div class="filter">
                 <div class="filter-icons">
@@ -37,19 +36,16 @@
                 </button>
             </div>
             <div class="product-view">
-                <section>
-                <nav> 
-                    <a asp-controller="Shop" asp-action="ProductPage">
-                        <button>
+                <section>                
+                        <button><a asp-controller="Shop" asp-action="ProductPage">
                             <div class="products">
                                 <img src="~/img/Products/Charger/Charger2.svg" alt="">
                             </div>
                             <p>LADDARE X2000</p>
                             <p><b>$19.90</b></p>
                             <p>En produkt för alla</p>
-                        </button>
-                    </a>
-                    </nav>
+                        </a>
+                    </button>
                 </section>
                 <section>
                     <a asp-controller="Shop" asp-action="Productpage">
@@ -162,6 +158,5 @@
             </div>
 
         </article>
-    </div>
     
 </main>
