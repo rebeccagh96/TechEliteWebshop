@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TechElite.Areas.Identity.Data;
 using TechElite.Models;
 
 namespace TechElite.Controllers
@@ -8,8 +9,17 @@ namespace TechElite.Controllers
     public class ShopController : Controller
     {
         private readonly ApplicationDbContext _context;
+
+        public ShopController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+
         public async Task<IActionResult> Index()
         {
+
+
             var departments = await _context.Departments.ToListAsync();
             var products = await _context.Products.ToListAsync();
             var reviews = await _context.Reviews.ToListAsync();
