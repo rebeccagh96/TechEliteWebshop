@@ -31,6 +31,7 @@ namespace TechElite.Models
         public required string UserName { get; set; } = string.Empty;
 
         public ICollection<ForumReply> Replies { get; set; } = new List<ForumReply>();
+        public ICollection<Notification> Notifications { get; set; }
 
     }
 }

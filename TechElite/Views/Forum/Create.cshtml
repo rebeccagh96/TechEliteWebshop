@@ -1,5 +1,6 @@
-﻿@model TechElite.Models.ForumThread
+﻿@model ForumViewModel
 @using TechElite.Areas.Identity.Data
+@using TechElite.Models
 @{
     ViewData["Title"] = "Create";
 }
@@ -13,12 +14,10 @@
         <label for="categoryId">Kategori</label>
         <select name="categoryId" id="thread-category" required>
             <option value="">Välj Kategori</option>
-            <option value="1">Rekommendationer</option>
-            <option value="2">Tips & hjälp</option>
-            <option value="3">Produkter</option>
-            <option value="4">Support</option>
-            <option value="5">Köp & Sälj</option>
-            <option value="6">Övrigt</option>
+            @foreach (var c in Model.ForumCategories)
+            {
+                <option value="@c.CategoryId">@c.CategoryName</option>
+            }
         </select>
         <label for="threadTitle">Titel</label>
         <input type="text" name="threadTitle" id="title" minlength="3" maxlength="30" required>
