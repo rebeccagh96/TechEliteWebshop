@@ -39,7 +39,7 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-//// Seeda användare och roller
+// Seeda användare och roller
 //using (var scope = app.Services.CreateScope())
 //{
 //    var services = scope.ServiceProvider;
