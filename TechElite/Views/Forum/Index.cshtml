@@ -11,15 +11,13 @@
     <div class="forum-container">
         <article class="forum-menu">
             <img class="notifications" src="~/img/Icons/notifications.svg" onclick="showNotifications()">
-            <a asp-controller="Forum" asp-action="Search"><img src="~/img/Icons/search_black.svg"></a>
+            <form asp-action="Search" method="get">
+                <input type="text" name="search" placeholder="Sök..." />
+                <button type="submit"><img src="~/img/Icons/search_black.svg"></button>
+            </form>
             <a class="btn" asp-controller="Forum" asp-action="Create">Skapa tråd</a>
         </article>
-        <article>
-            <form asp-action="Search" method="get">
-                <input type="text" name="search" placeholder="Sök..."/>
-                <button type="submit">Sök</button>
-            </form>
-        </article>
+
         <article id="notification-article">
             <section>
                 <h4>Notiser</h4>

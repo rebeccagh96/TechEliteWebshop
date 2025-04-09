@@ -11,10 +11,19 @@
 
 <main>
     <div class="forum-container">
-         @foreach (var c in Model.ForumCategories)
-         {
-            <a asp-controller="Forum" asp-action="FilterThreads" asp-route-id="@c.CategoryId">@c.CategoryName</a>
-         }
+        <div class="filter-icons">
+            <div class="dropdown">
+                <button>
+                    <img src="~/img/Icons/filter_blck.svg" alt="icon">
+                </button>
+                <div class="dropdown-content">
+                    @foreach (var c in Model.ForumCategories)
+                    {
+                        <a asp-controller="Forum" asp-action="FilterThreads" asp-route-id="@c.CategoryId">@c.CategoryName</a>
+                    }
+                </div>
+            </div>
+        </div>
     <article>
         <section>
             <h4>Alla trådar</h4>
