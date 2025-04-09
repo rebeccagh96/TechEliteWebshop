@@ -1,26 +1,27 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using TechElite.Areas.Identity.Data
 
-<ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <a asp-controller="Account" asp-action="Index">
+            <img class="icon" src="~/img/Icons/account.svg" alt="Visa profil">
+            <span>@UserManager.GetUserName(User)</span>
+        </a>
+
+        <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" method="post" class="d-inline">
+            <button type="submit" class="logout-btn">
+                <img class="icon" src="~/img/Icons/logout.svg" alt="logga ut">
+            </button>
         </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
-</ul>
+    }
+    else
+    {
+        <a asp-area="Identity" asp-page="/Account/Register"><img class="icon" src="~/img/Icons/signup.svg" alt="registrera"></a>
+        <a asp-area="Identity" asp-page="/Account/Login"><img class="icon" src="~/img/Icons/login.svg" alt="login"></a>
+        
+    }
+

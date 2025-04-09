@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using TechElite.Models
+
+@inject UserManager<ApplicationUser> UserManager
+
+@model IEnumerable<TechElite.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = "Account";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+</head>
+
+
+<main>
+    <div id="account-root" data-is-admin="@User.IsInRole("Admin").ToString().ToLower()"></div>
+    <div class="account-container">
+        <article>
+            <div class="account-panel">
+                <div class="tabs">
+                    <input type="radio" id="tab1" name="tab" checked>
+                    <label class="tab-label" for="tab1"></label>
+                    <input type="radio" id="tab2" name="tab">
+                    <label class="tab-label" for="tab2"></label>
+                    <input type="radio" id="tab3" name="tab">
+                    <label class="tab-label" for="tab3"></label>
+                    <input type="radio" id="tab4" name="tab">
+                    <label class="tab-label" for="tab4"></label>
+                    <input type="radio" id="tab5" name="tab">
+                    <label class="tab-label" for="tab5"></label>
+                    <input type="radio" id="tab6" name="tab">
+                    <label class="tab-label" for="tab6"></label>
+                    <input type="radio" id="tab7" name="tab">
+                    <label class="tab-label" for="tab7"></label>
+
+                    <div class="marker">
+                        <div id="top"></div>
+                        <div id="bottom"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                @if (User.IsInRole("Admin"))
+                {
+                    <partial name="_AdminAccountView" model="Model" />
+
+                }
+                else
+                {
+                    <partial name="_UserAccountView" model="Model" />
+                }
+            </div>
+        </article>
+    </div>
+</main>

@@ -1,0 +1,36 @@
+﻿@page
+@model TechElite.Areas.Identity.Pages.Account.ResendEmailConfirmationModel
+@{
+    ViewData["Title"] = "Resend email confirmation";
+}
+
+<h1>@ViewData["Title"]</h1>
+<h2>Skriv in din e-mejladress.</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Återsänd</button>
+        </form>
+    </div>
+</div>
+
+@if (Model.DisplayConfirmAccountLink)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <p>
+                <a asp-page="/Account/ConfirmEmail" asp-route-userId="@Model.UserId" asp-route-code="@Model.Code">Bekräfta konto</a>
+            </p>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

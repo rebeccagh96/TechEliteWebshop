@@ -1,0 +1,23 @@
+﻿@page
+@model TechElite.Areas.Identity.Pages.Account.RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Register Confirmation";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.DisplayConfirmAccountLink)
+{
+    <p>
+        Thank you for registering! Please confirm your account by clicking the link below:
+    </p>
+    <p>
+        <a id="confirm-link" href="@Model.EmailConfirmationUrl">Confirm your account</a>
+    </p>
+}
+else
+{
+    <p>
+        Please check your email to confirm your account.
+    </p>
+}

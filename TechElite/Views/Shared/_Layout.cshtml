@@ -1,12 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TechElite</title>
     <script type="importmap"></script>
-@*     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
-@*     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
+    @*  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+   <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> 
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,13 +29,19 @@
             </a>
             <nav>
                 <a asp-controller="Home" asp-action="Index">Start</a>
-                <a asp-controller="Shop" asp-action="Shop">Shop</a>
-                <a asp-controller="Forum" asp-action="Forum">Forum</a>
-                <a asp-controller="About" asp-action="About">Om oss</a>
+                <a asp-controller="Shop" asp-action="Index">Shop</a>
+                <a asp-controller="Forum" asp-action="Index">Forum</a>
+                <a asp-controller="About" asp-action="Index">Om oss</a>
             </nav>
             <div class="icons">
+
                 <a href="#"><img src="~/img/Icons/cart.svg" alt="Varukorg"></a>
                 <a asp-controller="Profile" asp-action="Profile"><img src="~/img/Icons/account.svg" alt="Logga in"></a>
+
+                <a href="#"><img class="icon" src="~/img/Icons/search.svg" alt="Sök"></a>
+                <a href="#"><img class="icon "src="~/img/Icons/cart.svg" alt="Varukorg"></a>
+                <partial name="_LoginPartial" />
+
             </div>
 
             <div class="search">
@@ -57,41 +68,41 @@
         <div class="footer-content">
             <div class="categories">
                 <h3>Kategorier</h3>
-                <a class="footer-cat" href="">Nyheter</a>
-                <a class="footer-cat" href="">Datorer</a>
-                <a class="footer-cat" href="">Tillbehör</a>
-                <a class="footer-cat" href="">Bildskärmar</a>
-                <a class="footer-cat" href="">Konsoler & tillbehör</a>
-                <a class="footer-cat" href="">Telefoner & tablets</a>
-                <a class="footer-cat" href="">Datorkomponenter</a>
-                <a class="footer-cat" href="">Ljud</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Nyheter">Nyheter</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Datorer">Datorer</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Tillbehor">Tillbehör</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Bildskarmar">Bildskärmar</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="KonsolerTillbehor">Konsoler & tillbehör</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="TelefonerTablets">Telefoner & tablets</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Datorkomponenter">Datorkomponenter</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Ljud">Ljud</a>
             </div>
             <div class="forum-links">
                 <h3>Forum</h3>
-                <a class="footer-cat" href="">Registrera dig</a>
-                <a class="footer-cat" href="">Logga in</a>
-                <a class="footer-cat" href="">Nyheter</a>
-                <a class="footer-cat" href="">Konto</a>
-                <a class="footer-cat" href="">Användarvillkor</a>
-                <a class="footer-cat" href="">Kontohantering</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="Register">Registrera dig</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="Login">Logga in</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="Nyheter">Nyheter</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="Account">Konto</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="Terms">Användarvillkor</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="AccountManagement">Kontohantering</a>
             </div>
             <div class="About">
                 <h3>Om oss</h3>
-                <a class="footer-cat" href="">Vår historia</a>
-                <a class="footer-cat" href="">Våra medarbetare</a>
-                <a class="footer-cat" href="">Kontaktinformation</a>
-                <a class="footer-cat" href="">Jobba hos oss</a>
-                <a class="footer-cat" href="">Press</a>
-                <a class="footer-cat" href="">Vanliga frågor</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Historia">Vår historia</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Medarbetare">Våra medarbetare</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Kontakt">Kontaktinformation</a>
+                <a class="footer-cat" asp-controller="About" asp-action="JobbaHosOss">Jobba hos oss</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Press">Press</a>
+                <a class="footer-cat" asp-controller="About" asp-action="VanligaFragor">Vanliga frågor</a>
             </div>
             <div class="Handla">
                 <h3>Handla hos oss</h3>
-                <a class="footer-cat" href="">Försäljningsvillkor</a>
-                <a class="footer-cat" href="">Frakt & leverans</a>
-                <a class="footer-cat" href="">Ångerrätt</a>
-                <a class="footer-cat" href="">Garanti</a>
-                <a class="footer-cat" href="">Reklamation</a>
-                <a class="footer-cat" href="">Sekretess & integritet</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="SalesConditions">Försäljningsvillkor</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="ShippingDelivery">Frakt & leverans</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="ReturnPolicy">Ångerrätt</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Warranty">Garanti</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="Complaint">Reklamation</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="PrivacyPolicy">Sekretess & integritet</a>
             </div>
             <div class="shortcuts">
                 <h3>Nyhetsbrev</h3>
@@ -100,25 +111,27 @@
                     <input class="btn" type="submit" id="submit" value="Submit">
                 </div>
                 <div class="footer-buttons">
-                    <a class="btn" href="">Sign in</a>
-                    <a class="btn" href="">Register</a>
+                    <a class="btn btn-primary" asp-controller="Profile" asp-action="Login">Sign In</a>
+                    <a class="btn btn-primary" asp-controller="Profile" asp-action="Register">Register</a>
                 </div>
+
                 <div class="socials">
                     <div class="social-media">
-                        <a href="#" class="fa fa-facebook" style="font-size: 20px;"></a>
-                        <a href="#" class="fa fa-linkedin" style="font-size: 20px;"></a>
-                        <a href="#" class="fa fa-instagram" style="font-size: 20px;"></a>
-                        <a href="#" class="fa fa-envelope" style="font-size: 20px;"></a>
+                        <a href="https://www.facebook.com/yourprofile" class="fa fa-facebook" style="font-size: 20px;"></a>
+                        <a href="https://www.linkedin.com/in/yourprofile" class="fa fa-linkedin" style="font-size: 20px;"></a>
+                        <a href="https://www.instagram.com/yourprofile" class="fa fa-instagram" style="font-size: 20px;"></a>
+                        <a href="mailto:your.email@example.com" class="fa fa-envelope" style="font-size: 20px;"></a>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
 
+    <script src="~/js/controlTabs.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/controlTabs.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -31,13 +31,22 @@ h2 {
     height: 100%;
 }
 
+#edit-user-form {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: start;
+    padding: 20px;
+
+    width: 30%;
+}
+
 .username, .password {
     margin-top: 3px;
     margin-bottom: 10px;
 }
 
 
-#signup input, #login input {
+#signup input, #login input, #edit-user-form input {
     border-radius: 5px;
     border-color: #e3e3e3ff;
     padding-left: 10px;
@@ -49,27 +58,13 @@ h2 {
     width: 80%;
 }
 
-#userrole, #forgotPassword {
+#edit-user-form input[type="text"], input[type="email"] {
+    height: 30px
+}
+
+#forgotPassword {
     margin-top: 10px;
     margin-bottom: 8px;
-}
-
-#role {
-    margin: 1px 10px;
-}
-
-.roles {
-    display: flex;
-    flex-direction: row;
-    row-gap: 10px;
-    column-gap: 5px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-
-#role label {
-    border: 1px solid #000;
 }
 
 

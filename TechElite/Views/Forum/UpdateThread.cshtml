@@ -1,0 +1,21 @@
+﻿@model TechElite.Models.ForumThread
+@{
+    ViewData["Title"] = "Update Thread";
+}
+<head>
+    <link rel="stylesheet" href="~/css/forum.css" />
+</head>
+<main>
+    <article>
+        <form asp-action="UpdateThread" method="post" id="create-thread">
+            @Html.AntiForgeryToken()
+            <h2>Uppdatera tråd</h2>
+            <input type="hidden" name="threadId" value="@Model.ThreadId" />
+            <label for="threadTitle">Titel</label>
+            <textarea name="threadTitle" id="title" minlength="3" maxlength="30" required>@Model.ThreadTitle</textarea>
+            <label for="threadContent">Text</label>
+            <textarea id="text" name="threadContent" rows="5" columns="50" required>@Model.ThreadContent</textarea>
+            <button type="submit" class="btn" id="submit">Publicera</button>
+        </form>
+    </article>
+</main>

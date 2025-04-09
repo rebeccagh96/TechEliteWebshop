@@ -1,4 +1,71 @@
-﻿@{
-	ViewData["Title"] = "Thread";
+﻿@using TechElite.Models
+@model ForumThread
+@{
+    ViewData["Title"] = "Thread";
 }
-<h1>Tråd</h1>
+<head>
+    <link rel="stylesheet" href="~/css/forum.css" />
+    <link rel="stylesheet" href="~/css/thread.css" />
+</head>
+<main>
+    <div class="forum-container">
+        <section class="thread">
+            <h3>@Model.ThreadTitle</h3>
+            <div class="thread-div">
+                <span>
+                    @if (Model.ApplicationUser != null)
+                    {
+                        <p>@Model.ApplicationUser.UserName</p>
+                    }
+                    else
+                    {
+                        <p>User for Thread @Model.ThreadTitle is not found.</p>
+                    }
+                    <p class="date">@Model.PublishDate</p>
+                </span>
+                <p>@Model.ThreadContent</p>
+                @if (Model.ApplicationUser?.UserName == User.Identity?.Name)
+                {
+                    <a class="btn" asp-controller="Forum" asp-action="UpdateThread" asp-route-id="@Model.ThreadId">Uppdatera tråd</a>
+                    <a class="btn" asp-controller="Forum" asp-action="DeleteThread" asp-route-id="@Model.ThreadId">Radera tråd</a>
+                }
+            </div>
+        </section>
+        @if (Model.Replies is not null)
+        {
+            foreach (var reply in Model.Replies)
+            {
+                <section class="thread">
+                    <div class="thread-div">
+                        <span>
+                            <p class="user">@reply.UserName</p>
+                            <p class="date">@reply.PublishDate</p>
+                        </span>
+                        <p>@reply.Content</p>
+                        @if (reply.ApplicationUser?.UserName == User.Identity?.Name)
+                        {
+                        <a class="btn" asp-controller="Forum" asp-action="UpdateReply" asp-route-id="@reply.ReplyId">Uppdatera inlägg</a>
+                        <a class="btn" asp-controller="Forum" asp-action="DeleteReply" asp-route-id="@reply.ReplyId">Radera inlägg</a>
+                        }
+                    </div>
+                </section>
+            }
+        }
+        @if (User.Identity.Name != null)
+        {
+            <article>
+                <form method="post" id="create-post" asp-action="AddReply">
+                    <h3>Skapa inlägg</h3>
+                    <input type="hidden" name="threadId" value="@Model.ThreadId" />
+                    <input type="hidden" name="threadTitle" value="@Model.ThreadTitle" />
+                    <input type="hidden" name="threadContent" value="@Model.ThreadContent" />
+                    <label for="replyContent">Inlägg</label>
+                    <textarea id="text" name="replyContent" rows="5" columns="50"></textarea>
+                    <input type="hidden" name="forumThread" value="@Model" />
+                    <input type="hidden" name="categoryId" value="@Model.CategoryId" />
+                    <button type="submit" class="btn" id="submit">Publicera</button>
+                </form>
+            </article>
+        }
+    </div>
+</main>

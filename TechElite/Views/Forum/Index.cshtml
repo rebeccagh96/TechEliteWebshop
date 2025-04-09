@@ -1,0 +1,72 @@
+﻿@using TechElite.Models
+@model ForumViewModel
+@{
+    ViewData["Title"] = "Forum";
+}
+<head>
+    <link rel="stylesheet" href="~/css/forum.css" asp-append-version="true" />
+</head>
+
+<main>
+    <div class="forum-container">
+        <article class="forum-menu">
+            <img class="notifications" src="~/img/Icons/notifications.svg" onclick="showNotifications()">
+            <a asp-controller="Forum" asp-action="Search"><img src="~/img/Icons/search_black.svg"></a>
+            <a class="btn" asp-controller="Forum" asp-action="Create">Skapa tråd</a>
+        </article>
+        <article>
+            <form asp-action="Search" method="get">
+                <input type="text" name="search" placeholder="Sök..."/>
+                <button type="submit">Sök</button>
+            </form>
+        </article>
+        <article id="notification-article">
+            <section>
+                <h4>Notiser</h4>
+                <div>
+                    @foreach (ForumThread t in Model.ForumThreads)
+                    {
+                        <p>Nytt inlägg i din tråd: <a class="notification-link" asp-controller="Forum" asp-action="Thread" asp-route-id="@t.ThreadId">@t.ThreadTitle</a></p>
+                    }
+                </div>
+            </section>
+        </article>
+        <article>
+            <section>
+                <h4>Senaste</h4>
+                <div>
+                    @foreach (ForumThread t in Model.ForumThreads)
+                    {
+                        <a class="new-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@t.ThreadId">@t.ThreadTitle</a>
+                    }
+                    <a class="show-more" asp-controller="Forum" asp-action="LatestThreads">Visa mer</a>
+                </div>
+            </section>
+            <section>
+                <h4>Mina trådar</h4>
+                <div>
+                    @if (Model.CurrentUser != null)
+                    {
+                    @foreach (var myThread in Model.ForumThreads)
+                    {
+                        <a class="my-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@myThread.ThreadId">@myThread.ThreadTitle</a>
+                    }
+                    }
+                    else
+                    {
+                        <p>Du måste vara inloggad för att se dina trådar.</p>
+                    }
+
+                    <a class="show-more" asp-controller="Forum" asp-action="MyThreads">Visa mer</a>
+                </div>
+            </section>
+        </article>
+    </div>
+</main>
+<script>
+    function showNotifications() {
+        var notis = document.getElementById("notification-article");
+        if (notis.style.display == "flex") notis.style.display = "none";
+        else notis.style.display = "flex";
+    }
+</script>

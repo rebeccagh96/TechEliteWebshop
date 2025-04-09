@@ -1,4 +1,30 @@
-﻿@{
+﻿@using TechElite.Models
+@model ForumViewModel
+@{
 	ViewData["Title"] = "Latest threads";
 }
-<h1>Senaste trådarna</h1>
+
+<head>
+    <link rel="stylesheet" href="~/css/forum.css" />
+    <link rel="stylesheet" href="~/css/thread.css" />
+</head>
+
+<main>
+    <div class="forum-container">
+         @foreach (var c in Model.ForumCategories)
+         {
+            <a asp-controller="Forum" asp-action="FilterThreads" asp-route-id="@c.CategoryId">@c.CategoryName</a>
+         }
+    <article>
+        <section>
+            <h4>Alla trådar</h4>
+            <div>
+                @foreach (var t in Model.ForumThreads)
+                {
+                    <a class="new-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@t.ThreadId">@t.ThreadTitle</a>
+                }
+            </div>
+        </section>
+    </article>
+    </div>
+</main>

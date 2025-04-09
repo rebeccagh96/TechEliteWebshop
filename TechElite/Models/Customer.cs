@@ -1,17 +1,45 @@
-﻿namespace TechElite.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using TechElite.Areas.Identity.Data;
+
+namespace TechElite.Models
 {
     public class Customer
     {
-        public int OrderID { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int CustomerId { get; set; }
 
-        public int UserID { get; set; }
+        [Required] // Denna annotation gör fältet obligatoriskt ifrån vyn, inte bara i DB
+        [RegularExpression("[A-Za-zÅÄÖåäö.'´-]+")]
+        [StringLength(30)]
+        public required string FirstName { get; set; } 
 
-        public string? Email { get; set; }
+        [Required] 
+        [RegularExpression("[A-Za-zÅÄÖåäö.'´-]+")]
+        [StringLength(30)]
+        public required string LastName { get; set; } 
 
-        public string? Address { get; set; }
+        [Required]
+        [StringLength(50)]// regex
+        public required string Address { get; set; }
 
-        public string? ZipCode { get; set; }
+        [Required]
+        [StringLength(5)]
+        [RegularExpression(@"\d{5}")]
+        public required string ZipCode { get; set; }
 
-        public string? City { get; set; }
+        [Required]
+        [StringLength(50)]
+        [RegularExpression("[A-Za-zÅÄÖåäö.'´-]+")]
+        public required string City { get; set; }
+        public ICollection<Order> Orders { get; set; } = new List<Order>(); // Lista av ordrar kopplade till användaren
+
+        [ForeignKey("ApplicationUser")]
+        public string? ApplicationUserId { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
+        public string? UserName { get; set; } = string.Empty;
+
+
     }
 }

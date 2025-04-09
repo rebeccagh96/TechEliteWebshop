@@ -1,10 +1,14 @@
-﻿namespace TechElite.Models
+﻿using System.Collections.Generic;
+using TechElite.Models;
+using Microsoft.AspNetCore.Identity;
+using TechElite.Areas.Identity.Data;
+namespace TechElite.Models
 {
-    public class ForumViewModel
-    {
-        public ICollection<ForumCategory>? forumCategories { get; set; }
-        public ICollection<Thread>? Threads { get; set; }
-        public ICollection<Reply>? Replys { get; set; }
-
-    }
+    public record ForumViewModel
+    (
+        ICollection<ForumCategory> ForumCategories,
+        ICollection<ForumThread> ForumThreads,
+        ICollection<ForumReply> ForumReplies,
+        ApplicationUser? CurrentUser
+    );
 }
