@@ -173,7 +173,7 @@ span {
             text-decoration: underline;
         }
 
-.btn, .shop-now-btn, button {
+.btn, .shop-now-btn, button { /*Här kan ni exkludera knappklasser*/
     background-color: #9747ffff;
     color: white;
     padding: 8px 14px;
