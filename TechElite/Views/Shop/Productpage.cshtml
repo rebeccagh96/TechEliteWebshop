@@ -1,9 +1,18 @@
-﻿<body>
-    <main>
+﻿@using TechElite.Models
+@model ShopViewModel
+@{
+    ViewData["Title"] = "Productpage";
+}
+<head>
+    <link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
+</head>
+
+
+<main>
+    <div class="shop-container">
         <article class="produkten">
             <section>
                 <img src="~/img/Products/Charger/Charger2.svg" alt="shop.img">
-
             </section>
             <section class="Produktinfo">
                 <h2><B>LADDARE X2000</B></h2><br>
@@ -18,6 +27,8 @@
                     självklart val för den som vill ta sin tech-vardag till nästa nivå.
                     Uppgradera och upptäck skillnaden idag!😁
                 </p>
+                <p><Br></Br></p>
+                <button class="Varukorg">Lägg till i Varukorgen!</button>
             </section>
         </article>
         <div class="filter">
@@ -25,34 +36,60 @@
                 <div class="dropdown">
                     <button><img src="~/img/Icons/filter_blck.svg" alt="icon"></button>
                     <div class="dropdown-content">
-                        <a href="datorer.html">Datorer & Skärmar</a>
-                        <a href="telefoner.html">Telefoner & tablets</a>
-                        <a href="hörlurar.html">Hörlurar & Hifi</a>
-                        <a href="tillbehör.html">Tillbehör & komponenter</a>
-                        <a href="gaming.html">Gaming</a>
+                        @foreach (var d in Model.Departments)
+                        {
+                            <a asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="@d.DepartmentId">@d.DepartmentName</a>
+                        }
                     </div>
                 </div>
             </div>
             <button class="cartlänk"><a href="cart.html"><img src="~/img/Icons/cart_blck.svg" alt="cart"></a></button>
         </div>
-        <article class="recensioner">
-            <section class="recensioner section">
-                <P>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Fugit consectetur hic porro. Delectus,
-                    perferendis quod reiciendis voluptates
-                    ratione optio qui deserunt eos cupiditate tempora voluptatibus,
-                    ad rem fuga quia suscipit!
-                </P><br>
-                <P>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Fugit consectetur hic porro. Delectus,
-                    perferendis quod reiciendis voluptates
-                    ratione optio qui deserunt eos cupiditate tempora voluptatibus,
-                    ad rem fuga quia suscipit!
-                </P>
+        <div class="reviews-container">
+            <div class="reviews-section">
+                <div class="review-form-container">
+                    <div class="review-form">
+                        <h3>Lämna en recension</h3>
+                        <form>
+                            <label for="name">Ditt namn</label>
+                            <input type="text" id="name" name="name" placeholder="Skriv ditt namn..." required>
 
-            </section>
-        </article>
-    </main>
-</body>
+                            <label for="rating">Betyg</label>
+                            <select id="rating" name="rating" required>
+                                <option value="">Välj betyg</option>
+                                <option value="5">★★★★★ (5)</option>
+                                <option value="4">★★★★☆ (4)</option>
+                                <option value="3">★★★☆☆ (3)</option>
+                                <option value="2">★★☆☆☆ (2)</option>
+                                <option value="1">★☆☆☆☆ (1)</option>
+                            </select>
+
+                            <label for="comment">Recension</label>
+                            <textarea id="comment" name="comment" rows="4" placeholder="Vad tyckte du om produkten?" required></textarea>
+
+                            <button type="submit" class="Varukorg">Skicka recension</button>
+                        </form>
+                    </div>
+                </div>
+                <h2>Recensioner</h2>
+
+                <div class="review">
+                    <div class="review-header">
+                        <strong>Emma L.</strong>
+                        <span class="stars">★★★★★</span>
+                    </div>
+                    <p>Otroligt bra ljud! Batteriet håller länge och brusreduceringen fungerar superbra. Rekommenderas!</p>
+                </div>
+
+                <div class="review">
+                    <div class="review-header">
+                        <strong>Jonas K.</strong>
+                        <span class="stars">★★★★☆</span>
+                    </div>
+                    <p>Väldigt nöjd, men hade önskat lite bättre passform för träning. Annars toppenprodukt!</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>

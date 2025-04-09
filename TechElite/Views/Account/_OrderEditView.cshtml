@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using TechElite.Models
+@using System.Linq
+
+@model IEnumerable<TechElite.Models.Order>
+
+
+<div class="order-action">
+	<form id="edit-order-form" style="display: none;" method="post" action="/Account/EditOrder">
+		<input type="hidden" id="edit-order-id" name="Id" />
+		
+
+			<!-- customer, orderdate, total price-->
+
+		<button type="submit">Spara</button>
+		<button type="button" id="cancel-edit">Avbryt</button>
+	</form>
+</div>

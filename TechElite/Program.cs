@@ -39,12 +39,12 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Seeda användare och roller
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    await ApplicationDbContext.SeedUsersAndRolesAsync(services);
-}
+//// Seeda användare och roller
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    await ApplicationDbContext.SeedUsersAndRolesAsync(services);
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

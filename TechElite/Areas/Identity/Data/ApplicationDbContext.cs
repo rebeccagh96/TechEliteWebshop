@@ -21,6 +21,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Order> Orders { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Review> Reviews { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -79,6 +80,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(fr => fr.ApplicationUser)
             .WithMany()
             .HasForeignKey(fr => fr.ApplicationUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Notification>()
+            .HasOne(n => n.ApplicationUser)
+            .WithMany(u => u.Notifications)
+            .HasForeignKey(n => n.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Notification>()
+            .HasOne(n => n.ForumThread)
+            .WithMany(ft => ft.Notifications)
+            .HasForeignKey(n => n.ThreadId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Skapa statiska variabler för att kunna referera till dem vid relationer
@@ -331,28 +344,28 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         var users = new[] { user1, user2, admin1 };
 
-        foreach (var user in users)
-        {
-            if (await userManager.FindByEmailAsync(user.Email) == null)
-            {
-                var createUserResult = await userManager.CreateAsync(user, "Password123!");
-                if (createUserResult.Succeeded)
-                {
-                    var roleToAssign = user.UserName.Equals("admin1", StringComparison.OrdinalIgnoreCase) ? "Admin" : "User";
-                    var addRoleResult = await userManager.AddToRoleAsync(user, roleToAssign);
-                    if (!addRoleResult.Succeeded)
-                    {
-                        var errors = string.Join(", ", addRoleResult.Errors.Select(e => e.Description));
-                        Console.WriteLine($"{user.UserName} kunde inte tilldelas rollen: {roleToAssign}.{errors}");
-                    }
-                }
-                else
-                {
-                    var errors = string.Join(", ", createUserResult.Errors.Select(e => e.Description));
-                    Console.WriteLine($"{user.UserName} kunde inte skapas: {errors}");
-                }
+        //foreach (var user in users)
+        //{
+        //    if (await userManager.FindByEmailAsync(user.Email) == null)
+        //    {
+        //        var createUserResult = await userManager.CreateAsync(user, "Password123!");
+        //        if (createUserResult.Succeeded)
+        //        {
+        //            var roleToAssign = user.UserName.Equals("admin1", StringComparison.OrdinalIgnoreCase) ? "Admin" : "User";
+        //            var addRoleResult = await userManager.AddToRoleAsync(user, roleToAssign);
+        //            if (!addRoleResult.Succeeded)
+        //            {
+        //                var errors = string.Join(", ", addRoleResult.Errors.Select(e => e.Description));
+        //                Console.WriteLine($"{user.UserName} kunde inte tilldelas rollen: {roleToAssign}.{errors}");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            var errors = string.Join(", ", createUserResult.Errors.Select(e => e.Description));
+        //            Console.WriteLine($"{user.UserName} kunde inte skapas: {errors}");
+        //        }
 
-            }
-        }
+        //    }
+        //}
     }
 }
