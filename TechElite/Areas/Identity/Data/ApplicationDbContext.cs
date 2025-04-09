@@ -327,7 +327,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         var users = new[] { user1, user2, admin1 };
 
-        foreach (var user in users)
+       foreach (var user in users)
         {
             if (await userManager.FindByEmailAsync(user.Email) == null)
             {
@@ -341,7 +341,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 }
                 else
                 {
-                    await userManager.AddToRoleAsync(user, "User");
+                   await userManager.AddToRoleAsync(user, "User");
                 }
             }
         }

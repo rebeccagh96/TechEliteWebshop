@@ -26,15 +26,15 @@ namespace TechElite.Controllers
 
         public IActionResult Index()
         {
-            ForumViewModel model = new (
-                ForumCategories: _context.ForumCategories.ToList(),
+                ForumViewModel model = new (
+                     ForumCategories: _context.ForumCategories.ToList(),
                 ForumThreads: _context.ForumThreads.ToList(),
-                ForumReplies: _context.ForumReplies.ToList()
-                );
-            return View(model);
-        }
+              ForumReplies: _context.ForumReplies.ToList()
+                      );
+                return View(model);
+                  }
 
-        [HttpGet]
+            [HttpGet]
         public async Task<IActionResult> Create()
         {
             var categories = await _context.ForumCategories.ToListAsync();

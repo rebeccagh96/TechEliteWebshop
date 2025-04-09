@@ -112,6 +112,8 @@ h3{
 }
 
 .produkten {
+    display: flex;
+    flex-direction: row;
     filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.479));
     background-color: rgb(30,19, 34);
 
@@ -127,3 +129,97 @@ h3{
     filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.479));
     background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
 }
+.reviews-section {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    border-radius: 10px;
+}
+
+    .reviews-section h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+    }
+
+.review {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.stars {
+    color: #FFD700;
+    font-size: 18px;
+}
+
+.Varukorg {
+    background-color: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .Varukorg:hover {
+        background-color: #f1f1f1;
+        transform: translateY(-1px);
+    }
+
+.review-form {
+    max-width: 1000px;
+    margin: 30px auto 60px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+    .review-form h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .review-form form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .review-form label {
+        margin: 10px 0 5px;
+        font-weight: bold;
+    }
+
+    .review-form input,
+    .review-form select,
+    .review-form textarea {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+    }
+
+    .review-form textarea {
+        min-height: 100px;
+    }
+
+    .review-form button {
+        margin-top: 20px;
+        align-self: flex-start;
+    }
+  
