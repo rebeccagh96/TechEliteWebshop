@@ -41,7 +41,7 @@ namespace TechElite.Controllers
             return View(model);
         }
 
-        [HttpGet]
+            [HttpGet]
         public async Task<IActionResult> Create()
         {
             var user = await _userManager.GetUserAsync(User);

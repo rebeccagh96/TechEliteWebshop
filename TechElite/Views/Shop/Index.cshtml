@@ -1,8 +1,12 @@
-﻿@{
+﻿@using TechElite.Models
+@model ShopViewModel
+
+@{
     ViewData["Title"] = "Shop";
 }
 <head>
     <link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Style.css" asp-append-version="true" />
 </head>
 
 <article class="Feature">
@@ -19,11 +23,10 @@
                             <img src="~/img/Icons/filter_blck.svg" alt="icon">
                         </button>
                         <div class="dropdown-content">
-                            <a href="datorer.html">Datorer & Skärmar</a>
-                            <a href="telefoner.html">Telefoner & tablets</a>
-                            <a href="hörlurar.html">Hörlurar & Hifi</a>
-                            <a href="tillbehör.html">Tillbehör & komponenter</a>
-                            <a href="gaming.html">Gaming</a>
+                            @foreach (var d in Model.Departments)
+                            {
+                                <a asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="@d.DepartmentId">@d.DepartmentName</a>
+                            }
                         </div>
                     </div>
                 </div>
@@ -35,7 +38,8 @@
             </div>
             <div class="product-view">
                 <section>
-                    <a asp-controller="Productpage" asp-action="Productpage"> productpage</a>
+                <nav> 
+                    <a asp-controller="Shop" asp-action="ProductPage">
                         <button>
                             <div class="products">
                                 <img src="~/img/Products/Charger/Charger2.svg" alt="">
@@ -45,9 +49,10 @@
                             <p>En produkt för alla</p>
                         </button>
                     </a>
+                    </nav>
                 </section>
                 <section>
-                    <a href="laddarex2000.html">
+                    <a asp-controller="Shop" asp-action="Productpage">
                         <button>
                             <div class="products">
                                 <img src="~/img/Products/Consoles/Console2.svg" alt="">
@@ -59,7 +64,7 @@
                     </a>
                 </section>
                 <section>
-                    <a href="laddarex2000.html">
+                    <a asp-controller="Shop" asp-action="Productpage">
                         <button>
                             <div class="products">
                                 <img src="~/img/Products/Earbuds/Buds2.svg" alt="">

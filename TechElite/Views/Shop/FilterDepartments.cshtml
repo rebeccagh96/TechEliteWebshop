@@ -1,0 +1,30 @@
+﻿@model IEnumerable<TechElite.Models.Product>
+@{
+    ViewData["Title"] = "Filter Departments";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
+</head>
+
+<main>
+    <div class="shop-container">
+        <article class="produkten">
+            @foreach (var p in Model)
+            {
+                <section>
+                    <img src="@p.Image" alt="shop.img">
+                </section>
+                <section class="Produktinfo">
+                    <h2><B>@p.ProductName</B></h2><br>
+                    <p><b>@p.Price</b></p><br>
+                    <p>
+                        @p.Description
+                    </p>
+                    <p><Br></Br></p>
+                    <button class="Varukorg">Lägg till i Varukorgen!</button>
+                </section>
+            }
+        </article>
+    </div>
+</main>
