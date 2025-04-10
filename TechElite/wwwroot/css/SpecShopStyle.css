@@ -1,0 +1,239 @@
+﻿/* 
+Färger:
+Mörkgrön #163832ff
+Mörklila #301934ff
+Ljusgrå #e3e3e3ff
+Blå-lila #9747ffff
+Rosa-lila #a948b3ff
+
+*/
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: "Space Grotesk", sans-serif;
+    background-color: #e3e3e3ff;
+    font-size: 14px;
+    min-height: 100vh;
+}
+
+    body a {
+        text-decoration: none;
+        color: #e3e3e3ff;
+    }
+
+header {
+    display: flex;
+    flex-direction: column;
+    background-image: linear-gradient(to bottom right, #301934ff, #163832ff);
+    color: #e3e3e3ff;
+}
+
+main {
+    margin: 0 auto;
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.logo {
+    width: 180px;
+    margin-top: 5px; 
+}
+
+
+.menu {
+    align-self: start;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+nav a {
+    margin: 0 10px;
+}
+
+    nav a:hover {
+        font-weight: bold;
+    }
+
+.menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+    width: 180px;
+}
+
+    .icons img {
+        width: 20px;
+    }
+
+.links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: auto auto 20px auto;
+    font-size: 0.9em;
+}
+
+    .links a {
+        margin: 0 30px;
+    }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+.btn {
+    background-color: #9747ffff;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+}
+
+    .btn:hover {
+        background-color: rgb(167, 100, 255);
+        transform: scale(1.05);
+    }
+
+footer btn {
+    margin-left: 10px;
+}
+
+h3 {
+    margin-bottom: 5px;
+    ;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    left: 0;
+    bottom: 0;
+    position: relative;
+    width: 100%;
+    background-image: linear-gradient(to bottom right, #163832ff, #301934ff);
+    color: #e3e3e3ff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+    .footer-content div {
+        display: flex;
+        flex-direction: column;
+    }
+
+.shortcuts {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.socials {
+    display: flex;
+}
+
+
+
+.shortcuts div {
+    display: flex;
+    flex-direction: row;
+    row-gap: 10px;
+}
+
+footer p, .footer-cat {
+    margin: 5px;
+}
+
+    .footer-cat:hover {
+        transform: translate(5%) scale(1.2);
+    }
+
+.subscribe {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+
+#subscribe {
+    height: 30px;
+    border-radius: 5px;
+    border-color: #e3e3e3ff;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+}
+
+.footer-buttons a, #submit {
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.footer-buttons {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 0 auto;
+}
+
+.fa {
+    margin: 20px;
+    width: 30px;
+    text-align: center;
+    text-decoration: none;
+}
+
+    .fa:hover {
+        transform: scale(1.4);
+    }
+
+#submit {
+    border: none;
+    font-size: 14px;
+    font-family: "Space Grotesk", sans-serif;
+}
+
+.readmore {
+    color: rgb(168, 102, 255);
+    font-weight: 500;
+    font-style: italic;
+}
+
+    .readmore:hover {
+        text-decoration: underline;
+    }
