@@ -58,7 +58,7 @@ span {
 
 .dropdown-content a:hover {
     background-color: #efefef77;
-    }
+}
 
 .dropdown:hover .dropdown-content {
     display: block;
