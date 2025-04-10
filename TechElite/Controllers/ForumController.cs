@@ -30,12 +30,22 @@ namespace TechElite.Controllers
             var forumThreads = await _context.ForumThreads.ToListAsync();
             var forumReplies = await _context.ForumReplies.ToListAsync();
             var user = await _userManager.GetUserAsync(User);
+            List<Notification> notification = new();
+
+            if (user != null)
+            {
+                notification = await _context.Notifications
+                    .Where(n => n.UserId == user.Id)
+                    .ToListAsync();
+            }
+
 
             ForumViewModel model = new (
                 ForumCategories: forumCategories,
                 ForumThreads: forumThreads,
                 ForumReplies: forumReplies,
-                CurrentUser: user
+                CurrentUser: user,
+                Notifications: notification
                 );
                 
             return View(model);
@@ -48,6 +58,7 @@ namespace TechElite.Controllers
             var forumThreads = await _context.ForumThreads.ToListAsync();
             var forumReplies = await _context.ForumReplies.ToListAsync();
             var user = await _userManager.GetUserAsync(User);
+            var notification = await _context.Notifications.ToListAsync();
 
             if (user is null)
             {
@@ -58,7 +69,8 @@ namespace TechElite.Controllers
                 ForumCategories: forumCategories,
                 ForumThreads: forumThreads,
                 ForumReplies: forumReplies,
-                CurrentUser: user
+                CurrentUser: user,
+                Notifications: notification
                 );
 
             return View(model);
@@ -129,9 +141,14 @@ namespace TechElite.Controllers
             {
                 return BadRequest("You must be logged in.");
             }
-            ForumThread? model = _context.ForumThreads
-                .SingleOrDefault(t => t.ThreadId == threadId);
-            List<ForumReply> forumReplies = await _context.ForumReplies.ToListAsync();
+            ForumThread? model = await _context.ForumThreads
+                .Include(t => t.ApplicationUser)
+                .SingleOrDefaultAsync(t => t.ThreadId == threadId);
+            if (model == null)
+            {
+                return NotFound("Thread not found.");
+            }
+
             var reply = new ForumReply
             {
                 ThreadId = threadId,
@@ -144,6 +161,22 @@ namespace TechElite.Controllers
 
             _context.ForumReplies.Add(reply);
             await _context.SaveChangesAsync();
+
+            if(model.ApplicationUserId != user.Id)
+            {
+                var notification = new Notification
+                {
+                    UserId = model.ApplicationUserId,
+                    Message = $"Nytt inlägg i din tråd: ",
+                    CreatedAt = DateTime.Now,
+                    IsRead = false,
+                    ThreadId = threadId
+                };
+
+                _context.Notifications.Add(notification);
+                await _context.SaveChangesAsync();
+
+            }
             return RedirectToAction("Thread", new { id = model.ThreadId });
         }
 
@@ -255,12 +288,14 @@ namespace TechElite.Controllers
             var forumThreads = await _context.ForumThreads.ToListAsync();
             var forumReplies = await _context.ForumReplies.ToListAsync();
             var user = await _userManager.GetUserAsync(User);
+            var notification = await _context.Notifications.ToListAsync();
 
             ForumViewModel model = new(
                 ForumCategories: forumCategories,
                 ForumThreads: forumThreads,
                 ForumReplies: forumReplies,
-                CurrentUser: user
+                CurrentUser: user,
+                Notifications: notification
                 );
             return View(model);
         }
@@ -296,6 +331,7 @@ namespace TechElite.Controllers
             var forumThreads = await _context.ForumThreads.ToListAsync();
             var replies = await _context.ForumReplies.ToListAsync();
             var user = await _userManager.GetUserAsync(User);
+            var notification = await _context.Notifications.ToListAsync();
 
             var filteredThreads = forumThreads.
                 Where(t => t.ThreadTitle.Contains(search, StringComparison.OrdinalIgnoreCase) 
@@ -310,9 +346,30 @@ namespace TechElite.Controllers
                 ForumCategories: categories,
                 ForumThreads: filteredThreads,
                 ForumReplies: filteredReplies,
-                CurrentUser: user
+                CurrentUser: user,
+                Notifications: notification
                 );
             return View(forumViewModel);
+        }
+
+        public async Task<IActionResult> Read(int id)
+        {
+            var notification = await _context.Notifications
+                .Include(n => n.ForumThread)
+                .FirstOrDefaultAsync(n => n.NotificationId == id);
+
+            if (notification == null)
+            {
+                return NotFound();
+            }
+            if (!notification.IsRead)
+            {
+                notification.IsRead = true;
+                _context.Update(notification);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Thread", new { id = notification.ThreadId });
         }
     }
 }
