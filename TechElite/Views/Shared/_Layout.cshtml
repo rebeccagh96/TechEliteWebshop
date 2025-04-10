@@ -46,7 +46,9 @@
 
             <div class="search">
                 <span class="search-icon material-symbols-outlined" onclick="toggleSearch()">search</span>
-                <input class="search-input" type="search" placeholder="Search" />
+                <form asp-controller="Search" asp-action="Search" method="get">
+                    <input class="search-input" type="search" name="search" placeholder="Search" />
+                </form>
             </div>
     </div>
 

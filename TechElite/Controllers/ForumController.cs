@@ -320,7 +320,7 @@ namespace TechElite.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(string search)
+        public async Task<IActionResult> SearchForum(string search)
         {
             if (string.IsNullOrEmpty(search))
             {
