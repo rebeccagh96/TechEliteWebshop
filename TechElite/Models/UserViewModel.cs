@@ -26,7 +26,5 @@ namespace TechElite.Models
         [Display(Name = "Efternamn")]
         public string? LastName { get; set; }
 
-
-
     }
 }

@@ -31,14 +31,15 @@ h2 {
     height: 100%;
 }
 
-#edit-user-form {
+#edit-user-form,
+#edit-product-form {
     display: flex;
     flex-flow: row wrap;
     align-items: start;
     padding: 20px;
-
     width: 30%;
 }
+#edit-product-form
 
 .username, .password {
     margin-top: 3px;
@@ -46,11 +47,16 @@ h2 {
 }
 
 
-#signup input, #login input, #edit-user-form input {
+
+#signup input,
+#login input,
+#edit-user-form input,
+#edit-product-form input {
     border-radius: 5px;
     border-color: #e3e3e3ff;
     padding-left: 10px;
     padding-right: 10px;
+
 }
 
 .username, .password {
@@ -58,8 +64,10 @@ h2 {
     width: 80%;
 }
 
-#edit-user-form input[type="text"], input[type="email"] {
-    height: 30px
+#edit-user-form input[type="text"], input[type="email"],
+#edit-product-form input[type="text"] {
+    height: 30px;
+
 }
 
 #forgotPassword {

@@ -7,7 +7,6 @@
 
 @model IEnumerable<TechElite.Models.UserViewModel>
 
-<div class="user-actions">
     <form id="edit-user-form" style="display: none;" method="post" action="/Account/Edit">
         <input type="hidden" id="edit-user-id" name="Id" />
         <div>
@@ -42,4 +41,3 @@
         <button type="button" id="delete-user">Radera</button>
     </form>
     <p id="edit-placeholder">Välj en användare att redigera.</p>
-</div>

@@ -22,13 +22,17 @@ namespace TechElite.Controllers
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();
+            var orders = await _context.Orders.Include(o => o.Products).ToListAsync();
+            var products = await _context.Products.ToListAsync();
+            var departments = await _context.Departments.ToListAsync(); 
 
             var userViewModels = new List<UserViewModel>();
 
             foreach (var user in users)
             {
                 var roles = await _userManager.GetRolesAsync(user);
-                var userViewModel = new UserViewModel
+
+                userViewModels.Add(new UserViewModel
                 {
                     Id = user.Id,
                     UserName = user.UserName,
@@ -36,11 +40,30 @@ namespace TechElite.Controllers
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                };
-                userViewModels.Add(userViewModel);
+                });
             }
-            return View(userViewModels);
+
+            var model = new AdminAccountViewModel
+            {
+                Users = userViewModels,
+                Orders = orders,
+                Products = products.Select(p => new ProductViewModel
+                {
+                    ProductId = p.ProductId,
+                    ProductName = p.ProductName,
+                    Quantity = p.Quantity,
+                    Price = p.Price,
+                    Description = p.Description,
+                    DepartmentId = p.DepartmentId,
+                    DepartmentName = p.Department?.DepartmentName ?? "Unknown",
+                    Image = p.Image
+                }).ToList(),
+                Departments = departments 
+            };
+
+            return View(model);
         }
+
 
 
         public async Task<IActionResult> Edit(string id)

@@ -8,6 +8,8 @@ namespace TechElite.Models
         public IEnumerable<UserViewModel> Users { get; set; }
         public IEnumerable<Order> Orders { get; set; }
         public IEnumerable<Customer> Customers { get; set; }
-        public IEnumerable<Product> Products { get; set; }
+        public IEnumerable<ProductViewModel> Products { get; set; }
+        public IEnumerable<Department> Departments { get; set; }
+        public int SelectedDepartmentId { get; set; }
     }
 }

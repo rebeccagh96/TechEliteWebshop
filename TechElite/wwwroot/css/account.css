@@ -150,14 +150,16 @@ article {
     gap: 10px;
 }
 
-.welcome, .users {
+.welcome, .users, 
+.inventory-management {
     border-radius: 5px;
     background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
     padding: 10px;
     margin-bottom: 15px;
 }
 
-.user-actions {
+.user-actions,
+.inventory-actions {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -180,13 +182,15 @@ th, td {
     flex: 1;
 }
 
-.user-table {
+.user-table, 
+.inventory-table {
     width: 100%;
 
 
 }
 
-.user-table tr {
+.user-table tr,
+.inventory-table tr {
     height: 40px;
     display: flex;
     flex-direction: row;
@@ -195,7 +199,9 @@ th, td {
 
 }
 
-.user-table td {
-    display: flex;
-    flex-direction: row; 
-}
+    .user-table td,
+    .inventory-table td{
+        display: flex;
+        flex-direction: row;
+    }
+

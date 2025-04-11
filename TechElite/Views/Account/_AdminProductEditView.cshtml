@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using System.Linq
+@using TechElite.Models
+
+
+@model TechElite.Models.AdminAccountViewModel
+
+
+    <form id="edit-product-form" style="display: none;" method="post" action="/Product/Save" enctype="multipart/form-data">
+        <input type="hidden" id="edit-product-id" name="ProductId" />
+        <div>
+            <label for="edit-product-name">Produktnamn</label>
+            <input type="text" id="edit-product-name" name="ProductName" />
+        </div>
+        <div>
+            <label for="edit-product-quantity">Antal i lager</label>
+            <input type="text" id="edit-product-quantity" name="Quantity" />
+        </div>
+        <div>
+            <label for="edit-product-price">Enhetspris</label>
+            <input type="text" id="edit-product-price" name="Price" />
+        </div>
+        <div>
+            <label for="edit-product-description">Beskrivning</label>
+            <input type="text" id="edit-product-description" name="Description" />
+        </div>
+        <div>
+            <label for="edit-product-department">Avdelning</label>
+            <select id="edit-product-department" name="DepartmentId" required>
+                <option value="">Välj avdelning</option>
+                @foreach (var department in Model.Departments)
+                {
+                    <option value="@department.DepartmentId">@department.DepartmentName</option>
+                }
+            </select>
+
+        </div>
+        <div>
+            <label for="edit-product-image">Bild</label>
+            <div id="current-image-preview" style="margin-bottom: 10px; max-height:50px; max-width: 50px;">
+
+            </div>
+            <input type="file" id="edit-product-image" name="Image" accept="image/svg+xml" />
+            <div id="new-image-preview" style="margin-top: 10px;">
+
+            </div>
+        </div>
+        <button type="submit" id="save-product">Spara</button>
+        <button type="button" id="cancel-product-edit">Avbryt</button>
+        <button type="button" id="delete-product">Radera</button>
+    </form>
+    <p id="product-edit-placeholder">Välj en produkt att redigera, eller klicka på "Lägg till produkt" för att skapa en ny.</p>
+

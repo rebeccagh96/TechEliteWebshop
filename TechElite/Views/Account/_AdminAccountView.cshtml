@@ -42,7 +42,8 @@
                             <td>@user.FirstName</td>
                             <td>@user.LastName</td>
                             <td>
-                                <button class="manage-user-btn" data-user-id="@user.Id"
+                                <button class="manage-user-btn"
+                                        data-user-id="@user.Id"
                                         data-user-username="@user.UserName"
                                         data-user-email="@user.Email"
                                         data-user-firstname="@user.FirstName"
@@ -63,7 +64,7 @@
         <div class="welcome">
             <h2>Hantera ordrar</h2>
         </div>
-        <div class="orders">
+        @* <div class="orders">
             <table class="order-table">
                 <thead>
                     <tr>
@@ -84,7 +85,7 @@
                                 <td>@order.CustomerId</td>
                                 <td>@product.ProductName</td>
                                 <td>@product.Price</td>
-@* 								<td>@product.Quantity</td> *@
+@* 								<td>@product.Quantity</td>
                                 <td>@order.TotalPrice</td>
                                 <td>@order.OrderDate</td>
                                 <td><button class="manage-order-btn">Hantera</button></td>
@@ -96,7 +97,7 @@
             <div class="order-actions">
                 <partial name="_OrderEditView" model="Model.Orders" />
             </div>
-        </div>
+        </div> *@
     </div>
     <div class="third account-tab">
         <div class="inventory-management">
@@ -115,20 +116,49 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach (var product in Model.Products)
-					{
-						<tr>
-							<td>@product.ProductName</td>
-							<td>@product.Quantity</td>
-							<td>@product.Price</td>
-							<td>@product.Department</td>
-							<td>@product.Description</td>
-							<td>@product.Image</td>
-							<td><button class="manage-product-btn">Hantera</button></td>
-						</tr>
-					}
+                    @foreach (var product in Model.Products)
+                    {
+                        <tr>
+                            <td>@product.ProductName</td>
+                            <td>@product.Quantity</td>
+                            <td>@product.Price</td>
+                            <td>
+                                @(Model.Departments.FirstOrDefault(d => d.DepartmentId == product.DepartmentId)?.DepartmentName ?? "Unknown")
+                            </td>
+                            <td>@product.Description</td>
+                            <td>
+                                @if (product.Image != null && product.Image.Length > 0)
+                                {
+                                    <img src="data:image/svg+xml;base64,@Convert.ToBase64String(product.Image)"
+                                         alt="@product.ProductName"
+                                         style="width: 50px; height: 50px;" />
+
+                                }
+                                else
+                                {
+                                    <span>Ingen bild</span>
+                                }
+                            </td>
+                            <td>
+                                <button class="manage-product-btn"
+                                        data-product-id="@product.ProductId"
+                                        data-product-name="@product.ProductName"
+                                        data-product-quantity="@product.Quantity"
+                                        data-product-price="@product.Price"
+                                        data-product-department-id="@product.DepartmentId"
+                                        data-product-description="@product.Description">
+                                    Hantera
+                                </button>
+                            </td>
+                        </tr>
+                    }
 				</tbody>
 			</table>
+            
+        </div>
+        <div class="inventory-actions">
+            <button class="add-product-btn">Lägg till produkt</button>
+            <partial name="_AdminProductEditView" model="Model" />
         </div>
     </div>
     <div class="fourth account-tab">
@@ -150,103 +180,5 @@
     </div>
 </div>
 
-<script>
-    // Borde kanske flytta detta till egen fil imorgon
-    document.addEventListener("DOMContentLoaded", function () {
-        const manageButtons = document.querySelectorAll(".manage-user-btn");
-        const editForm = document.getElementById("edit-user-form");
-        const editPlaceholder = document.getElementById("edit-placeholder");
-        const cancelButton = document.getElementById("cancel-edit");
-        const deleteButton = document.getElementById("delete-user");
-
-        // Hantera "Hantera"-knappen
-        manageButtons.forEach(button => {
-            button.addEventListener("click", function () {
-                const userId = this.getAttribute("data-user-id");
-                const userName = this.getAttribute("data-user-username");
-                const email = this.getAttribute("data-user-email");
-                const firstName = this.getAttribute("data-user-firstname");
-                const lastName = this.getAttribute("data-user-lastname");
-
-                document.getElementById("edit-user-id").value = userId;
-                document.getElementById("edit-user-username").value = userName;
-                document.getElementById("edit-user-email").value = email;
-                document.getElementById("edit-user-firstname").value = firstName;
-                document.getElementById("edit-user-lastname").value = lastName;
-
-                // Visa redigeringsformuläret och dölj placeholdern
-                editForm.style.display = "block";
-                editPlaceholder.style.display = "none";
-            });
-        });
-
-        // Hantera "Avbryt"-knappen
-        cancelButton.addEventListener("click", function () {
-            editForm.style.display = "none";
-            editPlaceholder.style.display = "block";
-        });
-
-        // Hantera formulärinlämning för redigering
-        editForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const formData = new FormData(editForm);
-
-            fetch("/Account/Edit", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text); });
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert(data.message);
-                    location.reload();
-                } else {
-                    alert("Misslyckades med att uppdatera användaren.");
-                }
-            })
-            .catch(error => {
-                console.error("Fel:", error);
-                alert("Ett fel inträffade: " + error.message);
-            });
-        });
-
-        // Hantera "Radera"-knappen
-        deleteButton.addEventListener("click", function () {
-            const userId = document.getElementById("edit-user-id").value;
-
-            if (confirm("Är du säker på att du vill radera användaren?")) {
-                fetch("/Account/Delete", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ id: userId })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(text => { throw new Error(text); });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message);
-                        location.reload();
-                    } else {
-                        alert("Misslyckades med att radera användaren.");
-                    }
-                })
-                .catch(error => {
-                    console.error("Fel:", error);
-                    alert("Ett fel inträffade: " + error.message);
-                });
-            }
-        });
-    });
-</script>
+<script src="~/js/productManagement.js"></script>
+<script src="~/js/userManagement.js"></script>
