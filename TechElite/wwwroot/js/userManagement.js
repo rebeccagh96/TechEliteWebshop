@@ -5,36 +5,57 @@
     const cancelButton = document.getElementById("cancel-edit");
     const deleteButton = document.getElementById("delete-user");
 
-    // Hantera "Hantera"-knappen
-    manageButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            const userId = this.getAttribute("data-user-id");
-            const userName = this.getAttribute("data-user-username");
-            const email = this.getAttribute("data-user-email");
-            const firstName = this.getAttribute("data-user-firstname");
-            const lastName = this.getAttribute("data-user-lastname");
+    // Styr om "hantera"-knbappen ska synas eller inte
+    const isAdminForm = manageButtons.length > 0; 
+    const isUserForm = !isAdminForm;
 
-            document.getElementById("edit-user-id").value = userId;
-            document.getElementById("edit-user-username").value = userName;
-            document.getElementById("edit-user-email").value = email;
-            document.getElementById("edit-user-firstname").value = firstName;
-            document.getElementById("edit-user-lastname").value = lastName;
+    if (isAdminForm) {
+        // Hantera "Hantera"-knappen
+        manageButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const userId = this.getAttribute("data-user-id");
+                const userName = this.getAttribute("data-user-username");
+                const email = this.getAttribute("data-user-email");
+                const firstName = this.getAttribute("data-user-firstname");
+                const lastName = this.getAttribute("data-user-lastname");
 
-            // Visa redigeringsformuläret och dölj placeholdern
-            editForm.style.display = "block";
-            editPlaceholder.style.display = "none";
+                document.getElementById("edit-user-id").value = userId;
+                document.getElementById("edit-user-username").value = userName;
+                document.getElementById("edit-user-email").value = email;
+                document.getElementById("edit-user-firstname").value = firstName;
+                document.getElementById("edit-user-lastname").value = lastName;
+
+                // Visa redigeringsformuläret och dölj placeholdern
+                editForm.style.display = "block";
+                editPlaceholder.style.display = "none";
+            });
         });
-    });
+    } else if (isUserForm) {
+        editForm.style.display = "block";
 
+    }
     // Hantera "Avbryt"-knappen
     cancelButton.addEventListener("click", function () {
-        editForm.style.display = "none";
-        editPlaceholder.style.display = "block";
+        if (isAdminForm) {
+            editForm.style.display = "none";
+            editPlaceholder.style.display = "block";
+        } else if (isUserForm) {
+            editForm.reset();
+            alert("Ändring avbröts.");
+        }
     });
 
     // Hantera formulärinlämning för redigering
     editForm.addEventListener("submit", function (e) {
         e.preventDefault();
+
+        const password = document.getElementById("edit-user-pword").value;
+        const passwordConfirm = document.getElementById("edit-user-pword-confirm").value;
+
+        if (password && password !== passwordConfirm) {
+            alert("Lösenorden matchar inte.");
+            return;
+        }
 
         const formData = new FormData(editForm);
 
@@ -66,7 +87,7 @@
     deleteButton.addEventListener("click", function () {
         const userId = document.getElementById("edit-user-id").value;
 
-        if (confirm("Är du säker på att du vill radera användaren?")) {
+        if (confirm("Är du säker på att du vill radera kontot? När det är raderat kan du inte få tillbaka det")) {
             fetch("/Account/Delete", {
                 method: "POST",
                 headers: {

@@ -26,5 +26,12 @@ namespace TechElite.Models
         [Display(Name = "Efternamn")]
         public string? LastName { get; set; }
 
+        [Display(Name = "Lösenord")]
+        public string Password { get; set; }
+
+        [Display(Name = "Bekräfta lösenord")]
+        public string PasswordConfirm { get; set; }
+        public string CurrentPassword { get; set; }
+
     }
 }

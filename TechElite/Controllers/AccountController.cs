@@ -51,15 +51,6 @@ namespace TechElite.Controllers
             {
                 Users = userViewModels,
                 Orders = orders,
-                //Customers = customers.Select(c => new Customer
-                //{
-                //    CustomerId = c.CustomerId,
-                //    FirstName = c.FirstName,
-                //    LastName = c.LastName,
-                //    Address = c.Address,
-                //    City = c.City,
-                //    ZipCode = c.ZipCode
-                //}).ToList(),
                 Customers = customers,
                 Products = products.Select(p => new ProductViewModel
                 {
@@ -124,15 +115,26 @@ namespace TechElite.Controllers
             }
 
             // Uppdatera ApplicationUser-egenskaper
-            user.UserName = model.UserName;
-            user.Email = model.Email;
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
+            user.UserName = model.UserName ?? user.UserName;
+            user.Email = model.Email ?? user.Email;
+            user.FirstName = model.FirstName ?? user.FirstName;
+            user.LastName = model.LastName ?? user.LastName;
 
-            var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
+
+            // Uppdatera lösenord om det är angivet
+            if (!string.IsNullOrEmpty(model.Password))
             {
-                return BadRequest("Misslyckades med att uppdatera användaren");
+                if (model.Password != model.PasswordConfirm)
+                {
+                    return BadRequest("Lösenorden matchar inte.");
+                }
+                
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.Password);
+                if (!changePasswordResult.Succeeded)
+                {
+                    return BadRequest("Misslyckades med att uppdatera lösenordet. Kontrollera ditt gamla lösenord.");
+                }
+                
             }
 
             // Updaterar roll
@@ -152,6 +154,12 @@ namespace TechElite.Controllers
                 {
                     return BadRequest("Misslyckades med att lägga till vald roll");
                 }
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest("Misslyckades med att uppdatera användaren");
             }
 
             return Ok(new { success = true, message = "Användaruppdatering lyckades." });
