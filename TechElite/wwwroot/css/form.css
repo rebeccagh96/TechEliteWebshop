@@ -64,10 +64,11 @@ h2 {
     width: 80%;
 }
 
-#edit-user-form input[type="text"], input[type="email"],
+#edit-user-form input[type="text"],
+#edit-user-form input[type="email"],
+#edit-user-form input[type="password"],
 #edit-product-form input[type="text"] {
     height: 30px;
-
 }
 
 #forgotPassword {

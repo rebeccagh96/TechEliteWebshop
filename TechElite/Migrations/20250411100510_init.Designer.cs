@@ -12,8 +12,8 @@ using TechElite;
 namespace TechElite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250410092219_updates")]
-    partial class updates
+    [Migration("20250411100510_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

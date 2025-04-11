@@ -144,6 +144,7 @@ article {
     flex-grow: 1;
 }
 
+
 .account-tab {
     display: flex;
     flex-flow: row wrap;
@@ -151,12 +152,52 @@ article {
 }
 
 .welcome, .users, 
-.inventory-management {
+.inventory-management,
+.Profile {
     border-radius: 5px;
     background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
     padding: 10px;
     margin-bottom: 15px;
 }
+
+
+.Profile {
+    
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+}
+
+.Profile img {
+    width: 100px;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.profile-management {
+    display: flex;
+    flex: 2.5;
+    flex-flow: row wrap;
+
+}
+
+#edit-user-form {
+    flex: 1;
+
+}
+
+
+.form-section {
+    flex: 1;
+
+
+}
+
 
 .user-actions,
 .inventory-actions {

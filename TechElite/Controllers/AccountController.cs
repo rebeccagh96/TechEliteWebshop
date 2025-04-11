@@ -19,10 +19,14 @@ namespace TechElite.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var currentUserId = _userManager.GetUserId(User);
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == currentUserId);
             var users = await _userManager.Users.ToListAsync();
             var orders = await _context.Orders.Include(o => o.Products).ToListAsync();
             var products = await _context.Products.ToListAsync();
-            var departments = await _context.Departments.ToListAsync(); 
+            var departments = await _context.Departments.ToListAsync();
+            var customers = await _context.Customers.ToListAsync();
+
 
             var userViewModels = new List<UserViewModel>();
 
@@ -45,6 +49,7 @@ namespace TechElite.Controllers
             {
                 Users = userViewModels,
                 Orders = orders,
+                Customers = customers,
                 Products = products.Select(p => new ProductViewModel
                 {
                     ProductId = p.ProductId,
@@ -56,7 +61,7 @@ namespace TechElite.Controllers
                     DepartmentName = p.Department?.DepartmentName ?? "Unknown",
                     Image = p.Image
                 }).ToList(),
-                Departments = departments 
+                Departments = departments
             };
 
             return View(model);
@@ -108,15 +113,26 @@ namespace TechElite.Controllers
             }
 
             // Uppdatera ApplicationUser-egenskaper
-            user.UserName = model.UserName;
-            user.Email = model.Email;
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
+            user.UserName = model.UserName ?? user.UserName;
+            user.Email = model.Email ?? user.Email;
+            user.FirstName = model.FirstName ?? user.FirstName;
+            user.LastName = model.LastName ?? user.LastName;
 
-            var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
+
+            // Uppdatera lösenord om det är angivet
+            if (!string.IsNullOrEmpty(model.Password))
             {
-                return BadRequest("Misslyckades med att uppdatera användaren");
+                if (model.Password != model.PasswordConfirm)
+                {
+                    return BadRequest("Lösenorden matchar inte.");
+                }
+                
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.Password);
+                if (!changePasswordResult.Succeeded)
+                {
+                    return BadRequest("Misslyckades med att uppdatera lösenordet. Kontrollera ditt gamla lösenord.");
+                }
+                
             }
 
             // Updaterar roll
@@ -136,6 +152,12 @@ namespace TechElite.Controllers
                 {
                     return BadRequest("Misslyckades med att lägga till vald roll");
                 }
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest("Misslyckades med att uppdatera användaren");
             }
 
             return Ok(new { success = true, message = "Användaruppdatering lyckades." });
