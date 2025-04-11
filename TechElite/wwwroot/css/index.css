@@ -1,14 +1,3 @@
-/* 
-Färger:
-Mörkgrön #163832ff
-Mörklila #301934ff
-Ljusgrå #e3e3e3ff
-Blå-lila #9747ffff
-Rosa-lila #a948b3ff
-
-*/
-
-
 .hero-container {
     min-height: 60vh;
     max-height: 80vh;
@@ -18,13 +7,9 @@ Rosa-lila #a948b3ff
     width: 100%;
 }
 
-
-
 h2 {
     font-size: 1.2em;
-
 }
-
 
 .filter {
     display: flex;
@@ -34,9 +19,9 @@ h2 {
     padding: 20px;
 }
 
-.filter img {
-    width: 20px;
-}
+    .filter img {
+        width: 20px;
+    }
 
 .header-content {
     position: relative;
@@ -49,46 +34,45 @@ h2 {
     margin-top: 150px;
 }
 
-
 .links a:hover {
     text-decoration: underline;
 }
 
-/* Hero Image Style */
 .hero-image {
-    background-image: url ('img/Products/Laptop/Laptop2.svg'); /* Lägg till din bild här */
-    background-size: cover; /* Gör så att bilden täcker hela området */
-    background-position: center; /* Centrerar bilden */
-    height: 100vh; /* Full höjd på fönstret */
+    background-image: url('img/Products/Laptop/Laptop2.svg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: white; /* Gör texten vit så att den syns på en mörk bild */
-    flex-direction: column; /* Lägger texterna vertikalt */
+    color: white;
+    flex-direction: column;
 }
 
-.hero-image h1 {
-    font-size: 3rem; /* Större text för rubriken */
-    margin-bottom: 20px; /* Skapar utrymme mellan rubriken och beskrivningen */
-}
+    .hero-image h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
 
-.hero-image p {
-    font-size: 1.5rem; /* Lite mindre text för beskrivningen */
-    margin-top: 0; /* Tar bort eventuell extra marginal ovanför beskrivningen */
-}
+    .hero-image p {
+        font-size: 1.5rem;
+        margin-top: 0;
+    }
+
 .shop-now-btn {
-    padding: 15px 30px; /* Lite padding för att göra knappen större */
-    font-size: 1.2rem; /* Gör texten lite större */
-    
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    margin-top: 40px;
 }
 
     .shop-now-btn:hover {
-        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition för hover-effekter */
+        transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
     .shop-now-btn:active {
-        transform: translateY(0); /* Återgår till originalposition när man klickar */
+        transform: translateY(0);
     }
 
 article {
@@ -99,9 +83,7 @@ article {
     margin: auto;
     height: 100%;
     justify-content: center;
-
 }
-
 
 .product-view {
     display: flex;
@@ -120,14 +102,14 @@ section {
     filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.100));
 }
 
-section div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 200px;
-    width: 150px;
-    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
-}
+    section div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 200px;
+        width: 150px;
+        background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+    }
 
 .products img {
     max-height: 60%;

@@ -133,39 +133,38 @@ nav a {
     align-items: center;
 }
 
-    .icons img {
-        width: 25px;
-    }
-
+.icons img {
+    width: 25px;
+}
 
 .search {
-    position: relative;
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .search-icon {
-    font-size: 24px;
+    font-size: 20px;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
 .search-input {
-    display: none; 
-    font-size: 16px;
+    display: none;
+    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin-left: 10px;
-    transition: all 0.3s ease; 
+    padding: 5px 10px;
+    transition: all 0.3s ease;
 }
 
-    .search-input.show {
-        display: inline-block; 
-        width: 200px; 
-    }
+.search-input.show {
+    display: inline-block;
+    width: 160px;
+}
 
 .search-icon.active {
-    transform: rotate(45deg); 
+    transform: rotate(45deg);
 }
 
 .team-container {
