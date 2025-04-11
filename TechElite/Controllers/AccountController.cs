@@ -1,6 +1,4 @@
-﻿//using System.Diagnostics;
-//using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TechElite.Areas.Identity.Data;
 using TechElite.Models;
@@ -161,23 +159,51 @@ namespace TechElite.Controllers
 
             try
             {
-                var userId = user.Id;
-
-                // Raderar reviews relaterade till användaren osv för kommande egenskaper
-                var reviews = await _context.Reviews
-                    .Where(r => r.ApplicationUserId == userId)
+                var userReplies = await _context.ForumReplies
+                    .Where(r => r.ApplicationUserId == user.Id)
                     .ToListAsync();
-                _context.Reviews.RemoveRange(reviews);
+                _context.ForumReplies.RemoveRange(userReplies);
 
-                var replies = await _context.ForumReplies
-                    .Where(r => r.ApplicationUserId == userId)
+                var userThreads = await _context.ForumThreads
+                    .Where(t => t.ApplicationUserId == user.Id)
                     .ToListAsync();
-                _context.ForumReplies.RemoveRange(replies);
 
-                var threads = await _context.ForumThreads
-                    .Where(t => t.ApplicationUserId == userId)
+                var threadIds = userThreads.Select(t => t.ThreadId).ToList();
+                var threadReplies = await _context.ForumReplies
+                    .Where(r => threadIds.Contains(r.ThreadId))
                     .ToListAsync();
-                _context.ForumThreads.RemoveRange(threads);
+                _context.ForumReplies.RemoveRange(threadReplies);
+
+                var threadNotifications = await _context.Notifications
+                    .Where(n => threadIds.Contains(n.ThreadId))
+                    .ToListAsync();
+                _context.Notifications.RemoveRange(threadNotifications);
+
+                _context.ForumThreads.RemoveRange(userThreads);
+
+                var userNotifications = await _context.Notifications
+                    .Where(n => n.UserId == user.Id)
+                    .ToListAsync();
+                _context.Notifications.RemoveRange(userNotifications);
+
+                var userReviews = await _context.Reviews
+                    .Where(r => r.ApplicationUserId == user.Id)
+                    .ToListAsync();
+                _context.Reviews.RemoveRange(userReviews);
+
+                var customer = await _context.Customers
+                    .FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+                if (customer != null)
+                {
+                    var customerOrders = await _context.Orders
+                        .Where(o => o.CustomerId == customer.CustomerId)
+                        .ToListAsync();
+                    _context.Orders.RemoveRange(customerOrders);
+
+                    _context.Customers.Remove(customer);
+                }
+
+                await _context.SaveChangesAsync();
 
                 var result = await _userManager.DeleteAsync(user);
                 if (!result.Succeeded)
@@ -186,10 +212,7 @@ namespace TechElite.Controllers
                     return BadRequest("Misslyckades med att hämta användaren från Identity.");
                 }
 
-                //  Sparar alla raderingar
-                await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
-
                 return Ok(new { success = true, message = "Användaren raderades framgångsrikt." });
             }
             catch (Exception ex)

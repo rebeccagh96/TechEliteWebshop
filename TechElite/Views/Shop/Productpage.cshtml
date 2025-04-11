@@ -35,12 +35,12 @@
             <div class="filter-icons">
                 <div class="dropdown">
                     <button><img src="~/img/Icons/filter_blck.svg" alt="icon"></button>
-                    <div class="dropdown-content">
+                   @*  <div class="dropdown-content">
                         @foreach (var d in Model.Departments)
                         {
                             <a asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="@d.DepartmentId">@d.DepartmentName</a>
                         }
-                    </div>
+                    </div> *@
                 </div>
             </div>
             <button class="cartlänk"><a href="cart.html"><img src="~/img/Icons/cart_blck.svg" alt="cart"></a></button>
