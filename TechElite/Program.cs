@@ -39,7 +39,7 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Seeda anv‰ndare och roller
+// Seeda anv√§ndare och roller
 //using (var scope = app.Services.CreateScope())
 //{
 //    var services = scope.ServiceProvider;

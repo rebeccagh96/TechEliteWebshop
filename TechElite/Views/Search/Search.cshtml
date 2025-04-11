@@ -1,0 +1,45 @@
+﻿@model SearchViewModel
+@{
+	ViewData["Title"] = "Search";
+}
+<head>
+	<link rel="stylesheet" href="~/css/forum.css" />
+	<link rel="stylesheet" href="~/css/thread.css" />
+</head>
+
+<main>
+    <div class="forum-container">
+        <article>
+            <section>
+                <h4>Sökresultat:</h4>
+                <div>
+                    @if (Model.Departments.Any())
+                    {
+                        @foreach (var t in Model.Departments)
+                        {
+                            <a class="new-thread" asp-controller="Shop" asp-action="FilterDepartment" asp-route-id="@t.DepartmentId">@t.DepartmentName</a>
+                        }
+                    }
+                    @if(Model.Products.Any())
+                    {
+                        @foreach (var r in Model.Products)
+                        {
+                            <a class="new-thread" asp-controller="Shop" asp-action="ProductPage" asp-route-id="@r.ProductId">@r.ProductName</a>
+                        }
+                    }
+                    @if (Model.Reviews.Any())
+                    {
+                        @foreach (var r in Model.Reviews)
+                        {
+                            <a class="new-thread" asp-controller="Shop" asp-action="ProductPage" asp-route-id="@r.ProductId">@r.ReviewText</a>
+                        }
+                    }
+                    @if (Model.Departments.Count == 0 && Model.Products.Count == 0 && Model.Reviews.Count == 0)
+                    {
+                        <p>Inget hittades som matchar din sökning.</p>
+                    }
+                </div>
+            </section>
+        </article>
+    </div>
+</main>
