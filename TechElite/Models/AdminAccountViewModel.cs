@@ -10,6 +10,7 @@ namespace TechElite.Models
         public IEnumerable<Customer> Customers { get; set; }
         public IEnumerable<ProductViewModel> Products { get; set; }
         public IEnumerable<Department> Departments { get; set; }
+
         public int SelectedDepartmentId { get; set; }
     }
 }
