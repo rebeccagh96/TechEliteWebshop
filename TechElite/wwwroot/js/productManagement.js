@@ -91,11 +91,13 @@
                     const svgContent = e.target.result;
 
                     newImagePreview.innerHTML = `
-                        <div style="max-width: 50px; max-height: 50px; border: 1px solid #4CAF50; padding: 5px;">
+                        <div style="width: 50px; height: 50px; overflow: hidden; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center;">
                             ${svgContent}
                         </div>
                         <p style="margin-top: 5px; font-size: 8px; color: #4CAF50;">Ny SVG (förhandsvisning)</p>
-                    `;
+     
+                        
+                   `;
                 };
 
                 reader.readAsText(file);

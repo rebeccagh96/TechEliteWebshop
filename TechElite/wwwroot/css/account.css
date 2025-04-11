@@ -246,3 +246,6 @@ th, td {
         flex-direction: row;
     }
 
+    #edit-product-image {
+        margin: 20px;
+    }
