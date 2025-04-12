@@ -7,6 +7,6 @@
         public string UserName { get; set; }
         public DateTime OrderDate { get; set; }
         public List<OrderProductViewModel> OrderProducts { get; set; } = new List<OrderProductViewModel>(); // Lista av produkter kopplade till ordern
-        public int TotalPrice { get; set; } // Totalpris för ordern
+        public decimal TotalPrice { get; set; } // Totalpris för ordern
     }
 }

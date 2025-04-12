@@ -23,7 +23,7 @@ namespace TechElite.Models
         public required string Description { get; set; }
 
         [Required]
-        public required int Price { get; set; }
+        public required decimal Price { get; set; }
         
         [Column(TypeName = "image")]
         public byte[]? Image { get; set; } // Nullable för att kunna ha produkter utan bild (Främst för testning)

@@ -14,7 +14,7 @@ namespace TechElite.Models
         public int Quantity { get; set; }
 
         [Display(Name = "Pris")]
-        public int Price { get; set; }
+        public decimal Price { get; set; }
 
         [Display(Name = "Beskrivning")]
         public required string Description { get; set; }

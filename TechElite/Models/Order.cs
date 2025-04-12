@@ -18,7 +18,7 @@ namespace TechElite.Models
         public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>(); // Lista av produkter kopplade till ordern
 
 
-        public int TotalPrice => OrderProducts.Sum(op => op.Product.Price * op.ProductQuantity);
+        public decimal TotalPrice => OrderProducts.Sum(op => op.Product.Price * op.ProductQuantity);
 
     }
 }

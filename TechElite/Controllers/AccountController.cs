@@ -22,7 +22,10 @@ namespace TechElite.Controllers
             var currentUserId = _userManager.GetUserId(User);
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == currentUserId);
             var users = await _userManager.Users.ToListAsync();
-            var orders = await _context.Orders.Include(o => o.OrderProducts).ToListAsync();
+            var orders = await _context.Orders
+                .Include(o => o.OrderProducts)
+                    .ThenInclude(op => op.Product) // Ensure Product is included
+                .ToListAsync();
             var products = await _context.Products.ToListAsync();
             var departments = await _context.Departments.ToListAsync();
             var customers = await _context.Customers.ToListAsync();
@@ -59,7 +62,8 @@ namespace TechElite.Controllers
                     Price = op.Product.Price,
                     ProductQuantity = op.ProductQuantity,
 
-                }).ToList()
+                }).ToList(),
+                TotalPrice = order.OrderProducts.Sum(op => op.Product.Price * op.ProductQuantity)
             }).ToList();
 
             var model = new AdminAccountViewModel

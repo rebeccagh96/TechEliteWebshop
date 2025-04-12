@@ -39,7 +39,7 @@ namespace TechElite.Controllers
                     Price = op.Product.Price,
                     ProductQuantity = op.ProductQuantity
                 }).ToList(),
-                TotalPrice = order.TotalPrice
+                TotalPrice = order.OrderProducts.Sum(op => op.Product.Price * op.ProductQuantity)
             }).ToList();
 
             var model = new AdminAccountViewModel
@@ -109,7 +109,6 @@ namespace TechElite.Controllers
                 return NotFound("Ordern hittades inte.");
             }
 
-            // Update existing products in the order
             foreach (var orderProduct in model.OrderProducts)
             {
                 var existingOrderProduct = order.OrderProducts.FirstOrDefault(op => op.ProductId == orderProduct.ProductId);
@@ -119,7 +118,7 @@ namespace TechElite.Controllers
                 }
                 else
                 {
-                    // Add new product to the order
+
                     order.OrderProducts.Add(new OrderProduct
                     {
                         ProductId = orderProduct.ProductId,
@@ -128,7 +127,7 @@ namespace TechElite.Controllers
                 }
             }
 
-            // Remove products with quantity 0
+
             var productIdsToRemove = model.OrderProducts
                 .Where(op => op.ProductQuantity == 0)
                 .Select(op => op.ProductId)
