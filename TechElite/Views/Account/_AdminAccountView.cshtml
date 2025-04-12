@@ -111,7 +111,7 @@
 						<th>Avdelning</th>
 						<th>Beskrivning</th>
 						<th>Bild</th>
-						<th>Recensioner</th>
+						<th>Recensioner</th> 
 						<th>Åtgärder</th>
 					</tr>
 				</thead>
@@ -139,6 +139,18 @@
                                     <span>Ingen bild</span>
                                 }
                             </td>
+                            <td>
+                                @if (product.Reviews != null && product.Reviews.Any())
+                                {
+                                    foreach (var review in product.Reviews)
+                                    {
+                                        <span>@review.ReviewText</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>Inga recensioner ännu</span>
+                                }
                             <td>
                                 <button class="manage-product-btn"
                                         data-product-id="@product.ProductId"

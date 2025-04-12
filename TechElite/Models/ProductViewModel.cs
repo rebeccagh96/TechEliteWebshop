@@ -25,6 +25,9 @@ namespace TechElite.Models
 
         [Display(Name = "Bild")]
         public byte[]? Image { get; set; }
-        
+
+        [Display(Name = "Recensioner")]
+        public ICollection<Review>? Reviews { get; set; } = new List<Review>();
+
     }
 }
