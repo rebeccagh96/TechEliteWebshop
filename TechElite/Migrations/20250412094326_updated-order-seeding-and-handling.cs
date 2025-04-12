@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TechElite.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class updatedorderseedingandhandling : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -275,9 +275,7 @@ namespace TechElite.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProductName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    TotalPrice = table.Column<int>(type: "int", nullable: false)
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -446,7 +444,34 @@ namespace TechElite.Migrations
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "ProductId", "DepartmentId", "Description", "Image", "Price", "ProductName", "Quantity" },
-                values: new object[] { 1, 1, "Beskrivning av exempelprodukten", null, 100, "Exempelprodukt", 10 });
+                values: new object[,]
+                {
+                    { 1, 1, "Beskrivning av exempelprodukten", null, 100, "Exempelprodukt", 10 },
+                    { 2, 2, "En produkt för alla", null, 1990, "Mac Attack", 20 },
+                    { 3, 3, "En produkt för alla", null, 19, "Temu Earbuds", 15 },
+                    { 4, 4, "En produkt för alla", null, 19, "LADDARE X2000", 150 },
+                    { 5, 5, "En produkt för alla", null, 199, "Xbox Kontroll", 30 },
+                    { 6, 1, "En produkt för alla", null, 19, "Rit Bräda", 100 },
+                    { 7, 2, "En produkt för alla", null, 1990, "Windows Fusion", 10 },
+                    { 8, 3, "En bra produkt för alla", null, 19, "Professor Earbuds", 120 },
+                    { 9, 4, "En bra product för alla", null, 19, "Smart Charger", 35 },
+                    { 10, 5, "En produkt för alla.", null, 199, "Custom ps5 Kontroll", 10 },
+                    { 11, 1, "En produkt för alla.", null, 19, "Wish Rit Bräda", 15 },
+                    { 12, 2, "En produkt för alla", null, 1990, "Elite Monitor", 50 },
+                    { 13, 3, "En produkt för alla.", null, 199, "Airpods pro", 20 },
+                    { 14, 4, "En produkt för alla.", null, 19, "Supercharger adapter", 80 },
+                    { 15, 5, "En produkt för alla.", null, 199, "Standard PS Kontroll", 50 },
+                    { 16, 1, "En produkt för alla.", null, 1990, "iphone 7", 30 },
+                    { 17, 2, "En produkt för alla.", null, 1990, "PS5", 20 },
+                    { 18, 3, "En produkt för alla.", null, 199, "Trådade Ipods Pro", 20 },
+                    { 19, 4, "En produkt för alla.", null, 19, "iphone adapter", 30 },
+                    { 20, 5, "En produkt för alla.", null, 1990, "Nintendo", 20 },
+                    { 21, 1, "En produkt för alla.", null, 1990, "iphone 5", 20 },
+                    { 22, 2, "En produkt för alla.", null, 1990, "Win Screen", 20 },
+                    { 23, 3, "En produkt för alla.", null, 199, "WIN-Win Headpones", 20 },
+                    { 24, 4, "En produkt för alla.", null, 199, "Superb Fläkt", 25 },
+                    { 25, 5, "En produkt för alla.", null, 1990, "Playstation 1", 20 }
+                });
 
             migrationBuilder.InsertData(
                 table: "ForumReplies",
@@ -455,13 +480,22 @@ namespace TechElite.Migrations
 
             migrationBuilder.InsertData(
                 table: "Orders",
-                columns: new[] { "OrderId", "CustomerId", "OrderDate", "ProductName", "TotalPrice", "UserName" },
-                values: new object[] { 1, 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Exempelprodukt", 100, "user1" });
+                columns: new[] { "OrderId", "CustomerId", "OrderDate", "UserName" },
+                values: new object[] { 1, 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user1" });
 
             migrationBuilder.InsertData(
                 table: "Reviews",
                 columns: new[] { "ReviewId", "ApplicationUserId", "ProductId", "Rating", "ReviewDate", "ReviewText", "ReviewTitle", "ReviewerName" },
                 values: new object[] { 1, "USER1-STATIC-ID", 1, 5, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jag gillar den verkligen!", "Bra produkt", "Anna" });
+
+            migrationBuilder.InsertData(
+                table: "OrderProduct",
+                columns: new[] { "OrdersOrderId", "ProductsProductId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 1, 2 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

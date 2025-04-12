@@ -172,6 +172,18 @@ namespace TechElite.Migrations
                     b.HasIndex("ProductsProductId");
 
                     b.ToTable("OrderProduct");
+
+                    b.HasData(
+                        new
+                        {
+                            OrdersOrderId = 1,
+                            ProductsProductId = 1
+                        },
+                        new
+                        {
+                            OrdersOrderId = 1,
+                            ProductsProductId = 2
+                        });
                 });
 
             modelBuilder.Entity("TechElite.Areas.Identity.Data.ApplicationUser", b =>
@@ -586,14 +598,6 @@ namespace TechElite.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<int>("TotalPrice")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -610,8 +614,6 @@ namespace TechElite.Migrations
                             OrderId = 1,
                             CustomerId = 1,
                             OrderDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductName = "Exempelprodukt",
-                            TotalPrice = 100,
                             UserName = "user1"
                         });
                 });
@@ -661,6 +663,222 @@ namespace TechElite.Migrations
                             Price = 100,
                             ProductName = "Exempelprodukt",
                             Quantity = 10
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            DepartmentId = 2,
+                            Description = "En produkt för alla",
+                            Price = 1990,
+                            ProductName = "Mac Attack",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            DepartmentId = 3,
+                            Description = "En produkt för alla",
+                            Price = 19,
+                            ProductName = "Temu Earbuds",
+                            Quantity = 15
+                        },
+                        new
+                        {
+                            ProductId = 4,
+                            DepartmentId = 4,
+                            Description = "En produkt för alla",
+                            Price = 19,
+                            ProductName = "LADDARE X2000",
+                            Quantity = 150
+                        },
+                        new
+                        {
+                            ProductId = 5,
+                            DepartmentId = 5,
+                            Description = "En produkt för alla",
+                            Price = 199,
+                            ProductName = "Xbox Kontroll",
+                            Quantity = 30
+                        },
+                        new
+                        {
+                            ProductId = 6,
+                            DepartmentId = 1,
+                            Description = "En produkt för alla",
+                            Price = 19,
+                            ProductName = "Rit Bräda",
+                            Quantity = 100
+                        },
+                        new
+                        {
+                            ProductId = 7,
+                            DepartmentId = 2,
+                            Description = "En produkt för alla",
+                            Price = 1990,
+                            ProductName = "Windows Fusion",
+                            Quantity = 10
+                        },
+                        new
+                        {
+                            ProductId = 8,
+                            DepartmentId = 3,
+                            Description = "En bra produkt för alla",
+                            Price = 19,
+                            ProductName = "Professor Earbuds",
+                            Quantity = 120
+                        },
+                        new
+                        {
+                            ProductId = 9,
+                            DepartmentId = 4,
+                            Description = "En bra product för alla",
+                            Price = 19,
+                            ProductName = "Smart Charger",
+                            Quantity = 35
+                        },
+                        new
+                        {
+                            ProductId = 10,
+                            DepartmentId = 5,
+                            Description = "En produkt för alla.",
+                            Price = 199,
+                            ProductName = "Custom ps5 Kontroll",
+                            Quantity = 10
+                        },
+                        new
+                        {
+                            ProductId = 11,
+                            DepartmentId = 1,
+                            Description = "En produkt för alla.",
+                            Price = 19,
+                            ProductName = "Wish Rit Bräda",
+                            Quantity = 15
+                        },
+                        new
+                        {
+                            ProductId = 12,
+                            DepartmentId = 2,
+                            Description = "En produkt för alla",
+                            Price = 1990,
+                            ProductName = "Elite Monitor",
+                            Quantity = 50
+                        },
+                        new
+                        {
+                            ProductId = 13,
+                            DepartmentId = 3,
+                            Description = "En produkt för alla.",
+                            Price = 199,
+                            ProductName = "Airpods pro",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 14,
+                            DepartmentId = 4,
+                            Description = "En produkt för alla.",
+                            Price = 19,
+                            ProductName = "Supercharger adapter",
+                            Quantity = 80
+                        },
+                        new
+                        {
+                            ProductId = 15,
+                            DepartmentId = 5,
+                            Description = "En produkt för alla.",
+                            Price = 199,
+                            ProductName = "Standard PS Kontroll",
+                            Quantity = 50
+                        },
+                        new
+                        {
+                            ProductId = 16,
+                            DepartmentId = 1,
+                            Description = "En produkt för alla.",
+                            Price = 1990,
+                            ProductName = "iphone 7",
+                            Quantity = 30
+                        },
+                        new
+                        {
+                            ProductId = 17,
+                            DepartmentId = 2,
+                            Description = "En produkt för alla.",
+                            Price = 1990,
+                            ProductName = "PS5",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 18,
+                            DepartmentId = 3,
+                            Description = "En produkt för alla.",
+                            Price = 199,
+                            ProductName = "Trådade Ipods Pro",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 19,
+                            DepartmentId = 4,
+                            Description = "En produkt för alla.",
+                            Price = 19,
+                            ProductName = "iphone adapter",
+                            Quantity = 30
+                        },
+                        new
+                        {
+                            ProductId = 20,
+                            DepartmentId = 5,
+                            Description = "En produkt för alla.",
+                            Price = 1990,
+                            ProductName = "Nintendo",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 21,
+                            DepartmentId = 1,
+                            Description = "En produkt för alla.",
+                            Price = 1990,
+                            ProductName = "iphone 5",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 22,
+                            DepartmentId = 2,
+                            Description = "En produkt för alla.",
+                            Price = 1990,
+                            ProductName = "Win Screen",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 23,
+                            DepartmentId = 3,
+                            Description = "En produkt för alla.",
+                            Price = 199,
+                            ProductName = "WIN-Win Headpones",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 24,
+                            DepartmentId = 4,
+                            Description = "En produkt för alla.",
+                            Price = 199,
+                            ProductName = "Superb Fläkt",
+                            Quantity = 25
+                        },
+                        new
+                        {
+                            ProductId = 25,
+                            DepartmentId = 5,
+                            Description = "En produkt för alla.",
+                            Price = 1990,
+                            ProductName = "Playstation 1",
+                            Quantity = 20
                         });
                 });
 

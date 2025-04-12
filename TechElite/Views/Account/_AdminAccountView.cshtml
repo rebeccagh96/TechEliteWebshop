@@ -83,12 +83,19 @@
                             <tr>
                                 <td>@order.OrderId</td>
                                 <td>@order.CustomerId</td>
-                                <td>@product.ProductName</td>
-                                <td>@product.Price</td>
- 								<td>@product.Quantity</td>
-                                <td>@order.TotalPrice</td>
+                                <td>@order.Products</td>
+                                <td>@product.Quantity</td>
+                                <td>@order.Products.Sum(p => p.Price * p.Quantity)</td>
                                 <td>@order.OrderDate</td>
-                                <td><button class="manage-order-btn">Hantera</button></td>
+                                <td>
+                                    <button class="manage-order-btn"
+                                            data-order-id="@order.OrderId"
+                                            data-customer-id="@order.CustomerId"
+                                            data-order-date="@order.OrderDate"
+                                            data-products='@Json.Serialize(order.Products)'>
+                                        Hantera
+                                    </button>
+                                </td>
                             </tr>
                         }
                     }
@@ -194,3 +201,4 @@
 
 <script src="~/js/productManagement.js"></script>
 <script src="~/js/userManagement.js"></script>
+<script src="~/js/orderManagement.js"></script>

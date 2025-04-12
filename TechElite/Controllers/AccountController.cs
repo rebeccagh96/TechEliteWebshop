@@ -27,6 +27,7 @@ namespace TechElite.Controllers
             var departments = await _context.Departments.ToListAsync();
             var customers = await _context.Customers.ToListAsync();
 
+            
 
             var userViewModels = new List<UserViewModel>();
 
@@ -45,10 +46,28 @@ namespace TechElite.Controllers
                 });
             }
 
+            var orderViewModels = orders.Select(order => new OrderViewModel
+            {
+                OrderId = order.OrderId,
+                CustomerId = order.CustomerId,
+                UserName = order.UserName,
+                OrderDate = order.OrderDate,
+                TotalPrice = order.TotalPrice,
+                Products = order.Products.Select(p => new ProductViewModel
+                {
+                    ProductId = p.ProductId,
+                    ProductName = p.ProductName,
+                    Quantity = p.Quantity,
+                    Price = p.Price,
+                    Description = p.Description,
+                    DepartmentId = p.DepartmentId
+                }).ToList()
+            }).ToList();
+
             var model = new AdminAccountViewModel
             {
                 Users = userViewModels,
-                Orders = orders,
+                Orders = orderViewModels,
                 Customers = customers,
                 Products = products.Select(p => new ProductViewModel
                 {

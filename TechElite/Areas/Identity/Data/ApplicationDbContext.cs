@@ -521,6 +521,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         // Seeda en Order
         var order1Id = 1;
+        var product1Price = 100; 
+        var product2Price = 1990;
+        var totalPrice = product1Price + product2Price;
+
         modelBuilder.Entity<Order>().HasData(
             new Order
             {
@@ -528,10 +532,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 CustomerId = customer1StaticId,
                 UserName = "user1",
                 OrderDate = new DateTime(2025, 1, 1),
-                ProductName = "Exempelprodukt",
-                TotalPrice = 100
+
             }
         );
+
+        modelBuilder.Entity<Order>()
+            .HasMany(o => o.Products)
+            .WithMany(p => p.Orders)
+            .UsingEntity(j => j.HasData(
+                new { OrdersOrderId = order1Id, ProductsProductId = product1Id },
+                new { OrdersOrderId = order1Id, ProductsProductId = product2Id }
+            ));
     }
 
     public static async Task SeedUsersAndRolesAsync(IServiceProvider serviceProvider)
