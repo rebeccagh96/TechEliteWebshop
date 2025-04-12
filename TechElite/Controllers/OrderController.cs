@@ -19,34 +19,28 @@ namespace TechElite.Controllers
         {
             var orders = await _context.Orders
                 .Include(o => o.Customer)
-                .Include(o => o.Products)
+                .Include(o => o.OrderProducts)
+                    .ThenInclude(op => op.Product)
                 .ToListAsync();
 
             var customers = await _context.Customers.ToListAsync();
             var products = await _context.Products.ToListAsync();
 
-            var orderViewModels = new List<OrderViewModel>();
-
-            foreach (var order in orders)
+            var orderViewModels = orders.Select(order => new OrderViewModel
             {
-                orderViewModels.Add(new OrderViewModel
+                OrderId = order.OrderId,
+                CustomerId = order.CustomerId,
+                UserName = order.UserName,
+                OrderDate = order.OrderDate,
+                OrderProducts = order.OrderProducts.Select(op => new OrderProductViewModel
                 {
-                    OrderId = order.OrderId,
-                    CustomerId = order.CustomerId,
-                    UserName = order.UserName,
-                    Products = order.Products.Select(p => new ProductViewModel
-                    {
-                        ProductId = p.ProductId,
-                        ProductName = p.ProductName,
-                        Quantity = p.Quantity,
-                        Price = p.Price,
-                        Description = p.Description,
-                        DepartmentId = p.DepartmentId
-                    }).ToList(),
-                    TotalPrice = order.Products.Sum(p => p.Price * p.Quantity), // Dynamically calculate TotalPrice
-                    OrderDate = order.OrderDate
-                });
-            }
+                    ProductId = op.ProductId,
+                    ProductName = op.Product.ProductName,
+                    Price = op.Product.Price,
+                    ProductQuantity = op.ProductQuantity
+                }).ToList(),
+                TotalPrice = order.TotalPrice
+            }).ToList();
 
             var model = new AdminAccountViewModel
             {
@@ -84,23 +78,18 @@ namespace TechElite.Controllers
                 OrderId = model.OrderId,
                 CustomerId = model.CustomerId,
                 UserName = model.UserName,
-                Products = model.Products.Select(p => new Product
+                OrderDate = DateTime.Now,
+                OrderProducts = model.OrderProducts.Select(op => new OrderProduct
                 {
-                    ProductId = p.ProductId ?? 0,
-                    ProductName = p.ProductName,
-                    Quantity = p.Quantity,
-                    Price = p.Price,
-                    Description = p.Description,
-                    DepartmentId = p.DepartmentId
-                }).ToList(),
-                OrderDate = DateTime.Now
+                    ProductId = op.ProductId,
+                    ProductQuantity = op.ProductQuantity
+                }).ToList()
             };
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Edit(OrderViewModel model)
@@ -111,7 +100,8 @@ namespace TechElite.Controllers
             }
 
             var order = await _context.Orders
-                .Include(o => o.Products)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
                 .FirstOrDefaultAsync(o => o.OrderId == model.OrderId);
 
             if (order == null)
@@ -119,35 +109,44 @@ namespace TechElite.Controllers
                 return NotFound("Ordern hittades inte.");
             }
 
-            foreach (var product in model.Products)
+            // Update existing products in the order
+            foreach (var orderProduct in model.OrderProducts)
             {
-                var existingProduct = order.Products.FirstOrDefault(p => p.ProductId == product.ProductId);
-                if (existingProduct != null)
+                var existingOrderProduct = order.OrderProducts.FirstOrDefault(op => op.ProductId == orderProduct.ProductId);
+                if (existingOrderProduct != null)
                 {
-                    existingProduct.Quantity = product.Quantity;
+                    existingOrderProduct.ProductQuantity = orderProduct.ProductQuantity;
+                }
+                else
+                {
+                    // Add new product to the order
+                    order.OrderProducts.Add(new OrderProduct
+                    {
+                        ProductId = orderProduct.ProductId,
+                        ProductQuantity = orderProduct.ProductQuantity
+                    });
                 }
             }
 
-            var productIdsToRemove = model.Products
-                .Where(p => p.Quantity == 0)
-                .Select(p => p.ProductId)
+            // Remove products with quantity 0
+            var productIdsToRemove = model.OrderProducts
+                .Where(op => op.ProductQuantity == 0)
+                .Select(op => op.ProductId)
                 .ToList();
 
-            order.Products = order.Products
-                .Where(p => !productIdsToRemove.Contains(p.ProductId))
+            order.OrderProducts = order.OrderProducts
+                .Where(op => !productIdsToRemove.Contains(op.ProductId))
                 .ToList();
-
 
             await _context.SaveChangesAsync();
             return Ok(new { success = true, message = "Ordern uppdaterades." });
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Delete([FromBody] int orderId)
         {
             var order = await _context.Orders
-                .Include(o => o.Products)
+                .Include(o => o.OrderProducts)
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
 
             if (order == null)

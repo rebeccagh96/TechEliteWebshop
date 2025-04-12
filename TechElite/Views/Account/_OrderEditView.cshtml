@@ -5,38 +5,45 @@
 
 @model IEnumerable<TechElite.Models.OrderViewModel>
 
-<form id="edit-order-form" style="display: none;" method="post" action="/Order/Edit">
-    <input type="hidden" id="edit-order-id" name="OrderId" />
-    <div>
-        <label for="edit-customer-id">KundID</label>
-        <input type="text" id="edit-customer-id" name="CustomerId" readonly />
-    </div>
-    <div>
-        <label for="edit-order-date">Orderdatum</label>
-        <input type="text" id="edit-order-date" name="OrderDate" readonly />
-    </div>
-    <div>
-        <label for="edit-total-price">Totalt belopp</label>
-        <input type="text" id="edit-total-price" name="TotalPrice" readonly />
-    </div>
-    <div>
-        <h3>Produkter</h3>
-        <table id="edit-products-table">
-            <thead>
-                <tr>
-                    <th>Produktnamn</th>
-                    <th>Pris</th>
-                    <th>Antal</th>
-                    <th>Åtgärder</th>
-                </tr>
-            </thead>
-            <tbody>
+<div id="edit-order-details" style="display: none;">
 
-            </tbody>
-        </table>
+        <div class="info">
+            <strong>KundID:</strong> @Model.FirstOrDefault()?.CustomerId
+
+            <strong>OrderID:</strong> @Model.FirstOrDefault()?.OrderId
+
+            <strong>Orderdatum:</strong> @Model.FirstOrDefault()?.OrderDate.ToString("yyyy-MM-dd")
+        </div>
+
+
+
+    <h3>Produkter</h3>
+    <table id="edit-orderproducts-table">
+        <thead>
+            <tr>
+                <th>Produktnamn</th>
+                <th>Pris</th>
+                <th>Antal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.FirstOrDefault()?.OrderProducts ?? Enumerable.Empty<OrderProductViewModel>())
+            {
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>@product.Price.ToString("C")</td>
+                    <td>
+                        <input type="number" name="ProductQuantities[@product.ProductId]" value="@product.ProductQuantity" min="0" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <button type="submit" id="save-order-edit">Spara</button>
+        <button type="button" id="cancel-order-edit">Avbryt</button>
+        <button type="button" id="delete-order">Ta bort order</button>
     </div>
-    <button type="submit" id="save-order-edit">Spara</button>
-    <button type="button" id="cancel-order-edit">Avbryt</button>
-    <button type="button" id="delete-order">Avbryt order</button>
-</form>
+</div>
 <p id="edit-order-placeholder">Välj en order att redigera.</p>

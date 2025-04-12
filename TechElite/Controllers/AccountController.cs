@@ -22,7 +22,7 @@ namespace TechElite.Controllers
             var currentUserId = _userManager.GetUserId(User);
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == currentUserId);
             var users = await _userManager.Users.ToListAsync();
-            var orders = await _context.Orders.Include(o => o.Products).ToListAsync();
+            var orders = await _context.Orders.Include(o => o.OrderProducts).ToListAsync();
             var products = await _context.Products.ToListAsync();
             var departments = await _context.Departments.ToListAsync();
             var customers = await _context.Customers.ToListAsync();
@@ -52,15 +52,13 @@ namespace TechElite.Controllers
                 CustomerId = order.CustomerId,
                 UserName = order.UserName,
                 OrderDate = order.OrderDate,
-                TotalPrice = order.TotalPrice,
-                Products = order.Products.Select(p => new ProductViewModel
+                OrderProducts = order.OrderProducts.Select(op => new OrderProductViewModel
                 {
-                    ProductId = p.ProductId,
-                    ProductName = p.ProductName,
-                    Quantity = p.Quantity,
-                    Price = p.Price,
-                    Description = p.Description,
-                    DepartmentId = p.DepartmentId
+                    ProductId = op.ProductId,
+                    ProductName = op.Product.ProductName,
+                    Price = op.Product.Price,
+                    ProductQuantity = op.ProductQuantity,
+
                 }).ToList()
             }).ToList();
 

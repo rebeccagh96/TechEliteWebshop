@@ -94,6 +94,19 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(n => n.ThreadId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<OrderProduct>()
+            .HasOne(op => op.Order)
+            .WithMany(o => o.OrderProducts)
+            .HasForeignKey(op => op.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+        modelBuilder.Entity<OrderProduct>()
+            .HasOne(op => op.Product)
+            .WithMany(p => p.OrderProducts)
+            .HasForeignKey(op => op.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         // Skapa statiska variabler för att kunna referera till dem vid relationer
         var dept1Id = 1;
         var dept2Id = 2;
@@ -521,9 +534,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         // Seeda en Order
         var order1Id = 1;
-        var product1Price = 100; 
-        var product2Price = 1990;
-        var totalPrice = product1Price + product2Price;
 
         modelBuilder.Entity<Order>().HasData(
             new Order
@@ -532,17 +542,25 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 CustomerId = customer1StaticId,
                 UserName = "user1",
                 OrderDate = new DateTime(2025, 1, 1),
-
             }
         );
 
-        modelBuilder.Entity<Order>()
-            .HasMany(o => o.Products)
-            .WithMany(p => p.Orders)
-            .UsingEntity(j => j.HasData(
-                new { OrdersOrderId = order1Id, ProductsProductId = product1Id },
-                new { OrdersOrderId = order1Id, ProductsProductId = product2Id }
-            ));
+        modelBuilder.Entity<OrderProduct>().HasData(
+            new OrderProduct
+            {
+                Id = 1, 
+                OrderId = order1Id,
+                ProductId = product1Id,
+                ProductQuantity = 2 
+            },
+            new OrderProduct
+            {
+                Id = 2, 
+                OrderId = order1Id,
+                ProductId = product2Id,
+                ProductQuantity = 1 
+            }
+        );
     }
 
     public static async Task SeedUsersAndRolesAsync(IServiceProvider serviceProvider)

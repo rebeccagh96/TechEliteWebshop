@@ -16,11 +16,11 @@ namespace TechElite.Models
         [Required] // Denna annotation gör fältet obligatoriskt ifrån vyn, inte bara i DB
         [StringLength(40)]
         [RegularExpression("[A-Za-zÅÄÖåäö.'´-]+")]
-        public required string ProductName { get; set; } = string.Empty;
+        public required string ProductName { get; set; }
 
         [Required] 
         [StringLength(150)]
-        public required string Description { get; set; } = string.Empty;
+        public required string Description { get; set; }
 
         [Required]
         public required int Price { get; set; }
@@ -31,8 +31,8 @@ namespace TechElite.Models
         [Required] 
         public required int Quantity { get; set; } // Antal i lager
 
-        public ICollection<Review>? Reviews { get; set; } = new List<Review>(); 
-        public ICollection<Order>? Orders { get; set; } = new List<Order>(); // För att visa antal ordrar
+        public ICollection<Review>? Reviews { get; set; } = new List<Review>();
+        public ICollection<OrderProduct>? OrderProducts { get; set; } = new List<OrderProduct>(); // Lista av orderprodukter kopplade, nullable för att kunna skapa produkter utan orderprodukter
 
     }
 }

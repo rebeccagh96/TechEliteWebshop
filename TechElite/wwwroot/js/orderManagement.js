@@ -1,23 +1,24 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
-    const orderForm = document.getElementById("edit-order-form");
+    const orderDetails = document.getElementById("edit-order-details");
     const orderPlaceholder = document.getElementById("edit-order-placeholder");
     const manageButtons = document.querySelectorAll(".manage-order-btn");
     const cancelButton = document.getElementById("cancel-order-edit");
     const deleteButton = document.getElementById("delete-order");
 
-    function populateOrderForm(button) {
+    function populateOrderDetails(button) {
         const orderId = button.getAttribute("data-order-id");
         const customerId = button.getAttribute("data-customer-id");
         const orderDate = button.getAttribute("data-order-date");
-        const totalPrice = button.getAttribute("data-total-price");
 
-        document.getElementById("edit-order-id").value = orderId;
-        document.getElementById("edit-customer-id").value = customerId;
-        document.getElementById("edit-order-date").value = orderDate;
-        document.getElementById("edit-total-price").value = totalPrice;
+        const infoDiv = orderDetails.querySelector(".info");
+        infoDiv.innerHTML = `
+            <strong>KundID:</strong> ${customerId}
+            <strong>OrderID:</strong> ${orderId}
+            <strong>Orderdatum:</strong> ${orderDate}
+        `;
 
-        const productsTable = document.getElementById("edit-products-table").querySelector("tbody");
-        productsTable.innerHTML = ""; 
+        const productsTable = document.getElementById("edit-orderproducts-table").querySelector("tbody");
+        productsTable.innerHTML = "";
 
         const products = JSON.parse(button.getAttribute("data-products"));
         products.forEach(product => {
@@ -26,33 +27,30 @@
                 <td>${product.ProductName}</td>
                 <td>${product.Price}</td>
                 <td>
-                    <input type="number" name="Products[${product.ProductId}].Quantity" value="${product.Quantity}" />
-                </td>
-                <td>
-                    <button type="button" class="remove-product-btn" data-product-id="${product.ProductId}">Ta bort</button>
+                    <input type="number" name="ProductQuantities[${product.ProductId}]" value="${product.ProductQuantity}" min="0" />
                 </td>
             `;
             productsTable.appendChild(row);
         });
 
-        orderForm.style.display = "block";
+        orderDetails.style.display = "block";
         orderPlaceholder.style.display = "none";
     }
 
     manageButtons.forEach(button => {
         button.addEventListener("click", function () {
-            populateOrderForm(this);
+            populateOrderDetails(this);
         });
     });
 
     cancelButton.addEventListener("click", function () {
-        orderForm.style.display = "none";
+        orderDetails.style.display = "none";
         orderPlaceholder.style.display = "block";
     });
 
     deleteButton.addEventListener("click", function () {
         const orderId = document.getElementById("edit-order-id").value;
-        if (confirm("Är du säker på att du vill avbryta ordern?")) {
+        if (confirm("Är du säker på att du vill ta bort ordern?")) {
             fetch(`/Order/Delete/${orderId}`, { method: "POST" })
                 .then(response => response.json())
                 .then(data => {
@@ -60,7 +58,7 @@
                         alert(data.message);
                         location.reload();
                     } else {
-                        alert("Misslyckades med att avbryta ordern.");
+                        alert("Misslyckades med att ta bort ordern.");
                     }
                 })
                 .catch(error => console.error("Fel:", error));

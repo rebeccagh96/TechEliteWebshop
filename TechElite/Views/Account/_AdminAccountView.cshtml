@@ -70,29 +70,39 @@
                     <tr>
                         <th>OrderID</th>
                         <th>KundID</th>
+                        <th>Produkter</th>
+                        <th>Antal</th>
+                        <th>Pris</th>
+                        <th>Totalt</th>
                         <th>Datum</th>
-                        <th>Totalt belopp</th>
                         <th>Åtgärder</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var order in Model.Orders)
                     {
-                        @foreach (var product in order.Products)
+                        @foreach (var product in order.OrderProducts)
                         {
                             <tr>
                                 <td>@order.OrderId</td>
                                 <td>@order.CustomerId</td>
-                                <td>@order.Products</td>
-                                <td>@product.Quantity</td>
-                                <td>@order.Products.Sum(p => p.Price * p.Quantity)</td>
-                                <td>@order.OrderDate</td>
+                                <td>@product.ProductName</td>
+                                <td>@product.ProductQuantity</td>
+                                <td>@product.Price</td>
+                                <td>@order.TotalPrice.ToString("C")</td> 
+                                <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
                                 <td>
                                     <button class="manage-order-btn"
                                             data-order-id="@order.OrderId"
                                             data-customer-id="@order.CustomerId"
                                             data-order-date="@order.OrderDate"
-                                            data-products='@Json.Serialize(order.Products)'>
+                                            data-products='@Json.Serialize(order.OrderProducts.Select(op => new
+                                        {
+                                            op.ProductId,
+                                            op.ProductName,
+                                            op.Price,
+                                            op.ProductQuantity
+                                        }))'>
                                         Hantera
                                     </button>
                                 </td>
@@ -101,9 +111,9 @@
                     }
                 </tbody>
             </table>
-            <div class="order-actions">
-                <partial name="_OrderEditView" model="Model.Orders" />
-            </div>
+        </div>
+        <div class="order-actions">
+            <partial name="_OrderEditView" model="Model.Orders" />
         </div>
     </div>
     <div class="third account-tab">
