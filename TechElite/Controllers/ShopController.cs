@@ -19,7 +19,6 @@ namespace TechElite.Controllers
         public async Task<IActionResult> Index()
         {
 
-
             var departments = await _context.Departments.ToListAsync();
             var products = await _context.Products.ToListAsync();
             var reviews = await _context.Reviews.ToListAsync();
@@ -32,10 +31,29 @@ namespace TechElite.Controllers
 
             return View(model);
         }
-        public IActionResult ProductPage()
+        public async Task<IActionResult> ProductPage(int? id)
+        {
+            if (id is null)
+            {
+                return BadRequest("You must pass in a ProductId.");
+            }
+
+            var model = await _context.Products
+                .Include(r => r.Reviews)
+                .FirstOrDefaultAsync(p => p.ProductId == id);
+            if (model is null)
+            {
+                return NotFound("Product not found.");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddReview(int? id, string name, string title, int rating, string comment)
         {
             return View();
         }
+
         public IActionResult Datorer()
         {
             return View();
@@ -65,7 +83,8 @@ namespace TechElite.Controllers
                 return BadRequest("You must pass in a DepartmentId.");
             }
 
-            var model = await _context.Departments
+            var model = await _context.Products
+                .Include(r => r.Reviews)
                 .Where(d => d.DepartmentId == id)
                 .ToListAsync();
             if (model == null)
