@@ -8,12 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Remove="Views\user\Index.csHTML" />
 		<Content Remove="wwwroot\css\member.css" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Include="Views\user\Index.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>

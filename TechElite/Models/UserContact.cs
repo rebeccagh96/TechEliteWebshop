@@ -2,8 +2,11 @@
 
 namespace TechElite.Models
 {
-    public class ContactFormModel
+    public class UserContact
     {
+        [Key]
+        public int UserContactId { get; set; }
+
         [Required]
         public string Name { get; set; }
 

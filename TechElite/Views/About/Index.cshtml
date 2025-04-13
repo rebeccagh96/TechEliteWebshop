@@ -1,5 +1,9 @@
-﻿<!DOCTYPE html>
-<html lang="sv">
+﻿@using TechElite.Models
+@model UserContact
+@{
+	ViewData["Title"] = "Index";
+}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,18 +65,18 @@ Tech Elite – där teknik möter kvalitet.
 
             <div class="form-container">
                 <h2>Kontakta oss</h2>
-                <form method="post" action="https://localhost:7073/user/submit">
+                <form method="post" asp-action="SubmitContactForm">
                     <label for="name">Namn:</label>
-                    <input type="text" id="name" name="Name" required>
+                    <input type="text" id="name" name="name" required>
 
                     <label for="phone">Telefonnummer:</label>
-                    <input type="tel" id="phone" name="Phone" required>
+                    <input type="tel" id="phone" name="phone" required>
 
                     <label for="email">E-post:</label>
-                    <input type="email" id="email" name="Email" required>
+                    <input type="email" id="email" name="email" required>
 
                     <label for="message">Meddelande:</label>
-                    <textarea id="message" name="Message" rows="5" required></textarea>
+                    <textarea id="message" name="message" rows="5" required></textarea>
 
                     <button type="submit">Skicka</button>
                 </form>
