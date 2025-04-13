@@ -1,6 +1,4 @@
-﻿//using System.Diagnostics;
-//using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TechElite.Areas.Identity.Data;
 using TechElite.Models;
@@ -21,10 +19,14 @@ namespace TechElite.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var currentUserId = _userManager.GetUserId(User);
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == currentUserId);
             var users = await _userManager.Users.ToListAsync();
             var orders = await _context.Orders.Include(o => o.Products).ToListAsync();
             var products = await _context.Products.ToListAsync();
-            var departments = await _context.Departments.ToListAsync(); 
+            var departments = await _context.Departments.ToListAsync();
+            var customers = await _context.Customers.ToListAsync();
+
 
             var userViewModels = new List<UserViewModel>();
 
@@ -47,6 +49,7 @@ namespace TechElite.Controllers
             {
                 Users = userViewModels,
                 Orders = orders,
+                Customers = customers,
                 Products = products.Select(p => new ProductViewModel
                 {
                     ProductId = p.ProductId,
@@ -58,7 +61,7 @@ namespace TechElite.Controllers
                     DepartmentName = p.Department?.DepartmentName ?? "Unknown",
                     Image = p.Image
                 }).ToList(),
-                Departments = departments 
+                Departments = departments
             };
 
             return View(model);
@@ -110,15 +113,26 @@ namespace TechElite.Controllers
             }
 
             // Uppdatera ApplicationUser-egenskaper
-            user.UserName = model.UserName;
-            user.Email = model.Email;
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
+            user.UserName = model.UserName ?? user.UserName;
+            user.Email = model.Email ?? user.Email;
+            user.FirstName = model.FirstName ?? user.FirstName;
+            user.LastName = model.LastName ?? user.LastName;
 
-            var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
+
+            // Uppdatera lösenord om det är angivet
+            if (!string.IsNullOrEmpty(model.Password))
             {
-                return BadRequest("Misslyckades med att uppdatera användaren");
+                if (model.Password != model.PasswordConfirm)
+                {
+                    return BadRequest("Lösenorden matchar inte.");
+                }
+                
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.Password);
+                if (!changePasswordResult.Succeeded)
+                {
+                    return BadRequest("Misslyckades med att uppdatera lösenordet. Kontrollera ditt gamla lösenord.");
+                }
+                
             }
 
             // Updaterar roll
@@ -138,6 +152,12 @@ namespace TechElite.Controllers
                 {
                     return BadRequest("Misslyckades med att lägga till vald roll");
                 }
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest("Misslyckades med att uppdatera användaren");
             }
 
             return Ok(new { success = true, message = "Användaruppdatering lyckades." });
@@ -161,23 +181,51 @@ namespace TechElite.Controllers
 
             try
             {
-                var userId = user.Id;
-
-                // Raderar reviews relaterade till användaren osv för kommande egenskaper
-                var reviews = await _context.Reviews
-                    .Where(r => r.ApplicationUserId == userId)
+                var userReplies = await _context.ForumReplies
+                    .Where(r => r.ApplicationUserId == user.Id)
                     .ToListAsync();
-                _context.Reviews.RemoveRange(reviews);
+                _context.ForumReplies.RemoveRange(userReplies);
 
-                var replies = await _context.ForumReplies
-                    .Where(r => r.ApplicationUserId == userId)
+                var userThreads = await _context.ForumThreads
+                    .Where(t => t.ApplicationUserId == user.Id)
                     .ToListAsync();
-                _context.ForumReplies.RemoveRange(replies);
 
-                var threads = await _context.ForumThreads
-                    .Where(t => t.ApplicationUserId == userId)
+                var threadIds = userThreads.Select(t => t.ThreadId).ToList();
+                var threadReplies = await _context.ForumReplies
+                    .Where(r => threadIds.Contains(r.ThreadId))
                     .ToListAsync();
-                _context.ForumThreads.RemoveRange(threads);
+                _context.ForumReplies.RemoveRange(threadReplies);
+
+                var threadNotifications = await _context.Notifications
+                    .Where(n => threadIds.Contains(n.ThreadId))
+                    .ToListAsync();
+                _context.Notifications.RemoveRange(threadNotifications);
+
+                _context.ForumThreads.RemoveRange(userThreads);
+
+                var userNotifications = await _context.Notifications
+                    .Where(n => n.UserId == user.Id)
+                    .ToListAsync();
+                _context.Notifications.RemoveRange(userNotifications);
+
+                var userReviews = await _context.Reviews
+                    .Where(r => r.ApplicationUserId == user.Id)
+                    .ToListAsync();
+                _context.Reviews.RemoveRange(userReviews);
+
+                var customer = await _context.Customers
+                    .FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+                if (customer != null)
+                {
+                    var customerOrders = await _context.Orders
+                        .Where(o => o.CustomerId == customer.CustomerId)
+                        .ToListAsync();
+                    _context.Orders.RemoveRange(customerOrders);
+
+                    _context.Customers.Remove(customer);
+                }
+
+                await _context.SaveChangesAsync();
 
                 var result = await _userManager.DeleteAsync(user);
                 if (!result.Succeeded)
@@ -186,10 +234,7 @@ namespace TechElite.Controllers
                     return BadRequest("Misslyckades med att hämta användaren från Identity.");
                 }
 
-                //  Sparar alla raderingar
-                await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
-
                 return Ok(new { success = true, message = "Användaren raderades framgångsrikt." });
             }
             catch (Exception ex)

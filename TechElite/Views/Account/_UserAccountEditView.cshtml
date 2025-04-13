@@ -1,0 +1,67 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using System.Linq
+@using TechElite.Models
+
+@inject UserManager<ApplicationUser> UserManager
+
+@model TechElite.Models.AdminAccountViewModel
+
+    <form id="edit-user-form" style="display: none;" method="post" action="/Account/Edit">
+        <div class="form-section">
+            <input type="hidden" id="edit-user-id" name="Id" value="@UserManager.GetUserId(User)" />
+            <div>
+                <label for="edit-user-username">Användarnamn</label>
+                <input type="text" id="edit-user-username" name="UserName" value="@UserManager.GetUserName(User)" />
+            </div>
+            <div>
+                <label for="edit-user-firstname">Förnamn</label>
+                <input type="text" id="edit-user-firstname" name="FirstName" value="@UserManager.GetUserAsync(User).Result.FirstName" />
+            </div>
+            <div>
+                <label for="edit-user-lastname">Efternamn</label>
+                <input type="text" id="edit-user-lastname" name="LastName" value="@UserManager.GetUserAsync(User).Result.LastName" />
+            </div>
+            
+        </div>
+        <div class="form-section">
+            <div>
+                <label for="edit-user-email">E-post</label>
+                <input type="email" id="edit-user-email" name="Email" value="@UserManager.GetUserAsync(User).Result.Email" />
+            </div>
+            <div>
+                <label for="edit-user-address">Adress</label>
+                <input type="text" id="edit-user-address" name="Address" value="@Model.Customers?.FirstOrDefault(c => c.ApplicationUserId == UserManager.GetUserId(User))?.Address" />
+            </div>
+            <div>
+                <label for="edit-user-zipcode">Postnummer</label>
+                <input type="text" id="edit-user-zipcode" name="ZipCode" value="@Model.Customers?.FirstOrDefault(c => c.ApplicationUserId == UserManager.GetUserId(User))?.ZipCode" />
+            </div>
+            <div>
+                <label for="edit-user-city">Stad</label>
+                <input type="text" id="edit-user-city" name="City" value="@Model.Customers?.FirstOrDefault(c => c.ApplicationUserId == UserManager.GetUserId(User))?.City" />
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div>
+                <label for="edit-user-current-password">Nuvarande lösenord</label>
+                <input type="password" id="edit-user-current-password" name="CurrentPassword" />
+            </div>
+            <div>
+                <label for="edit-user-pword">Nytt lösenord</label>
+                <input type="password" id="edit-user-pword" name="Password" />
+            </div>
+            <div>
+                <label for="edit-user-pword-confirm">Bekräfta nytt lösenord</label>
+                <input type="password" id="edit-user-pword-confirm" name="PasswordConfirm" />
+            </div>
+        </div>
+        
+
+
+        <button type="submit" id="save-edit">Spara</button>
+        <button type="button" id="cancel-edit">Avbryt</button>
+        <button type="button" id="delete-user">Ta bort konto</button>
+    </form>
+
