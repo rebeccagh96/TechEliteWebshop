@@ -1,15 +1,41 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using TechElite.Areas.Identity.Data;
-using TechElite.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using TechElite;
+using TechElite.Models; 
 
-namespace TechElite.Controllers
+public class AboutController : Controller
 {
-    public class AboutController : Controller
+    private readonly ApplicationDbContext _context;
+
+    public AboutController(ApplicationDbContext context)
     {
-        public IActionResult Index()
+        _context = context;
+    }
+
+    public IActionResult Index()
+    {
+        return View(); 
+    }
+
+    
+    [HttpPost]
+    public async Task<IActionResult> SubmitContactForm(string name, string phone, string email, string message)
+    {
+        var contactForm = new UserContact
         {
-            return View();
-        }
+            Name = name,
+            Phone = phone,
+            Email = email,
+            Message = message
+        };
+
+        _context.userContacts.Add(contactForm);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(ThankYou));
+    }
+
+    public IActionResult ThankYou()
+    {
+        return View(); 
     }
 }
