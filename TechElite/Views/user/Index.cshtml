@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Om oss - Tech Elite</title>
+
+    <!-- Externa typsnitt och ikoner -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Egna CSS-filer -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/about.css">
+</head>
+<body>
+
+    <header>
+        <div class="search">
+            <span class="search-icon material-symbols-outlined" onclick="toggleSearch()">search</span>
+            <form method="get" action="/Search/Search">
+                <input class="search-input" type="search" name="search" placeholder="Sök">
+            </form>
+        </div>
+    </header>
+
+    <main>
+        <div class="about-container">
+            <h1>Om oss</h1>
+
+            <div class="text-box">
+                <label for="intro-text">Välkommen till Tech Elite – din destination för teknik i toppklass.</label>
+                <textarea id="intro-text" rows="5" readonly>
+Vi är inte bara en butik. Vi är teknikentusiaster som lever och andas innovation. Sedan starten har vårt mål varit att erbjuda de mest pålitliga, moderna och prisvärda teknikprodukterna på marknaden. Oavsett om du är ute efter den senaste mobilen, smarta hemmet-prylar eller datorutrustning för gaming och arbete, har vi något för dig.
+                </textarea>
+            </div>
+
+            <br><br>
+
+            <div class="text-box">
+                <label for="history-text">🔧 Vår historia</label>
+                <textarea id="history-text" rows="5" readonly>
+Tech Elite grundades 2021 av fem vänner med en gemensam passion för teknik. Det hela började i ett litet förråd där vi byggde datorer åt vänner och bekanta, testade nya prylar och drömde stort. Vi såg att många teknikbutiker saknade den personliga touchen – det där lilla extra som gör att man känner sig trygg som kund.
+
+Så vi bestämde oss för att göra något åt det. Vi startade Tech Elite med målet att kombinera expertis, service och ett riktigt grymt sortiment. Och ja – vi är fortfarande samma gäng, bara med lite större lager och fler kaffekoppar på kontoret.
+                </textarea>
+            </div>
+
+            <br><br>
+
+            <div class="text-box">
+                <label for="why-choose-text">🌟 Varför välja Tech Elite?</label>
+                <textarea id="why-choose-text" rows="5" readonly>
+Vi testar, granskar och väljer våra produkter med omsorg. Vårt team består av kunniga experter som gärna hjälper dig hitta rätt – både online och i butik. Här får du alltid ärliga rekommendationer, snabb service och teknik som håller.
+
+Tech Elite – där teknik möter kvalitet.
+                </textarea>
+            </div>
+
+            <div class="form-container">
+                <h2>Kontakta oss</h2>
+                <form method="post" action="https://localhost:7073/user/submit">
+                    <label for="name">Namn:</label>
+                    <input type="text" id="name" name="Name" required>
+
+                    <label for="phone">Telefonnummer:</label>
+                    <input type="tel" id="phone" name="Phone" required>
+
+                    <label for="email">E-post:</label>
+                    <input type="email" id="email" name="Email" required>
+
+                    <label for="message">Meddelande:</label>
+                    <textarea id="message" name="Message" rows="5" required></textarea>
+
+                    <button type="submit">Skicka</button>
+                </form>
+            </div>
+
+            <br><br>
+
+            <div class="team-container">
+                <div class="profile-box">
+                    <img src="img/profile/profil.jpeg" alt="Musse" />
+                    <h3>Musse</h3>
+                </div>
+
+                <div class="profile-box">
+                    <img src="img/profile/profil.jpeg" alt="James" />
+                    <h3>James</h3>
+                </div>
+
+                <div class="profile-box">
+                    <img src="img/profile/profil.jpeg" alt="Rebecca" />
+                    <h3>Rebecca</h3>
+                </div>
+
+                <div class="profile-box">
+                    <img src="img/profile/profil.jpeg" alt="Alex" />
+                    <h3>Alex</h3>
+                </div>
+
+                <div class="profile-box">
+                    <img src="img/profile/profil.jpeg" alt="San" />
+                    <h3>San</h3>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

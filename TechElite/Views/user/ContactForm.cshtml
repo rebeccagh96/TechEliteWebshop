@@ -1,0 +1,29 @@
+﻿@model TechElite.Models.ContactFormModel
+
+<h2>Kontakta oss</h2>
+
+<form asp-action="Submit" asp-controller="User" method="post">
+    <div class="form-container">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+
+        <label asp-for="Phone"></label>
+        <input asp-for="Phone" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+
+        <label asp-for="Message"></label>
+        <textarea asp-for="Message" rows="5"></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+
+        <button type="submit">Skicka</button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

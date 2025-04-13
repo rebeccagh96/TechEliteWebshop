@@ -36,15 +36,17 @@
             <div class="icons">
                 <a href="#"><img class="icon "src="~/img/Icons/cart.svg" alt="Varukorg"></a>
                 <partial name="_LoginPartial" />
+                
+                <div class="search">
+                    <span class="search-icon material-symbols-outlined" onclick="toggleSearch()">search</span>
+                    <form asp-controller="Search" asp-action="Search" method="get">
+                        <input class="search-input" type="search" name="search" placeholder="Search" />
+                    </form>
+                </div>
 
             </div>
 
-            <div class="search">
-                <span class="search-icon material-symbols-outlined" onclick="toggleSearch()">search</span>
-                <form asp-controller="Search" asp-action="Search" method="get">
-                    <input class="search-input" type="search" name="search" placeholder="Search" />
-                </form>
-            </div>
+           
         </div>
     </header>
 
