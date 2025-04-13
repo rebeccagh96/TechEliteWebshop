@@ -69,7 +69,9 @@ main {
 .account-container, 
 .login-container, 
 .checkout-container,
-.about-container {
+.about-container,
+.login-container,
+.signup-container {
     min-height: 70vh;
     background-color: #e3e3e3ff;
 }
@@ -330,7 +332,7 @@ span {
             text-decoration: underline;
         }
 
-.btn, .shop-now-btn, button { /*Här kan ni exkludera knappklasser*/
+.btn, .shop-now-btn, button:not(.logout-btn) { 
     background-color: #9747ffff;
     color: white;
     padding: 8px 14px;
@@ -342,7 +344,7 @@ span {
 
     .btn:hover,
     .shop-now-btn:hover,
-    button:hover{
+    button:hover:not(.logout-btn) {
         background-color: rgb(167, 100, 255);
         transform: scale(1.05);
     }
