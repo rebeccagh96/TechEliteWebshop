@@ -120,6 +120,13 @@ namespace TechElite.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(UserViewModel model)
         {
+            if (!model.ChangePassword)
+            {
+                ModelState.Remove("Password");
+                ModelState.Remove("PasswordConfirm");
+                ModelState.Remove("CurrentPassword");
+            }
+
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
@@ -139,24 +146,27 @@ namespace TechElite.Controllers
             user.FirstName = model.FirstName ?? user.FirstName;
             user.LastName = model.LastName ?? user.LastName;
 
-
             // Uppdatera lösenord om det är angivet
-            if (!string.IsNullOrEmpty(model.Password))
+            if (model.ChangePassword && !string.IsNullOrEmpty(model.Password))
             {
+                if (string.IsNullOrEmpty(model.CurrentPassword))
+                {
+                    return BadRequest("Nuvarande lösenord krävs för att ändra lösenord.");
+                }
+
                 if (model.Password != model.PasswordConfirm)
                 {
                     return BadRequest("Lösenorden matchar inte.");
                 }
-                
+
                 var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.Password);
                 if (!changePasswordResult.Succeeded)
                 {
                     return BadRequest("Misslyckades med att uppdatera lösenordet. Kontrollera ditt gamla lösenord.");
                 }
-                
             }
 
-            // Updaterar roll
+            // Uppdatera roller om de är angivna
             if (model.Roles != null && model.Roles.Any())
             {
                 var selectedRole = model.Roles.First(); // Hämtar rollen

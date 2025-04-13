@@ -4,6 +4,8 @@
     const editPlaceholder = document.getElementById("edit-placeholder");
     const cancelButton = document.getElementById("cancel-edit");
     const deleteButton = document.getElementById("delete-user");
+    const changePasswordCheckbox = document.getElementById("change-password-checkbox");
+    const passwordFields = document.getElementById("password-fields");
 
     // Styr om "hantera"-knbappen ska synas eller inte
     const isAdminForm = manageButtons.length > 0; 
@@ -32,7 +34,6 @@
         });
     } else if (isUserForm) {
         editForm.style.display = "block";
-
     }
     // Hantera "Avbryt"-knappen
     cancelButton.addEventListener("click", function () {
@@ -45,19 +46,28 @@
         }
     });
 
+    // Visa eller dölj lösenordsfält beroende på checkbox
+    if (changePasswordCheckbox && passwordFields) {
+        changePasswordCheckbox.addEventListener("change", function () {
+            if (this.checked) {
+                passwordFields.style.display = "block";
+                document.getElementById("change-password-hidden").value = "true";
+            } else {
+                passwordFields.style.display = "none";
+                document.getElementById("change-password-hidden").value = "false";
+                document.getElementById("edit-user-current-password").value = "";
+                document.getElementById("edit-user-pword").value = "";
+                document.getElementById("edit-user-pword-confirm").value = "";
+            }
+        });
+    }
+
     // Hantera formulärinlämning för redigering
     editForm.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const password = document.getElementById("edit-user-pword").value;
-        const passwordConfirm = document.getElementById("edit-user-pword-confirm").value;
-
-        if (password && password !== passwordConfirm) {
-            alert("Lösenorden matchar inte.");
-            return;
-        }
-
         const formData = new FormData(editForm);
+
 
         fetch("/Account/Edit", {
             method: "POST",

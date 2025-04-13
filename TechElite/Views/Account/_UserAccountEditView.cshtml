@@ -42,19 +42,25 @@
                 <input type="text" id="edit-user-city" name="City" value="@Model.Customers?.FirstOrDefault(c => c.ApplicationUserId == UserManager.GetUserId(User))?.City" />
             </div>
         </div>
-
         <div class="form-section">
             <div>
-                <label for="edit-user-current-password">Nuvarande lösenord</label>
-                <input type="password" id="edit-user-current-password" name="CurrentPassword" />
+                <input type="checkbox" id="change-password-checkbox" />
+                <label for="change-password-checkbox">Vill du ändra lösenord?</label>
             </div>
-            <div>
-                <label for="edit-user-pword">Nytt lösenord</label>
-                <input type="password" id="edit-user-pword" name="Password" />
-            </div>
-            <div>
-                <label for="edit-user-pword-confirm">Bekräfta nytt lösenord</label>
-                <input type="password" id="edit-user-pword-confirm" name="PasswordConfirm" />
+            <input type="hidden" id="change-password-hidden" name="ChangePassword" value="false" />
+            <div id="password-fields" style="display: none;">
+                <div>
+                    <label for="edit-user-current-password">Nuvarande lösenord</label>
+                    <input type="password" id="edit-user-current-password" name="CurrentPassword" />
+                </div>
+                <div>
+                    <label for="edit-user-pword">Nytt lösenord</label>
+                    <input type="password" id="edit-user-pword" name="Password" />
+                </div>
+                <div>
+                    <label for="edit-user-pword-confirm">Bekräfta nytt lösenord</label>
+                    <input type="password" id="edit-user-pword-confirm" name="PasswordConfirm" />
+                </div>
             </div>
         </div>
         
