@@ -4,6 +4,7 @@
     const manageButtons = document.querySelectorAll(".manage-order-btn");
     const cancelButton = document.getElementById("cancel-order-edit");
     const deleteButton = document.getElementById("delete-order");
+    const saveButton = document.getElementById("save-order-edit");
 
     function populateOrderDetails(button) {
         const orderId = button.getAttribute("data-order-id");
@@ -12,6 +13,7 @@
 
         const infoDiv = orderDetails.querySelector(".info");
         infoDiv.innerHTML = `
+            <input type="hidden" id="edit-order-id" value="${orderId}" />
             <strong>KundID:</strong> ${customerId}
             <strong>OrderID:</strong> ${orderId}
             <strong>Orderdatum:</strong> ${orderDate}
@@ -49,9 +51,20 @@
     });
 
     deleteButton.addEventListener("click", function () {
-        const orderId = document.getElementById("edit-order-id").value;
+        const orderIdInput = document.getElementById("edit-order-id");
+        if (!orderIdInput) {
+            console.error("Order-ID kunde inte hittas!");
+            return;
+        }
+        const orderId = orderIdInput.value;
         if (confirm("Är du säker på att du vill ta bort ordern?")) {
-            fetch(`/Order/Delete/${orderId}`, { method: "POST" })
+            fetch('/Order/Delete', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ OrderId: parseInt(orderId) })
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -63,5 +76,50 @@
                 })
                 .catch(error => console.error("Fel:", error));
         }
+    });
+
+    saveButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        const orderIdInput = document.getElementById("edit-order-id");
+        if (!orderIdInput) {
+            console.error("Order-ID hittades inte!");
+            return;
+        }
+        const orderId = orderIdInput.value;
+
+        let updatedOrder = {
+            OrderId: orderId,
+            OrderProducts: []
+        };
+
+        document.querySelectorAll("#edit-orderproducts-table input[type='number']").forEach(input => {
+            const matches = input.name.match(/\[(\d+)\]/);
+            if (matches) {
+                const productId = parseInt(matches[1]);
+                const productQuantity = parseInt(input.value);
+                updatedOrder.OrderProducts.push({
+                    ProductId: productId,
+                    ProductQuantity: productQuantity
+                });
+            }
+        });
+
+        fetch('/Order/Edit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedOrder)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert("Misslyckades med att spara ändringar.");
+                }
+            })
+            .catch(error => console.error("Fel:", error));
     });
 });

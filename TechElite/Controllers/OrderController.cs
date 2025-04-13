@@ -92,9 +92,9 @@ namespace TechElite.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(OrderViewModel model)
+        public async Task<IActionResult> Edit([FromBody] OrderEditDto model)
         {
-            if (!ModelState.IsValid)
+            if (model == null)
             {
                 return BadRequest(new { message = "Ogiltig data" });
             }
@@ -118,7 +118,6 @@ namespace TechElite.Controllers
                 }
                 else
                 {
-
                     order.OrderProducts.Add(new OrderProduct
                     {
                         ProductId = orderProduct.ProductId,
@@ -126,7 +125,6 @@ namespace TechElite.Controllers
                     });
                 }
             }
-
 
             var productIdsToRemove = model.OrderProducts
                 .Where(op => op.ProductQuantity == 0)
@@ -142,8 +140,15 @@ namespace TechElite.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete([FromBody] int orderId)
+        public async Task<IActionResult> Delete([FromBody] OrderDeleteDto request)
         {
+            if (request == null || request.OrderId <= 0)
+            {
+                return BadRequest("Order ID krävs.");
+            }
+
+            int orderId = request.OrderId;
+
             var order = await _context.Orders
                 .Include(o => o.OrderProducts)
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
@@ -165,5 +170,6 @@ namespace TechElite.Controllers
                 return BadRequest(new { success = false, message = "Ett fel inträffade: " + ex.Message });
             }
         }
+
     }
 }

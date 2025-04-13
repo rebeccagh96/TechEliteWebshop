@@ -6,17 +6,14 @@
 @model IEnumerable<TechElite.Models.OrderViewModel>
 
 <div id="edit-order-details" style="display: none;">
-
         <div class="info">
+        <input type="hidden" id="edit-order-id" value="@Model.FirstOrDefault()?.OrderId" />
             <strong>KundID:</strong> @Model.FirstOrDefault()?.CustomerId
 
             <strong>OrderID:</strong> @Model.FirstOrDefault()?.OrderId
 
             <strong>Orderdatum:</strong> @Model.FirstOrDefault()?.OrderDate.ToString("yyyy-MM-dd")
         </div>
-
-
-
     <h3>Produkter</h3>
     <table id="edit-orderproducts-table">
         <thead>
@@ -39,7 +36,6 @@
             }
         </tbody>
     </table>
-
     <div>
         <button type="submit" id="save-order-edit">Spara</button>
         <button type="button" id="cancel-order-edit">Avbryt</button>
