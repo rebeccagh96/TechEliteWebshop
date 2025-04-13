@@ -24,10 +24,10 @@
         products.forEach(product => {
             const row = document.createElement("tr");
             row.innerHTML = `
-                <td>${product.ProductName}</td>
-                <td>${product.Price}</td>
+                <td>${product.productName}</td>
+                <td>${product.price}</td>
                 <td>
-                    <input type="number" name="ProductQuantities[${product.ProductId}]" value="${product.ProductQuantity}" min="0" />
+                    <input type="number" name="ProductQuantities[${product.productId}]" value="${product.productQuantity}" min="0" />
                 </td>
             `;
             productsTable.appendChild(row);

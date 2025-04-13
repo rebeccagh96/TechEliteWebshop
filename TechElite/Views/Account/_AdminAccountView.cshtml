@@ -71,8 +71,6 @@
                         <th>OrderID</th>
                         <th>KundID</th>
                         <th>Produkter</th>
-                        <th>Antal</th>
-                        <th>Pris</th>
                         <th>Totalt</th>
                         <th>Datum</th>
                         <th>Åtgärder</th>
@@ -86,16 +84,14 @@
                             <tr>
                                 <td>@order.OrderId</td>
                                 <td>@order.CustomerId</td>
-                                <td>@product.ProductName</td>
-                                <td>@product.ProductQuantity</td>
-                                <td>@product.Price</td>
-                                <td>@order.TotalPrice.ToString("C")</td> 
+                                <td>@string.Join(", ", order.OrderProducts.Select(op => op.ProductName))</td>
+                                <td>@order.OrderProducts.Sum(op => op.Price * op.ProductQuantity).ToString("C")</td>
                                 <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
                                 <td>
                                     <button class="manage-order-btn"
                                             data-order-id="@order.OrderId"
                                             data-customer-id="@order.CustomerId"
-                                            data-order-date="@order.OrderDate"
+                                            data-order-date="@order.OrderDate.ToString("yyyy-MM-dd")"
                                             data-products='@Json.Serialize(order.OrderProducts.Select(op => new
                                         {
                                             op.ProductId,

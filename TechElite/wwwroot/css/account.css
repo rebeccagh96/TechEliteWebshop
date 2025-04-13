@@ -267,8 +267,21 @@ th, td {
     flex: 1;
 }
 
+
+.order-table {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.order-table tbody {
+
+
+}
+
+
 .user-table, 
-.inventory-table
+.inventory-table,
 .order-table {
     width: 100%;
 }
@@ -281,12 +294,11 @@ th, td {
     flex-direction: row;
     width: 100%;
     gap: 10px;
-
 }
 
+
     .user-table td,
-    .inventory-table td,
-    .order-table td {
+    .inventory-table td {
         display: flex;
         flex-direction: row;
 
