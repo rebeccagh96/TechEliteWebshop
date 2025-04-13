@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TechElite.Migrations
 {
     /// <inheritdoc />
-    public partial class updates : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -80,6 +80,22 @@ namespace TechElite.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ForumCategories", x => x.CategoryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "userContacts",
+                columns: table => new
+                {
+                    UserContactId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_userContacts", x => x.UserContactId);
                 });
 
             migrationBuilder.CreateTable(
@@ -594,6 +610,9 @@ namespace TechElite.Migrations
 
             migrationBuilder.DropTable(
                 name: "Reviews");
+
+            migrationBuilder.DropTable(
+                name: "userContacts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
