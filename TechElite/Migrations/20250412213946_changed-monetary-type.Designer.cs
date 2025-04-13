@@ -12,8 +12,8 @@ using TechElite;
 namespace TechElite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250411100510_init")]
-    partial class init
+    [Migration("20250412213946_changed-monetary-type")]
+    partial class changedmonetarytype
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,21 +160,6 @@ namespace TechElite.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("OrderProduct", b =>
-                {
-                    b.Property<int>("OrdersOrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrdersOrderId", "ProductsProductId");
-
-                    b.HasIndex("ProductsProductId");
-
-                    b.ToTable("OrderProduct");
                 });
 
             modelBuilder.Entity("TechElite.Areas.Identity.Data.ApplicationUser", b =>
@@ -589,14 +574,6 @@ namespace TechElite.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<int>("TotalPrice")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -613,9 +590,70 @@ namespace TechElite.Migrations
                             OrderId = 1,
                             CustomerId = 1,
                             OrderDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductName = "Exempelprodukt",
-                            TotalPrice = 100,
                             UserName = "user1"
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            CustomerId = 1,
+                            OrderDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserName = "user1"
+                        });
+                });
+
+            modelBuilder.Entity("TechElite.Models.OrderProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderProduct");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            OrderId = 1,
+                            ProductId = 1,
+                            ProductQuantity = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            OrderId = 1,
+                            ProductId = 2,
+                            ProductQuantity = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            OrderId = 2,
+                            ProductId = 4,
+                            ProductQuantity = 5
+                        },
+                        new
+                        {
+                            Id = 4,
+                            OrderId = 2,
+                            ProductId = 8,
+                            ProductQuantity = 1
                         });
                 });
 
@@ -638,8 +676,8 @@ namespace TechElite.Migrations
                     b.Property<byte[]>("Image")
                         .HasColumnType("image");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -661,9 +699,225 @@ namespace TechElite.Migrations
                             ProductId = 1,
                             DepartmentId = 1,
                             Description = "Beskrivning av exempelprodukten",
-                            Price = 100,
+                            Price = 100.00m,
                             ProductName = "Exempelprodukt",
                             Quantity = 10
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            DepartmentId = 2,
+                            Description = "En produkt för alla",
+                            Price = 1990.00m,
+                            ProductName = "Mac Attack",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            DepartmentId = 3,
+                            Description = "En produkt för alla",
+                            Price = 19.00m,
+                            ProductName = "Temu Earbuds",
+                            Quantity = 15
+                        },
+                        new
+                        {
+                            ProductId = 4,
+                            DepartmentId = 4,
+                            Description = "En produkt för alla",
+                            Price = 19.00m,
+                            ProductName = "LADDARE X2000",
+                            Quantity = 150
+                        },
+                        new
+                        {
+                            ProductId = 5,
+                            DepartmentId = 5,
+                            Description = "En produkt för alla",
+                            Price = 199.00m,
+                            ProductName = "Xbox Kontroll",
+                            Quantity = 30
+                        },
+                        new
+                        {
+                            ProductId = 6,
+                            DepartmentId = 1,
+                            Description = "En produkt för alla",
+                            Price = 19.00m,
+                            ProductName = "Rit Bräda",
+                            Quantity = 100
+                        },
+                        new
+                        {
+                            ProductId = 7,
+                            DepartmentId = 2,
+                            Description = "En produkt för alla",
+                            Price = 1990.00m,
+                            ProductName = "Windows Fusion",
+                            Quantity = 10
+                        },
+                        new
+                        {
+                            ProductId = 8,
+                            DepartmentId = 3,
+                            Description = "En bra produkt för alla",
+                            Price = 19.00m,
+                            ProductName = "Professor Earbuds",
+                            Quantity = 120
+                        },
+                        new
+                        {
+                            ProductId = 9,
+                            DepartmentId = 4,
+                            Description = "En bra product för alla",
+                            Price = 19.00m,
+                            ProductName = "Smart Charger",
+                            Quantity = 35
+                        },
+                        new
+                        {
+                            ProductId = 10,
+                            DepartmentId = 5,
+                            Description = "En produkt för alla.",
+                            Price = 199.00m,
+                            ProductName = "Custom ps5 Kontroll",
+                            Quantity = 10
+                        },
+                        new
+                        {
+                            ProductId = 11,
+                            DepartmentId = 1,
+                            Description = "En produkt för alla.",
+                            Price = 19.00m,
+                            ProductName = "Wish Rit Bräda",
+                            Quantity = 15
+                        },
+                        new
+                        {
+                            ProductId = 12,
+                            DepartmentId = 2,
+                            Description = "En produkt för alla",
+                            Price = 1990.00m,
+                            ProductName = "Elite Monitor",
+                            Quantity = 50
+                        },
+                        new
+                        {
+                            ProductId = 13,
+                            DepartmentId = 3,
+                            Description = "En produkt för alla.",
+                            Price = 199.00m,
+                            ProductName = "Airpods pro",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 14,
+                            DepartmentId = 4,
+                            Description = "En produkt för alla.",
+                            Price = 19.00m,
+                            ProductName = "Supercharger adapter",
+                            Quantity = 80
+                        },
+                        new
+                        {
+                            ProductId = 15,
+                            DepartmentId = 5,
+                            Description = "En produkt för alla.",
+                            Price = 199.00m,
+                            ProductName = "Standard PS Kontroll",
+                            Quantity = 50
+                        },
+                        new
+                        {
+                            ProductId = 16,
+                            DepartmentId = 1,
+                            Description = "En produkt för alla.",
+                            Price = 1990.00m,
+                            ProductName = "iphone 7",
+                            Quantity = 30
+                        },
+                        new
+                        {
+                            ProductId = 17,
+                            DepartmentId = 2,
+                            Description = "En produkt för alla.",
+                            Price = 1990.00m,
+                            ProductName = "PS5",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 18,
+                            DepartmentId = 3,
+                            Description = "En produkt för alla.",
+                            Price = 199.00m,
+                            ProductName = "Trådade Ipods Pro",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 19,
+                            DepartmentId = 4,
+                            Description = "En produkt för alla.",
+                            Price = 19.00m,
+                            ProductName = "iphone adapter",
+                            Quantity = 30
+                        },
+                        new
+                        {
+                            ProductId = 20,
+                            DepartmentId = 5,
+                            Description = "En produkt för alla.",
+                            Price = 1990.00m,
+                            ProductName = "Nintendo",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 21,
+                            DepartmentId = 1,
+                            Description = "En produkt för alla.",
+                            Price = 1990.00m,
+                            ProductName = "iphone 5",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 22,
+                            DepartmentId = 2,
+                            Description = "En produkt för alla.",
+                            Price = 1990.00m,
+                            ProductName = "Win Screen",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 23,
+                            DepartmentId = 3,
+                            Description = "En produkt för alla.",
+                            Price = 199.00m,
+                            ProductName = "WIN-Win Headpones",
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 24,
+                            DepartmentId = 4,
+                            Description = "En produkt för alla.",
+                            Price = 199.00m,
+                            ProductName = "Superb Fläkt",
+                            Quantity = 25
+                        },
+                        new
+                        {
+                            ProductId = 25,
+                            DepartmentId = 5,
+                            Description = "En produkt för alla.",
+                            Price = 1990.00m,
+                            ProductName = "Playstation 1",
+                            Quantity = 20
                         });
                 });
 
@@ -776,21 +1030,6 @@ namespace TechElite.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OrderProduct", b =>
-                {
-                    b.HasOne("TechElite.Models.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TechElite.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TechElite.Models.Customer", b =>
                 {
                     b.HasOne("TechElite.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
@@ -868,6 +1107,25 @@ namespace TechElite.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("TechElite.Models.OrderProduct", b =>
+                {
+                    b.HasOne("TechElite.Models.Order", "Order")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TechElite.Models.Product", "Product")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("TechElite.Models.Product", b =>
                 {
                     b.HasOne("TechElite.Models.Department", "Department")
@@ -927,8 +1185,15 @@ namespace TechElite.Migrations
                     b.Navigation("Replies");
                 });
 
+            modelBuilder.Entity("TechElite.Models.Order", b =>
+                {
+                    b.Navigation("OrderProducts");
+                });
+
             modelBuilder.Entity("TechElite.Models.Product", b =>
                 {
+                    b.Navigation("OrderProducts");
+
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

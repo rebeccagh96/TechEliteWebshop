@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using System.Linq
+@using TechElite.Models
+
+@model IEnumerable<TechElite.Models.OrderViewModel>
+
+<div id="edit-order-details" style="display: none;">
+        <div class="info">
+        <input type="hidden" id="edit-order-id" value="@Model.FirstOrDefault()?.OrderId" />
+            <strong>KundID:</strong> @Model.FirstOrDefault()?.CustomerId
+
+            <strong>OrderID:</strong> @Model.FirstOrDefault()?.OrderId
+
+            <strong>Orderdatum:</strong> @Model.FirstOrDefault()?.OrderDate.ToString("yyyy-MM-dd")
+        </div>
+    <h3>Produkter</h3>
+    <table id="edit-orderproducts-table">
+        <thead>
+            <tr>
+                <th>Produktnamn</th>
+                <th>Pris</th>
+                <th>Antal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.FirstOrDefault()?.OrderProducts ?? Enumerable.Empty<OrderProductViewModel>())
+            {
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>@product.Price.ToString("C")</td>
+                    <td>
+                        <input type="number" name="ProductQuantities[@product.ProductId]" value="@product.ProductQuantity" min="0" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <button type="submit" id="save-order-edit">Spara</button>
+        <button type="button" id="cancel-order-edit">Avbryt</button>
+        <button type="button" id="delete-order">Ta bort order</button>
+    </div>
+</div>
+<p id="edit-order-placeholder">Välj en order att redigera.</p>

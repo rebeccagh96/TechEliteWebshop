@@ -28,6 +28,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Product>()
+            .Property(p => p.Price)
+            .HasColumnType("decimal(18,2)");
+
         // Konfigurerar relationer
         modelBuilder.Entity<Customer>()
             .HasOne(c => c.ApplicationUser)
@@ -93,6 +97,19 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(n => n.ForumThread)
             .WithMany(ft => ft.Notifications)
             .HasForeignKey(n => n.ThreadId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<OrderProduct>()
+            .HasOne(op => op.Order)
+            .WithMany(o => o.OrderProducts)
+            .HasForeignKey(op => op.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+        modelBuilder.Entity<OrderProduct>()
+            .HasOne(op => op.Product)
+            .WithMany(p => p.OrderProducts)
+            .HasForeignKey(op => op.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Skapa statiska variabler för att kunna referera till dem vid relationer
@@ -214,7 +231,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept1Id,
                 ProductName = "Exempelprodukt",
                 Description = "Beskrivning av exempelprodukten",
-                Price = 100,
+                Price = 100.00m,
                 Quantity = 10
             },
             new Product
@@ -223,7 +240,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept2Id,
                 ProductName = "Mac Attack",
                 Description = "En produkt för alla",
-                Price = 1990,
+                Price = 1990.00m,
                 Quantity = 20
             },
             new Product
@@ -232,7 +249,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept3Id,
                 ProductName = "Temu Earbuds",
                 Description = "En produkt för alla",
-                Price = 19,
+                Price = 19.00m,
                 Quantity = 15
             },
             new Product
@@ -241,7 +258,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept4Id,
                 ProductName = "LADDARE X2000",
                 Description = "En produkt för alla",
-                Price = 19,
+                Price = 19.00m,
                 Quantity = 150
             },
             new Product
@@ -250,7 +267,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept5Id,
                 ProductName = "Xbox Kontroll",
                 Description = "En produkt för alla",
-                Price = 199,
+                Price = 199.00m,
                 Quantity = 30
             },
             new Product
@@ -259,7 +276,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept1Id,
                 ProductName = "Rit Bräda",
                 Description = "En produkt för alla",
-                Price = 19,
+                Price = 19.00m,
                 Quantity = 100
             },
             new Product
@@ -268,7 +285,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept2Id,
                 ProductName = "Windows Fusion",
                 Description = "En produkt för alla",
-                Price = 1990,
+                Price = 1990.00m,
                 Quantity = 10
             },
             new Product
@@ -277,7 +294,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept3Id,
                 ProductName = "Professor Earbuds",
                 Description = "En bra produkt för alla",
-                Price = 19,
+                Price = 19.00m,
                 Quantity = 120
             },
             new Product
@@ -286,7 +303,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept4Id,
                 ProductName = "Smart Charger",
                 Description = "En bra product för alla",
-                Price = 19,
+                Price = 19.00m,
                 Quantity = 35
             },
             new Product
@@ -295,7 +312,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept5Id,
                 ProductName = "Custom ps5 Kontroll",
                 Description = "En produkt för alla.",
-                Price = 199,
+                Price = 199.00m,
                 Quantity = 10
             },
             new Product
@@ -304,7 +321,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept1Id,
                 ProductName = "Wish Rit Bräda",
                 Description = "En produkt för alla.",
-                Price = 19,
+                Price = 19.00m,
                 Quantity = 15
             },
             new Product
@@ -313,7 +330,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept2Id,
                 ProductName = "Elite Monitor",
                 Description = "En produkt för alla",
-                Price = 1990,
+                Price = 1990.00m,
                 Quantity = 50
             },
             new Product
@@ -322,7 +339,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept3Id,
                 ProductName = "Airpods pro",
                 Description = "En produkt för alla.",
-                Price = 199,
+                Price = 199.00m,
                 Quantity = 20
             },
             new Product 
@@ -331,7 +348,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept4Id,
                 ProductName = "Supercharger adapter",
                 Description = "En produkt för alla.",
-                Price = 19,
+                Price = 19.00m,
                 Quantity = 80
             },
             new Product
@@ -340,7 +357,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept5Id,
                 ProductName = "Standard PS Kontroll",
                 Description = "En produkt för alla.",
-                Price = 199,
+                Price = 199.00m,
                 Quantity = 50
             },
             new Product
@@ -349,7 +366,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept1Id,
                 ProductName = "iphone 7",
                 Description = "En produkt för alla.",
-                Price = 1990,
+                Price = 1990.00m,
                 Quantity = 30
             },
             new Product
@@ -358,7 +375,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept2Id,
                 ProductName = "PS5",
                 Description = "En produkt för alla.",
-                Price = 1990,
+                Price = 1990.00m,
                 Quantity = 20
             },
             new Product 
@@ -367,7 +384,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept3Id,
                 ProductName = "Trådade Ipods Pro",
                 Description = "En produkt för alla.",
-                Price = 199,
+                Price = 199.00m,
                 Quantity = 20
             },
             new Product
@@ -376,7 +393,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept4Id,
                 ProductName = "iphone adapter",
                 Description = "En produkt för alla.",
-                Price = 19,
+                Price = 19.00m,
                 Quantity = 30
             },
             new Product
@@ -385,7 +402,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept5Id,
                 ProductName = "Nintendo",
                 Description = "En produkt för alla.",
-                Price = 1990,
+                Price = 1990.00m,
                 Quantity = 20
             },
             new Product
@@ -394,7 +411,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept1Id,
                 ProductName = "iphone 5",
                 Description = "En produkt för alla.",
-                Price = 1990,
+                Price = 1990.00m,
                 Quantity = 20
             },
             new Product
@@ -403,7 +420,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept2Id,
                 ProductName = "Win Screen",
                 Description = "En produkt för alla.",
-                Price = 1990,
+                Price = 1990.00m,
                 Quantity = 20
             },
             new Product
@@ -412,7 +429,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept3Id,
                 ProductName = "WIN-Win Headpones",
                 Description = "En produkt för alla.",
-                Price = 199,
+                Price = 199.00m,
                 Quantity = 20
             },
             new Product
@@ -421,7 +438,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept4Id,
                 ProductName = "Superb Fläkt",
                 Description = "En produkt för alla.",
-                Price = 199,
+                Price = 199.00m,
                 Quantity = 25
             }, 
             new Product
@@ -430,7 +447,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept5Id,
                 ProductName = "Playstation 1",
                 Description = "En produkt för alla.",
-                Price = 1990,
+                Price = 1990.00m,
                 Quantity = 20
             }
         );
@@ -520,8 +537,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        // Seeda en Order
+        // Seeda Ordrar
         var order1Id = 1;
+
         modelBuilder.Entity<Order>().HasData(
             new Order
             {
@@ -529,8 +547,52 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 CustomerId = customer1StaticId,
                 UserName = "user1",
                 OrderDate = new DateTime(2025, 1, 1),
-                ProductName = "Exempelprodukt",
-                TotalPrice = 100
+            }
+        );
+
+        modelBuilder.Entity<OrderProduct>().HasData(
+            new OrderProduct
+            {
+                Id = 1, 
+                OrderId = order1Id,
+                ProductId = product1Id,
+                ProductQuantity = 2 
+            },
+            new OrderProduct
+            {
+                Id = 2, 
+                OrderId = order1Id,
+                ProductId = product2Id,
+                ProductQuantity = 1 
+            }
+        );
+
+        var order2Id = 2;
+
+        modelBuilder.Entity<Order>().HasData(
+            new Order
+            {
+                OrderId = order2Id,
+                CustomerId = customer1StaticId,
+                UserName = "user1",
+                OrderDate = new DateTime(2025, 1, 1),
+            }
+        );
+
+        modelBuilder.Entity<OrderProduct>().HasData(
+            new OrderProduct
+            {
+                Id = 3,
+                OrderId = order2Id,
+                ProductId = product4Id,
+                ProductQuantity = 5
+            },
+            new OrderProduct
+            {
+                Id = 4,
+                OrderId = order2Id,
+                ProductId = product8Id,
+                ProductQuantity = 1
             }
         );
     }

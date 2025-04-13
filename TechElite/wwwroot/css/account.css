@@ -153,6 +153,7 @@ article {
 
 .welcome, .users, 
 .inventory-management,
+.orders,
 .Profile {
     border-radius: 5px;
     background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
@@ -160,9 +161,13 @@ article {
     margin-bottom: 15px;
 }
 
+.inventory-management {
+    max-height: 300px;
+    overflow-y: scroll;
+}
 
-.Profile {
-    
+
+.Profile, .orders {
     display: flex;
     flex-direction: row;
     gap: 10px;
@@ -183,13 +188,35 @@ article {
     display: flex;
     flex: 2.5;
     flex-flow: row wrap;
-
 }
 
-#edit-user-form {
-    flex: 1;
-
+#edit-order-details {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border: 1px solid red;
 }
+
+#edit-orderproducts-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+    #edit-orderproducts-table thead,
+    #edit-orderproducts-table tr,
+    #edit-orderproducts-table th,
+    #edit-orderproducts-table td {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+
+
+    #edit-user-form {
+        flex: 1;
+    }
 
 
 .form-section {
@@ -198,9 +225,23 @@ article {
 
 }
 
+.order-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    padding: 20px;
+    margin: auto;
+    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+    border-radius: 5px;
+    filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.171));
+    width: 100%;
+}
+
+
 
 .user-actions,
-.inventory-actions {
+.inventory-actions
+{
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -211,6 +252,9 @@ article {
     filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.171));
     width: 100%;
 }
+
+
+
 
 thead {
     width: 100%;
@@ -223,28 +267,43 @@ th, td {
     flex: 1;
 }
 
-.user-table, 
-.inventory-table {
-    width: 100%;
+
+.order-table {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.order-table tbody {
 
 
 }
 
+
+.user-table, 
+.inventory-table,
+.order-table {
+    width: 100%;
+}
+
 .user-table tr,
-.inventory-table tr {
+.inventory-table tr,
+.order-table tr {
     height: 40px;
     display: flex;
     flex-direction: row;
     width: 100%;
     gap: 10px;
-
 }
 
+
     .user-table td,
-    .inventory-table td{
+    .inventory-table td {
         display: flex;
         flex-direction: row;
+
     }
+
 
     #edit-product-image {
         margin: 20px;
