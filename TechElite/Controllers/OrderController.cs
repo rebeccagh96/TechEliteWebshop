@@ -5,16 +5,20 @@ using TechElite.Areas.Identity.Data;
 using System.Threading.Tasks;
 using TechElite.Helpers;
 using static NuGet.Packaging.PackagingConstants;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace TechElite.Controllers
 {
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrderController(ApplicationDbContext context)
+        public OrderController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -63,38 +67,67 @@ namespace TechElite.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Checkout(CartPageViewModel model)
+        public async Task<IActionResult> Checkout(string firstname, string lastname, string address, string zipcode, string city)
         {
-            if (model == null || model.CartItems == null || !model.CartItems.Any())
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction("ViewCart", "Cart");
+                return View("ViewCart"); // Show validation messages
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            // Check if the customer already exists
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+            if (customer == null)
+            {
+                // Create a new customer if one doesn't exist
+                customer = new Customer
+                {
+                    FirstName = firstname,
+                    LastName = lastname,
+                    Address = address,
+                    ZipCode = zipcode,
+                    City = city,
+                    ApplicationUserId = user.Id,
+                    UserName = user.UserName
+                };
+                _context.Customers.Add(customer);
+            }
+            else
+            {
+                // Update existing customer details if necessary
+                customer.FirstName = firstname;
+                customer.LastName = lastname;
+                customer.Address = address;
+                customer.ZipCode = zipcode;
+                customer.City = city;
+            }
+
+            var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart");
+            if (cartItems == null || !cartItems.Any())
+            {
+                ModelState.AddModelError("", "Din kundvagn är tom.");
+                return View("ViewCart");
             }
 
             var order = new Order
             {
                 OrderDate = DateTime.Now,
-                UserName = model.Customer.UserName ?? "Guest",
-                Customer = new Customer
-                {
-                    FirstName = model.Customer.FirstName,
-                    LastName = model.Customer.LastName,
-                    Address = model.Customer.Address,
-                    ZipCode = model.Customer.ZipCode,
-                    City = model.Customer.City,
-                    ApplicationUserId = model.Customer.ApplicationUserId,
-                    UserName = model.Customer.UserName
-                },
-                OrderProducts = model.CartItems.Select(item => new OrderProduct
+                UserName = user.UserName,
+                Customer = customer,
+                OrderProducts = cartItems.Select(item => new OrderProduct
                 {
                     ProductId = item.ProductId,
                     ProductQuantity = item.CartQuantity
                 }).ToList()
             };
 
-            _context.Customers.Add(order.Customer); 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+
+            HttpContext.Session.Remove("Cart");
+
+            return RedirectToAction("Confirmation");
         }
 
         [HttpPost]

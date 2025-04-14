@@ -113,6 +113,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(op => op.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<OrderProductViewModel>()
+            .Property(op => op.Price)
+            .HasColumnType("decimal(18,2)");
+
+
         // Skapa statiska variabler för att kunna referera till dem vid relationer
         var dept1Id = 1;
         var dept2Id = 2;

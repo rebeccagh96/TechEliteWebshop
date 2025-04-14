@@ -76,45 +76,56 @@ namespace TechElite.Controllers
             {
                 return View("ViewCart"); // Show validation messages
             }
-            var FirstName = firstname;
-            var LastName = lastname;
-            var Address = address;
-            var Zipcode = zipcode;
-            var City = city;
+
             var user = await _userManager.GetUserAsync(User);
 
-            var customer = new Customer
+            // Retrieve the existing customer or create a new one
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+            if (customer == null)
             {
-                FirstName = FirstName,
-                LastName = LastName,
-                Address = Address,
-                ZipCode = Zipcode,
-                City = City,
-                ApplicationUserId = user.Id,
-                UserName = user.UserName
-            };
+                // Create a new customer if one doesn't exist
+                customer = new Customer
+                {
+                    FirstName = firstname,
+                    LastName = lastname,
+                    Address = address,
+                    ZipCode = zipcode,
+                    City = city,
+                    ApplicationUserId = user.Id,
+                    UserName = user.UserName
+                };
+                _context.Customers.Add(customer);
+            }
+            else
+            {
+                // Update existing customer details if necessary
+                customer.FirstName = firstname;
+                customer.LastName = lastname;
+                customer.Address = address;
+                customer.ZipCode = zipcode;
+                customer.City = city;
+            }
 
-            var cartJson = HttpContext.Session.GetString("Cart");
-            if (string.IsNullOrEmpty(cartJson))
+            var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart");
+            if (cartItems == null || !cartItems.Any())
             {
                 ModelState.AddModelError("", "Din kundvagn är tom.");
                 return View("ViewCart");
             }
 
-            var cartItems = JsonSerializer.Deserialize<List<Product>>(cartJson);
+            // Create a new order and associate it with the existing or new customer
             var order = new Order
             {
                 OrderDate = DateTime.Now,
                 UserName = user.UserName,
-                Customer = customer,
+                Customer = customer, // Associate the customer
                 OrderProducts = cartItems.Select(item => new OrderProduct
                 {
                     ProductId = item.ProductId,
-                    ProductQuantity = item.Quantity,
+                    ProductQuantity = item.CartQuantity
                 }).ToList()
             };
 
-            _context.Customers.Add(customer);
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
@@ -122,6 +133,7 @@ namespace TechElite.Controllers
 
             return RedirectToAction("Confirmation");
         }
+
 
         [HttpPost]
         public IActionResult RemoveFromCart(int id)
@@ -138,7 +150,11 @@ namespace TechElite.Controllers
 
         public IActionResult Confirmation()
         {
-            return View();
+            var model = new AdminAccountViewModel
+            {
+                Orders = new List<OrderViewModel>() 
+            };
+            return View(model);
         }
     }
 }

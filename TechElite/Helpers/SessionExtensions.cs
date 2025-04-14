@@ -5,7 +5,7 @@ namespace TechElite.Helpers
 {
     public static class SessionExtensions
     {
-        public static void SetObjectAsJson<T>(this ISession session, string key, T value)
+        public static void SetObjectAsJson(this ISession session, string key, object value)
         {
             session.SetString(key, JsonSerializer.Serialize(value));
         }
@@ -16,5 +16,4 @@ namespace TechElite.Helpers
             return value == null ? default : JsonSerializer.Deserialize<T>(value);
         }
     }
-
 }

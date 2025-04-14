@@ -12,7 +12,7 @@ using TechElite;
 namespace TechElite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250414163956_again")]
+    [Migration("20250414180424_again")]
     partial class again
     {
         /// <inheritdoc />
@@ -254,6 +254,19 @@ namespace TechElite.Migrations
                             TwoFactorEnabled = false,
                             UserName = "user1"
                         });
+                });
+
+            modelBuilder.Entity("TechElite.Models.Cart", b =>
+                {
+                    b.Property<int>("CartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
+
+                    b.HasKey("CartId");
+
+                    b.ToTable("carts");
                 });
 
             modelBuilder.Entity("TechElite.Models.Customer", b =>
@@ -655,6 +668,40 @@ namespace TechElite.Migrations
                             ProductId = 8,
                             ProductQuantity = 1
                         });
+                });
+
+            modelBuilder.Entity("TechElite.Models.OrderProductViewModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CartQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.ToTable("OrderProductViewModel");
                 });
 
             modelBuilder.Entity("TechElite.Models.Product", b =>
@@ -1165,6 +1212,13 @@ namespace TechElite.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("TechElite.Models.OrderProductViewModel", b =>
+                {
+                    b.HasOne("TechElite.Models.Cart", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CartId");
+                });
+
             modelBuilder.Entity("TechElite.Models.Product", b =>
                 {
                     b.HasOne("TechElite.Models.Department", "Department")
@@ -1200,6 +1254,11 @@ namespace TechElite.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("TechElite.Models.Cart", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("TechElite.Models.Customer", b =>
