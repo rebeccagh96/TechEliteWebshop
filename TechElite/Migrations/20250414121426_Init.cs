@@ -238,7 +238,7 @@ namespace TechElite.Migrations
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Price = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Image = table.Column<byte[]>(type: "image", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false)
                 },
@@ -291,9 +291,7 @@ namespace TechElite.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProductName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    TotalPrice = table.Column<int>(type: "int", nullable: false)
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -399,24 +397,27 @@ namespace TechElite.Migrations
                 name: "OrderProduct",
                 columns: table => new
                 {
-                    OrdersOrderId = table.Column<int>(type: "int", nullable: false),
-                    ProductsProductId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductQuantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderProduct", x => new { x.OrdersOrderId, x.ProductsProductId });
+                    table.PrimaryKey("PK_OrderProduct", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderProduct_Orders_OrdersOrderId",
-                        column: x => x.OrdersOrderId,
+                        name: "FK_OrderProduct_Orders_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderProduct_Products_ProductsProductId",
-                        column: x => x.ProductsProductId,
+                        name: "FK_OrderProduct_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -462,7 +463,34 @@ namespace TechElite.Migrations
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "ProductId", "DepartmentId", "Description", "Image", "Price", "ProductName", "Quantity" },
-                values: new object[] { 1, 1, "Beskrivning av exempelprodukten", null, 100, "Exempelprodukt", 10 });
+                values: new object[,]
+                {
+                    { 1, 1, "Beskrivning av exempelprodukten", null, 100.00m, "Exempelprodukt", 10 },
+                    { 2, 2, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 1990.00m, "Mac Attack", 20 },
+                    { 3, 3, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 19.00m, "Temu Earbuds", 15 },
+                    { 4, 4, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 19.00m, "LADDARE X2000", 150 },
+                    { 5, 5, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 199.00m, "Xbox Kontroll", 30 },
+                    { 6, 1, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 19.00m, "Rit Bräda", 100 },
+                    { 7, 2, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 1990.00m, "Windows Fusion", 10 },
+                    { 8, 3, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 19.00m, "Professor Earbuds", 120 },
+                    { 9, 4, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 19.00m, "Smart Charger", 35 },
+                    { 10, 5, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 199.00m, "Custom ps5 Kontroll", 10 },
+                    { 11, 1, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 19.00m, "Wish Rit Bräda", 15 },
+                    { 12, 2, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 1990.00m, "Elite Monitor", 50 },
+                    { 13, 3, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 199.00m, "Airpods pro", 20 },
+                    { 14, 4, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 19.00m, "Supercharger adapter", 80 },
+                    { 15, 5, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 199.00m, "Standard PS Kontroll", 50 },
+                    { 16, 1, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 1990.00m, "iphone 7", 30 },
+                    { 17, 2, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 1990.00m, "PS5", 20 },
+                    { 18, 3, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 199.00m, "Trådade Ipods Pro", 20 },
+                    { 19, 4, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 19.00m, "iphone adapter", 30 },
+                    { 20, 5, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 1990.00m, "Nintendo", 20 },
+                    { 21, 1, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 1990.00m, "iphone 5", 20 },
+                    { 22, 2, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 1990.00m, "Win Screen", 20 },
+                    { 23, 3, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 199.00m, "WIN-Win Headpones", 20 },
+                    { 24, 4, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 199.00m, "Superb Fläkt", 25 },
+                    { 25, 5, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 1990.00m, "Playstation 1", 20 }
+                });
 
             migrationBuilder.InsertData(
                 table: "ForumReplies",
@@ -471,13 +499,28 @@ namespace TechElite.Migrations
 
             migrationBuilder.InsertData(
                 table: "Orders",
-                columns: new[] { "OrderId", "CustomerId", "OrderDate", "ProductName", "TotalPrice", "UserName" },
-                values: new object[] { 1, 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Exempelprodukt", 100, "user1" });
+                columns: new[] { "OrderId", "CustomerId", "OrderDate", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user1" },
+                    { 2, 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user1" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Reviews",
                 columns: new[] { "ReviewId", "ApplicationUserId", "ProductId", "Rating", "ReviewDate", "ReviewText", "ReviewTitle", "ReviewerName" },
                 values: new object[] { 1, "USER1-STATIC-ID", 1, 5, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jag gillar den verkligen!", "Bra produkt", "Anna" });
+
+            migrationBuilder.InsertData(
+                table: "OrderProduct",
+                columns: new[] { "Id", "OrderId", "ProductId", "ProductQuantity" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, 2 },
+                    { 2, 1, 2, 1 },
+                    { 3, 2, 4, 5 },
+                    { 4, 2, 8, 1 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -556,9 +599,14 @@ namespace TechElite.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderProduct_ProductsProductId",
+                name: "IX_OrderProduct_OrderId",
                 table: "OrderProduct",
-                column: "ProductsProductId");
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderProduct_ProductId",
+                table: "OrderProduct",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomerId",
