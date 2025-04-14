@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const tabs = document.querySelectorAll(".tabs input[type='radio']");
     const contentSections = document.querySelectorAll(".content .account-tab");
     const labels = document.querySelectorAll(".tabs label");
+    const hamburgerBtn = document.getElementById("hamburger-btn");
+    const overlayMenu = document.getElementById("overlay-menu");
 
     const tabMapping = {
         "tab1": "first",
@@ -12,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "tab6": "sixth",
         "tab7": "seventh"
     };
-
 
     function showContent(selectedTab) {
         contentSections.forEach(section => section.style.display = "none");
@@ -62,5 +63,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (checkedTab) {
         showContent(checkedTab);
     }
-});
 
+    hamburgerBtn.addEventListener("click", function () {
+        const isVisible = overlayMenu.style.display === "block";
+        overlayMenu.style.display = isVisible ? "none" : "block";
+    });
+
+    overlayMenu.addEventListener("click", function (event) {
+        if (event.target.tagName === "LABEL") {
+            overlayMenu.style.display = "none";
+        }
+    });
+});

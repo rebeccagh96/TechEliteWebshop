@@ -12,8 +12,8 @@ using TechElite;
 namespace TechElite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250414121426_Init")]
-    partial class Init
+    [Migration("20250414163956_again")]
+    partial class again
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -698,9 +698,9 @@ namespace TechElite.Migrations
                         {
                             ProductId = 1,
                             DepartmentId = 1,
-                            Description = "Beskrivning av exempelprodukten",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 100.00m,
-                            ProductName = "Exempelprodukt",
+                            ProductName = "Elite Phone",
                             Quantity = 10
                         },
                         new
@@ -1006,6 +1006,16 @@ namespace TechElite.Migrations
                     b.HasKey("UserContactId");
 
                     b.ToTable("userContacts");
+
+                    b.HasData(
+                        new
+                        {
+                            UserContactId = 1,
+                            Email = "user1@example.com",
+                            Message = "Hej, jag har en fråga om min beställning.",
+                            Name = "Anna",
+                            Phone = "+46701234567"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

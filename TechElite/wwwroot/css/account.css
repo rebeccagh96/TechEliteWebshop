@@ -5,7 +5,6 @@ Mörklila #301934ff
 Ljusgrå #e3e3e3ff
 Blå-lila #9747ffff
 Rosa-lila #a948b3ff
-
 */
 
 body {
@@ -14,7 +13,7 @@ body {
 
 article {
     display: flex;
-    flex-direction: row;
+    flex-flow: row;
     justify-content: center;
     margin: auto;
     height: 100%;
@@ -72,8 +71,6 @@ article {
         color: #efefef;
     }
 
-
-
 .tabs {
     width: 100%;
     max-width: 240px;
@@ -109,11 +106,13 @@ article {
         border-radius: 0 32px 32px 0;
     }
 
-#tab1:checked ~ .marker{
-    transform: translateY(calc(-10 * 56px));}
+#tab1:checked ~ .marker {
+    transform: translateY(calc(-10 * 56px));
+}
 
 #tab2:checked ~ .marker {
-    transform: translateY(calc(-9 * 55px));}
+    transform: translateY(calc(-9 * 55px));
+}
 
 #tab3:checked ~ .marker {
     transform: translateY(calc(-8 * 55px));
@@ -132,9 +131,8 @@ article {
 }
 
 #tab7:checked ~ .marker {
-    transform: translateY(calc(-4 * 55px))
+    transform: translateY(calc(-4 * 55px));
 }
-
 
 .content {
     position: relative;
@@ -144,17 +142,17 @@ article {
     flex-grow: 1;
 }
 
-
 .account-tab {
     display: flex;
     flex-flow: row wrap;
     gap: 10px;
 }
 
-.welcome, .users, 
+.welcome, .users,
 .inventory-management,
 .orders,
-.Profile {
+.Profile,
+.inbox {
     border-radius: 5px;
     background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
     padding: 10px;
@@ -166,7 +164,6 @@ article {
     overflow-y: scroll;
 }
 
-
 .Profile, .orders {
     display: flex;
     flex-direction: row;
@@ -174,9 +171,9 @@ article {
     width: 100%;
 }
 
-.Profile img {
-    width: 100px;
-}
+    .Profile img {
+        width: 100px;
+    }
 
 .profile-details {
     display: flex;
@@ -213,16 +210,12 @@ article {
         width: 100%;
     }
 
-
-    #edit-user-form {
-        flex: 1;
-    }
-
+#edit-user-form {
+    flex: 1;
+}
 
 .form-section {
     flex: 1;
-
-
 }
 
 .order-actions {
@@ -237,11 +230,8 @@ article {
     width: 100%;
 }
 
-
-
 .user-actions,
-.inventory-actions
-{
+.inventory-actions {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -253,8 +243,9 @@ article {
     width: 100%;
 }
 
-
-
+.overlay-menu {
+    display: none;
+}
 
 thead {
     width: 100%;
@@ -267,44 +258,94 @@ th, td {
     flex: 1;
 }
 
-
 .order-table {
     display: flex;
     flex-direction: column;
-    
 }
 
-.order-table tbody {
-
-
-}
-
-
-.user-table, 
+.user-table,
 .inventory-table,
-.order-table {
+.order-table,
+.inbox-table {
     width: 100%;
 }
 
-.user-table tr,
-.inventory-table tr,
-.order-table tr {
-    height: 40px;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    gap: 10px;
-}
-
-
-    .user-table td,
-    .inventory-table td {
+    .user-table tr,
+    .inventory-table tr,
+    .order-table tr,
+    .inbox-table tr {
+        height: 40px;
         display: flex;
         flex-direction: row;
+        width: 100%;
+        gap: 10px;
+    }
 
+    .user-table td,
+    .inventory-table td,
+    .inbox-table td {
+        display: flex;
+        flex-direction: row;
+    }
+
+#edit-product-image {
+    margin: 20px;
+}
+
+#hamburger-btn {
+    background-color: #9747ffff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hamburger-menu {
+    display: none;
+}
+
+#overlay-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+}
+
+    #overlay-menu ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    #overlay-menu li {
+        margin: 20px 0;
+    }
+
+    #overlay-menu label {
+        font-size: 20px;
+        cursor: pointer;
+        color: white;
     }
 
 
-    #edit-product-image {
-        margin: 20px;
+@media (max-width: 980px) {
+    .tabs, .account-panel {
+        display: none;
     }
+
+    .hamburger-menu {
+        display: block;
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+    }
+}

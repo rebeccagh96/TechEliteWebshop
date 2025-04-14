@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TechElite.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class again : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -451,6 +451,11 @@ namespace TechElite.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "userContacts",
+                columns: new[] { "UserContactId", "Email", "Message", "Name", "Phone" },
+                values: new object[] { 1, "user1@example.com", "Hej, jag har en fråga om min beställning.", "Anna", "+46701234567" });
+
+            migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "CustomerId", "Address", "ApplicationUserId", "City", "FirstName", "LastName", "UserName", "ZipCode" },
                 values: new object[] { 1, "Exempelgatan 1", "USER1-STATIC-ID", "Exempelstad", "Anna", "Andersson", "user1", "12345" });
@@ -465,7 +470,7 @@ namespace TechElite.Migrations
                 columns: new[] { "ProductId", "DepartmentId", "Description", "Image", "Price", "ProductName", "Quantity" },
                 values: new object[,]
                 {
-                    { 1, 1, "Beskrivning av exempelprodukten", null, 100.00m, "Exempelprodukt", 10 },
+                    { 1, 1, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 100.00m, "Elite Phone", 10 },
                     { 2, 2, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 1990.00m, "Mac Attack", 20 },
                     { 3, 3, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 19.00m, "Temu Earbuds", 15 },
                     { 4, 4, "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.", null, 19.00m, "LADDARE X2000", 150 },

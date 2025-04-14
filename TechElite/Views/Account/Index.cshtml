@@ -18,6 +18,30 @@
 
 <main>
     <div id="account-root" data-is-admin="@User.IsInRole("Admin").ToString().ToLower()"></div>
+    <div id="overlay-menu" class="overlay-menu">
+        <ul>
+            @if (User.IsInRole("Admin"))
+            {
+                <li><label for="tab1">Användare</label></li>
+                <li><label for="tab2">Orderhistorik</label></li>
+                <li><label for="tab3">Lagersaldo</label></li>
+                <li><label for="tab4">Inkorga</label></li>
+                <li><label for="tab5">Aviseringar</label></li>
+                <li><label for="tab6">Inställningar</label></li>
+                <li><label for="tab7">Övrigt</label></li>
+            }
+            else
+            {
+                <li><label for="tab1">Profil</label></li>
+                <li><label for="tab2">Orderhistorik</label></li>
+                <li><label for="tab3">Favoriter</label></li>
+                <li><label for="tab4">Spårning</label></li>
+                <li><label for="tab5">Trådar</label></li>
+                <li><label for="tab6">Inlägg</label></li>
+                <li><label for="tab7">Hjälp</label></li>
+            }
+        </ul>
+    </div>
     <div class="account-container">
         <article>
             <div class="account-panel">

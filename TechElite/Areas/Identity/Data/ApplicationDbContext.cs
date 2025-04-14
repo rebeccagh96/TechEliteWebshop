@@ -37,7 +37,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(c => c.ApplicationUser)
             .WithOne(u => u.Customer)
             .HasForeignKey<Customer>(c => c.ApplicationUserId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Review>()
             .HasOne(r => r.Product)
@@ -49,7 +49,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(r => r.ApplicationUser)
             .WithMany()
             .HasForeignKey(r => r.ApplicationUserId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Order>()
             .HasOne(o => o.Customer)
@@ -73,7 +73,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(ft => ft.ApplicationUser)
             .WithMany()
             .HasForeignKey(ft => ft.ApplicationUserId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<ForumReply>()
             .HasOne(fr => fr.Thread)
@@ -346,7 +346,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Price = 199.00m,
                 Quantity = 20
             },
-            new Product 
+            new Product
             {
                 ProductId = product14Id,
                 DepartmentId = dept4Id,
@@ -382,7 +382,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Price = 1990.00m,
                 Quantity = 20
             },
-            new Product 
+            new Product
             {
                 ProductId = product18Id,
                 DepartmentId = dept3Id,
@@ -444,7 +444,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Description = productDescription,
                 Price = 199.00m,
                 Quantity = 25
-            }, 
+            },
             new Product
             {
                 ProductId = product25Id,
@@ -557,17 +557,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<OrderProduct>().HasData(
             new OrderProduct
             {
-                Id = 1, 
+                Id = 1,
                 OrderId = order1Id,
                 ProductId = product1Id,
-                ProductQuantity = 2 
+                ProductQuantity = 2
             },
             new OrderProduct
             {
-                Id = 2, 
+                Id = 2,
                 OrderId = order1Id,
                 ProductId = product2Id,
-                ProductQuantity = 1 
+                ProductQuantity = 1
             }
         );
 
@@ -597,6 +597,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 OrderId = order2Id,
                 ProductId = product8Id,
                 ProductQuantity = 1
+            }
+        );
+
+        var UserContactId1 = 1;
+        modelBuilder.Entity<UserContact>().HasData(
+            new UserContact
+            {
+                UserContactId = UserContactId1,
+                Name = "Anna",
+                Phone = "+46701234567",
+                Email = "user1@example.com",
+                Message = "Hej, jag har en fråga om min beställning."
             }
         );
     }
