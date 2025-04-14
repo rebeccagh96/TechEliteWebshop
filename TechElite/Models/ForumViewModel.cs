@@ -9,6 +9,7 @@ namespace TechElite.Models
         ICollection<ForumCategory> ForumCategories,
         ICollection<ForumThread> ForumThreads,
         ICollection<ForumReply> ForumReplies,
-        ApplicationUser? CurrentUser
+        ApplicationUser? CurrentUser,
+        ICollection<Notification> Notifications
     );
 }

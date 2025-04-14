@@ -35,11 +35,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const userLabels = [
         "Profil",
+        "Favoriter",
         "Orderhistorik",
+        "Spårning",
         "Trådar",
         "Inlägg",
-        "Inställningar",
-        "Spårning",
         "Hjälp"
     ];
 
