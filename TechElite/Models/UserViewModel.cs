@@ -31,6 +31,8 @@ namespace TechElite.Models
 
         public bool ChangePassword { get; set; }
 
+        public Customer? Customer { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (ChangePassword)
