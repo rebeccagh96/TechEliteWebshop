@@ -4,6 +4,7 @@ using TechElite.Models;
 using TechElite.Areas.Identity.Data;
 using System.Threading.Tasks;
 using TechElite.Helpers;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace TechElite.Controllers
 {
@@ -69,17 +70,28 @@ namespace TechElite.Controllers
                 return RedirectToAction("ViewCart", "Cart");
             }
 
-            var customer = new Customer
+            var order = new Order
             {
-                FirstName = model.Customer.FirstName,
-                LastName = model.Customer.LastName,
-                Address = model.Customer.Address,
-                ZipCode = model.Customer.ZipCode,
-                City = model.Customer.City,
-                ApplicationUserId = model.Customer.ApplicationUserId,
-                UserName = model.Customer.UserName
+                OrderDate = DateTime.Now,
+                UserName = model.Customer.UserName ?? "Guest",
+                Customer = new Customer
+                {
+                    FirstName = model.Customer.FirstName,
+                    LastName = model.Customer.LastName,
+                    Address = model.Customer.Address,
+                    ZipCode = model.Customer.ZipCode,
+                    City = model.Customer.City,
+                    ApplicationUserId = model.Customer.ApplicationUserId,
+                    UserName = model.Customer.UserName
+                },
+                OrderProducts = model.CartItems.Select(item => new OrderProduct
+                {
+                    ProductId = item.ProductId,
+                    ProductQuantity = item.CartQuantity
+                }).ToList()
             };
 
+            _context.Customers.Add(order.Customer); 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -165,33 +177,8 @@ namespace TechElite.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddToCart(int OrderId)
-        {
-            var cart = HttpContext.Session.GetObjectFromJson<Cart>("Cart");
-
-            if (cart == null || !cart.Products.Any())
-            {
-                return RedirectToAction("ViewCart", "Cart");
-            }
-
-            var order = new Order
-            {
-                OrderDate = DateTime.Now,
-                UserName = model.Customer.UserName ?? "Guest",
-                Customer = customer,
-                OrderProducts = model.CartItems.Select(item => new OrderProduct
-                {
-                    ProductId = item.ProductId,
-                    ProductQuantity = item.CartQuantity
-                }).ToList()
-            };
-
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-
-            HttpContext.Session.Remove("Cart");
-            return RedirectToAction("Confirmation", "Cart");
-        }
+       
+        
+        
     }
 }
