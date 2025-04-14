@@ -31,7 +31,8 @@
         <article id="notification-article">
             <section>
                 <h4>Notiser</h4>
-                <div>
+      
+                    <div class="Tråd">
                     @foreach (Notification n in Model.Notifications)
                     {
                         <p class="@(n.IsRead ? "read" : "unread")">
@@ -43,8 +44,10 @@
                         </p>
                     }
                 </div>
+                
             </section>
         </article>
+  
         <article>
             <section>
                 <h4>Senaste</h4>

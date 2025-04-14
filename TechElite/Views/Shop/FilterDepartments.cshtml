@@ -22,7 +22,7 @@
             @foreach (var p in Model)
             {
                 <section>
-                    <button>
+                   
                         <a asp-controller="Shop" asp-action="ProductPage" asp-route-id="@p.ProductId">
                             <div class="products">
                                 <img src="~/img/Products/Department@(p.DepartmentId)/Product@(p.ProductId).svg" alt="">
@@ -31,7 +31,7 @@
                             <p><b>@p.Price</b></p>
                             <p>@p.Description</p>
                         </a>
-                    </button>
+                    
                     <button class="Varukorg">Lägg till i Varukorgen!</button>
                 </section>
             }
