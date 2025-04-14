@@ -14,7 +14,7 @@
 
 
 
-    @await Html.PartialAsync("_ProductCard", Model)
+    
 
 
 <head>
@@ -35,7 +35,10 @@
                     @Model.Description
                 </p>
                 <p><Br></Br></p>
-                <button class="Varukorg">Lägg till i Varukorgen!</button>
+                <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                    <input type="hidden" name="id" value="@Model.ProductId" />
+                    <button type="submit" class="Varukorg">Lägg till i Varukorgen</button>
+                </form>
             </section>
         </article>
         <div class="reviews-container">

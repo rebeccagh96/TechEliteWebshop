@@ -1,21 +1,14 @@
-﻿@using TechElite.Models
+@using TechElite.Models
 @model ShopViewModel
 
 @{
     ViewData["Title"] = "Shop";
 }
 
-@foreach (var product in Model.Products)
-{
-    @await Html.PartialAsync("_ProductCard", product)
-}
-
 <head>
-      <link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Style.css" asp-append-version="true" />
 </head>
-
-
 
 <main>
     <article class="Feature">
@@ -26,9 +19,7 @@
             <div class="filter">
                 <div class="filter-icons">
                     <div class="dropdown">
-                       
-                            <img src="~/img/Icons/filter_blck.svg" alt="icon">
-                        
+                        <img src="~/img/Icons/filter_blck.svg" alt="icon">
                         <div class="dropdown-content">
                             @foreach (var d in Model.Departments)
                             {
@@ -38,31 +29,32 @@
                     </div>
                 </div>
                 <div class="cartlänk">
-                    <a href="cart.html">
+                    <a asp-controller="Cart" asp-action="ViewCart">
                         <img src="~/img/Icons/cart_blck.svg" alt="cart">
                     </a>
-               
                 </div>
             </div>
-        </article>
-        <div class="product-view">
-            <article>
+
+            <div class="product-view">
                 @foreach (var p in Model.Products)
                 {
                     <section class="Shop-section">
-
                         <a asp-controller="Shop" asp-action="ProductPage" asp-route-id="@p.ProductId">
                             <div class="products">
-                                <img src="~/img/Products/Department@(p.DepartmentId)/Product@(p.ProductId).svg" alt="">
+                                <img src="~/img/Products/Department@(p.DepartmentId)/Product@(p.ProductId).svg" alt="@p.ProductName">
                             </div>
                             <p>@p.ProductName</p>
-                            <p><b>@p.Price</b></p>
+                            <p><b>@p.Price.ToString("C")</b></p>
                             <p>@p.Description</p>
                         </a>
 
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="id" value="@p.ProductId" />
+                            <button type="submit" class="Varukorg">Lägg till i Varukorgen</button>
+                        </form>
                     </section>
                 }
-            </article>
-        </div>
+            </div>
+        </article>
     </div>
 </main>

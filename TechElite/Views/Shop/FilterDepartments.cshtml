@@ -1,17 +1,11 @@
-﻿@using TechElite.Models
+@using TechElite.Models
 @model IEnumerable<TechElite.Models.Product>
 @{
     ViewData["Title"] = "Filter Departments";
-}
-@{
     var department = Model
         .Where(d => d.DepartmentId != null)
-        .Select(d => d.DepartmentId);
-}
-
-@foreach (var product in Model)
-{
-    @await Html.PartialAsync("_ProductCard", product)
+        .Select(d => d.DepartmentId)
+        .FirstOrDefault();
 }
 
 <head>
@@ -21,23 +15,26 @@
 <main>
     <div class="shop-container">
         <article class="Feature">
-            <img max-height="400px" src="~/img/Shop/Department@(department.FirstOrDefault()).jpg" alt="shop.img">
+            <img style="max-height: 400px;" src="~/img/Shop/Department@(department).jpg" alt="shop.img" />
         </article>
+
         <article class="produkten">
             @foreach (var p in Model)
             {
                 <section>
-                   
-                        <a asp-controller="Shop" asp-action="ProductPage" asp-route-id="@p.ProductId">
-                            <div class="products">
-                                <img src="~/img/Products/Department@(p.DepartmentId)/Product@(p.ProductId).svg" alt="">
-                            </div>
-                            <p>@p.ProductName</p>
-                            <p><b>@p.Price</b></p>
-                            <p>@p.Description</p>
-                        </a>
-                    
-                    <button class="Varukorg">Lägg till i Varukorgen!</button>
+                    <a asp-controller="Shop" asp-action="ProductPage" asp-route-id="@p.ProductId">
+                        <div class="products">
+                            <img src="~/img/Products/Department@(p.DepartmentId)/Product@(p.ProductId).svg" alt="@p.ProductName">
+                        </div>
+                        <p>@p.ProductName</p>
+                        <p><b>@p.Price.ToString("C")</b></p>
+                        <p>@p.Description</p>
+                    </a>
+
+                    <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                        <input type="hidden" name="id" value="@p.ProductId" />
+                        <button type="submit" class="Varukorg">Lägg till i Varukorgen</button>
+                    </form>
                 </section>
             }
         </article>
