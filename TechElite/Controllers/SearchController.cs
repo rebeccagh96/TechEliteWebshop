@@ -7,6 +7,12 @@ namespace TechElite.Controllers
     public class SearchController : Controller
     {
         private readonly ApplicationDbContext _context;
+
+        public SearchController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+        [HttpGet]
         public async Task<IActionResult> Search(string search)
         {
             if (string.IsNullOrEmpty(search))

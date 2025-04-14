@@ -13,15 +13,16 @@
             @foreach (var p in Model)
             {
                 <section>
-                    <img src="@p.Image" alt="shop.img">
-                </section>
-                <section class="Produktinfo">
-                    <h2><B>@p.ProductName</B></h2><br>
-                    <p><b>@p.Price</b></p><br>
-                    <p>
-                        @p.Description
-                    </p>
-                    <p><Br></Br></p>
+                    <button>
+                        <a asp-controller="Shop" asp-action="ProductPage" asp-route-id="@p.ProductId">
+                            <div class="products">
+                                <img src="~/img/Products/Department@(p.DepartmentId)/Product@(p.ProductId).svg" alt="">
+                            </div>
+                            <p>@p.ProductName</p>
+                            <p><b>@p.Price</b></p>
+                            <p>@p.Description</p>
+                        </a>
+                    </button>
                     <button class="Varukorg">Lägg till i Varukorgen!</button>
                 </section>
             }

@@ -1,5 +1,5 @@
 ﻿@using TechElite.Models
-@model ShopViewModel
+@model Product
 @{
     ViewData["Title"] = "Productpage";
 }
@@ -12,45 +12,46 @@
     <div class="shop-container">
         <article class="produkten">
             <section>
-                <img src="~/img/Products/Charger/Charger2.svg" alt="shop.img">
+                <img src="~/img/Products/Department@(Model.DepartmentId)/Product@(Model.ProductId).svg" alt="shop.img">
             </section>
             <section class="Produktinfo">
-                <h2><B>LADDARE X2000</B></h2><br>
-                <p><b>$19.90</b></p><br>
+                <h2><B>@Model.ProductName</B></h2><br>
+                <p><b>@Model.Price</b></p><br>
                 <p>
-                    Upplev kraften i den senaste tekniken! 🚀 Designad för att leverera hög prestanda,
+                    @Model.Description
+                    <!--Upplev kraften i den senaste tekniken! 🚀 Designad för att leverera hög prestanda,
                     smart funktionalitet och stilren estetik.
                     Med avancerad teknik och kvalitativa material säkerställer
                     denna produkt en smidig och pålitlig upplevelse,
                     oavsett om det gäller arbete, underhållning eller vardagsbehov.
                     Innovativa funktioner och modern design gör den till ett
                     självklart val för den som vill ta sin tech-vardag till nästa nivå.
-                    Uppgradera och upptäck skillnaden idag!😁
+                    Uppgradera och upptäck skillnaden idag!😁-->
                 </p>
                 <p><Br></Br></p>
                 <button class="Varukorg">Lägg till i Varukorgen!</button>
             </section>
         </article>
-        <div class="filter">
+        <!--<div class="filter">
             <div class="filter-icons">
                 <div class="dropdown">
                     <button><img src="~/img/Icons/filter_blck.svg" alt="icon"></button>
                     <div class="dropdown-content">
-                        @foreach (var d in Model.Departments)
+                        @*foreach (var d in Department)
                         {
                             <a asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="@d.DepartmentId">@d.DepartmentName</a>
-                        }
-                    </div>
+                        }*@
+                    </div> 
                 </div>
             </div>
             <button class="cartlänk"><a href="cart.html"><img src="~/img/Icons/cart_blck.svg" alt="cart"></a></button>
-        </div>
+                </div>-->
         <div class="reviews-container">
             <div class="reviews-section">
                 <div class="review-form-container">
                     <div class="review-form">
                         <h3>Lämna en recension</h3>
-                        <form>
+                        <form asp-action="" method="post">
                             <label for="name">Ditt namn</label>
                             <input type="text" id="name" name="name" placeholder="Skriv ditt namn..." required>
 

@@ -16,38 +16,47 @@ namespace TechElite.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-
         public ForumController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var forumCategories = await _context.ForumCategories.ToListAsync();
             var forumThreads = await _context.ForumThreads.ToListAsync();
             var forumReplies = await _context.ForumReplies.ToListAsync();
             var user = await _userManager.GetUserAsync(User);
+            List<Notification> notification = new();
+
+            if (user != null)
+            {
+                notification = await _context.Notifications
+                    .Where(n => n.UserId == user.Id)
+                    .ToListAsync();
+            }
 
             ForumViewModel model = new (
                 ForumCategories: forumCategories,
                 ForumThreads: forumThreads,
                 ForumReplies: forumReplies,
-                CurrentUser: user
+                CurrentUser: user,
+                Notifications: notification
                 );
-                
+
             return View(model);
         }
 
-            [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var forumCategories = await _context.ForumCategories.ToListAsync();
             var forumThreads = await _context.ForumThreads.ToListAsync();
             var forumReplies = await _context.ForumReplies.ToListAsync();
             var user = await _userManager.GetUserAsync(User);
+            var notification = await _context.Notifications.ToListAsync();
 
             if (user is null)
             {
@@ -58,7 +67,8 @@ namespace TechElite.Controllers
                 ForumCategories: forumCategories,
                 ForumThreads: forumThreads,
                 ForumReplies: forumReplies,
-                CurrentUser: user
+                CurrentUser: user,
+                Notifications: notification
                 );
 
             return View(model);
@@ -73,7 +83,7 @@ namespace TechElite.Controllers
             {
                 return BadRequest("You must be logged in.");
             }
-            List<ForumThread> forumThreads = await _context.ForumThreads.ToListAsync();
+
             var forumThread = new ForumThread
             {
                 CategoryId = categoryId,
@@ -83,6 +93,7 @@ namespace TechElite.Controllers
                 UserName = user.UserName,
                 PublishDate = DateTime.Now
             };
+
             _context.ForumThreads.Add(forumThread);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -92,14 +103,15 @@ namespace TechElite.Controllers
         public async Task<IActionResult> MyThreads()
         {
             var user = await _userManager.GetUserAsync(User);
-
             if (user is null)
             {
                 return BadRequest("You must be logged in.");
             }
+
             var forumThreads = await _context.ForumThreads
                 .Where(ft => ft.ApplicationUserId == user.Id)
                 .ToListAsync();
+
             return View(forumThreads);
         }
 
@@ -110,6 +122,7 @@ namespace TechElite.Controllers
             {
                 return BadRequest("You must pass in a ThreadId.");
             }
+
             var model = await _context.ForumThreads
                 .Include(t => t.Replies)
                 .ThenInclude(r => r.ApplicationUser)
@@ -118,6 +131,7 @@ namespace TechElite.Controllers
             {
                 return NotFound($"Forum thread with ID {id} was not found.");
             }
+
             return View(model);
         }
 
@@ -129,9 +143,16 @@ namespace TechElite.Controllers
             {
                 return BadRequest("You must be logged in.");
             }
-            ForumThread? model = _context.ForumThreads
-                .SingleOrDefault(t => t.ThreadId == threadId);
-            List<ForumReply> forumReplies = await _context.ForumReplies.ToListAsync();
+
+            var model = await _context.ForumThreads
+                .Include(t => t.ApplicationUser)
+                .SingleOrDefaultAsync(t => t.ThreadId == threadId);
+
+            if (model == null)
+            {
+                return NotFound("Thread not found.");
+            }
+
             var reply = new ForumReply
             {
                 ThreadId = threadId,
@@ -144,6 +165,21 @@ namespace TechElite.Controllers
 
             _context.ForumReplies.Add(reply);
             await _context.SaveChangesAsync();
+
+            if(model.ApplicationUserId != user.Id)
+            {
+                var notification = new Notification
+                {
+                    UserId = model.ApplicationUserId,
+                    Message = $"Nytt inlägg i din tråd: ",
+                    CreatedAt = DateTime.Now,
+                    IsRead = false,
+                    ThreadId = threadId
+                };
+
+                _context.Notifications.Add(notification);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction("Thread", new { id = model.ThreadId });
         }
 
@@ -154,6 +190,7 @@ namespace TechElite.Controllers
             {
                 return BadRequest("You must pass in a ThreadId.");
             }
+
             var model = _context.ForumThreads
                 .Include(t => t.Replies)
                 .ThenInclude(r => r.ApplicationUser)
@@ -162,6 +199,7 @@ namespace TechElite.Controllers
             {
                 return NotFound($"Forum thread with ID {id} was not found.");
             }
+
             return View(model);
         }
 
@@ -183,19 +221,21 @@ namespace TechElite.Controllers
         }
 
         [HttpGet]
-        public IActionResult UpdateReply(int? id)
+        public async Task<IActionResult> UpdateReply(int? id)
         {
             if (id == null)
             {
                 return BadRequest("You must pass in a ReplyId.");
             }
-            var model = _context.ForumReplies
+
+            var model = await _context.ForumReplies
                 .Include(r => r.ApplicationUser)
-                .FirstOrDefault(r => r.ReplyId == id);
+                .FirstOrDefaultAsync(r => r.ReplyId == id);
             if (model == null)
             {
                 return NotFound($"Reply with ID {id} was not found.");
             }
+
             return View(model);
         }
 
@@ -203,64 +243,88 @@ namespace TechElite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateReply(int id, string replyContent)
         {
-            var forumReply = await _context.ForumReplies
+            if (replyContent is null)
+            {
+                return BadRequest("You must write some content.");
+            }
+
+            var reply = await _context.ForumReplies
                 .FirstOrDefaultAsync(r => r.ReplyId == id);
-            if (forumReply == null)
+
+            if (reply is null)
             {
                 return NotFound("Reply not found.");
             }
-            forumReply.Content = replyContent;
+
+            reply.Content = replyContent;
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Thread", new { id = forumReply.ThreadId });
+
+            return RedirectToAction("Thread", new { id = reply.ThreadId });
         }
 
         public async Task<IActionResult> DeleteThread(int? id)
         {
+            if (id is null)
+            {
+                return BadRequest("ThreadId not found.");
+            }
+
             var thread = await _context.ForumThreads
                 .Include(t => t.Replies)
+                .Include(t => t.Notifications)
                 .FirstOrDefaultAsync(t => t.ThreadId == id);
-            if (thread == null)
+
+            if (thread is null)
             {
-                return NotFound("Thread not found");
+                return NotFound("Thread not found.");
             }
-            if (thread != null)
-            {
-                _context.ForumReplies.RemoveRange(thread.Replies);
-                _context.ForumThreads.Remove(thread);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction("Index");
+
+            _context.Notifications.RemoveRange(thread.Notifications);
+            _context.ForumReplies.RemoveRange(thread.Replies);
+            _context.ForumThreads.Remove(thread);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> DeleteReply(int? id) 
         {
+            if (id is null)
+            {
+                return BadRequest("ReplyId not found.");
+            }
+
             var reply = await _context.ForumReplies
                 .FirstOrDefaultAsync(r => r.ReplyId == id);
-            if (reply == null)
+
+            if (reply is null)
             {
-                return NotFound("Reply not found");
+                return NotFound("Reply not found.");
             }
-            if (reply != null)
-            {
-                _context.ForumReplies.Remove(reply);
-                await _context.SaveChangesAsync();
-            }
+
+            _context.ForumReplies.Remove(reply);
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Thread", new { id = reply.ThreadId});
         }
 
+        [HttpGet]
         public async Task<IActionResult> LatestThreads()
         {
             var forumCategories = await _context.ForumCategories.ToListAsync();
             var forumThreads = await _context.ForumThreads.ToListAsync();
             var forumReplies = await _context.ForumReplies.ToListAsync();
             var user = await _userManager.GetUserAsync(User);
+            var notification = await _context.Notifications.ToListAsync();
 
             ForumViewModel model = new(
                 ForumCategories: forumCategories,
                 ForumThreads: forumThreads,
                 ForumReplies: forumReplies,
-                CurrentUser: user
+                CurrentUser: user,
+                Notifications: notification
                 );
             return View(model);
         }
@@ -276,6 +340,7 @@ namespace TechElite.Controllers
             var model = await _context.ForumThreads
                 .Where(c => c.CategoryId == id)
                 .ToListAsync();
+
             if (model == null)
             {
                 return NotFound($"Forum category with ID {id} was not found.");
@@ -285,9 +350,9 @@ namespace TechElite.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(string search)
+        public async Task<IActionResult> SearchForum(string search)
         {
-            if (string.IsNullOrEmpty(search))
+            if (search is null)
             {
                 return BadRequest("Hittade inget sökord.");
             }
@@ -296,6 +361,7 @@ namespace TechElite.Controllers
             var forumThreads = await _context.ForumThreads.ToListAsync();
             var replies = await _context.ForumReplies.ToListAsync();
             var user = await _userManager.GetUserAsync(User);
+            var notification = await _context.Notifications.ToListAsync();
 
             var filteredThreads = forumThreads.
                 Where(t => t.ThreadTitle.Contains(search, StringComparison.OrdinalIgnoreCase) 
@@ -310,9 +376,37 @@ namespace TechElite.Controllers
                 ForumCategories: categories,
                 ForumThreads: filteredThreads,
                 ForumReplies: filteredReplies,
-                CurrentUser: user
+                CurrentUser: user,
+                Notifications: notification
                 );
+
             return View(forumViewModel);
+        }
+
+        public async Task<IActionResult> Read(int? id)
+        {
+            if (id is null)
+            {
+                return BadRequest("Id not found.");
+            }
+
+            var notification = await _context.Notifications
+                .Include(n => n.ForumThread)
+                .FirstOrDefaultAsync(n => n.NotificationId == id);
+
+            if (notification is null)
+            {
+                return NotFound("No notifications was found.");
+            }
+
+            if (!notification.IsRead)
+            {
+                notification.IsRead = true;
+                _context.Update(notification);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Thread", new { id = notification.ThreadId });
         }
     }
 }

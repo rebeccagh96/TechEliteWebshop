@@ -6,7 +6,7 @@ using TechElite.Areas.Identity.Data;
 using TechElite.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DataContextConnection' not found."); ;
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DataContextConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
@@ -16,7 +16,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = false;
-    options.SignIn.RequireConfirmedAccount = true; 
+    options.SignIn.RequireConfirmedAccount = true;
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -27,7 +27,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
     options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 })
-.AddCookie() 
+.AddCookie()
 .AddNegotiate("Negotiate", options => { });
 
 
@@ -41,14 +41,14 @@ builder.Services.AddSession();
 
 var app = builder.Build();
 
-// Seeda anv‰ndare och roller
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    await ApplicationDbContext.SeedUsersAndRolesAsync(services);
-//}
+// Seeda anv√§ndare och roller
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await ApplicationDbContext.SeedUsersAndRolesAsync(services);
+}
 
-// Configure the HTTP request pipeline.
+// Konfigurera HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -72,6 +72,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

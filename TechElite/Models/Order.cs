@@ -15,11 +15,10 @@ namespace TechElite.Models
         public required string UserName { get; set; } = string.Empty; // Användarnamn kopplat till ordern
         public required DateTime OrderDate { get; set; }
 
-        [RegularExpression("[A-Za-zÅÄÖåäö.'´-]+")]
-        [StringLength(40)]
-        public required string ProductName { get; set; } = string.Empty;
-        public ICollection<Product> Products { get; set; } = new List<Product>(); // Lista av produkter kopplade till ordern
-        public int TotalPrice { get; set; } // Totalpris för ordern
+        public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>(); // Lista av produkter kopplade till ordern
+
+
+        public decimal TotalPrice => OrderProducts.Sum(op => op.Product.Price * op.ProductQuantity);
 
     }
 }

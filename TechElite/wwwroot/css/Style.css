@@ -69,7 +69,9 @@ main {
 .account-container, 
 .login-container, 
 .checkout-container,
-.about-container {
+.about-container,
+.login-container,
+.signup-container {
     min-height: 70vh;
     background-color: #e3e3e3ff;
 }
@@ -133,39 +135,38 @@ nav a {
     align-items: center;
 }
 
-    .icons img {
-        width: 25px;
-    }
-
+.icons img {
+    width: 25px;
+}
 
 .search {
-    position: relative;
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .search-icon {
-    font-size: 24px;
+    font-size: 20px;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
 .search-input {
-    display: none; 
-    font-size: 16px;
+    display: none;
+    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin-left: 10px;
-    transition: all 0.3s ease; 
+    padding: 5px 10px;
+    transition: all 0.3s ease;
 }
 
-    .search-input.show {
-        display: inline-block; 
-        width: 200px; 
-    }
+.search-input.show {
+    display: inline-block;
+    width: 160px;
+}
 
 .search-icon.active {
-    transform: rotate(45deg); 
+    transform: rotate(45deg);
 }
 
 .team-container {
@@ -249,7 +250,62 @@ button.logout-btn {
     border: none; 
     background: none;
 }
+.text-box.contact-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
 
+.contact-form h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #444;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        border-color: #007BFF;
+        outline: none;
+    }
+
+.contact-form .btn {
+    display: inline-block;
+    background-color: #007BFF;
+    color: white;
+    padding: 0.9rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .contact-form .btn:hover {
+        background-color: #0056b3;
+    }
 
 span {
     padding: 0 5px;
@@ -276,7 +332,7 @@ span {
             text-decoration: underline;
         }
 
-.btn, .shop-now-btn, button { /*Här kan ni exkludera knappklasser*/
+.btn, .shop-now-btn, button:not(.logout-btn) { 
     background-color: #9747ffff;
     color: white;
     padding: 8px 14px;
@@ -288,7 +344,7 @@ span {
 
     .btn:hover,
     .shop-now-btn:hover,
-    button:hover{
+    button:hover:not(.logout-btn) {
         background-color: rgb(167, 100, 255);
         transform: scale(1.05);
     }

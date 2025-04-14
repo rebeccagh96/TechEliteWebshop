@@ -17,15 +17,14 @@ using TechElite.Areas.Identity.Data;
 
 namespace TechElite.Areas.Identity.Pages.Account
 {
+    [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IEmailSender _emailSender;
 
-        public ForgotPasswordModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
         }
 
         /// <summary>
@@ -34,6 +33,7 @@ namespace TechElite.Areas.Identity.Pages.Account
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
+        public string PasswordResetUrl { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -65,18 +65,13 @@ namespace TechElite.Areas.Identity.Pages.Account
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
+
+                PasswordResetUrl = Url.Page(
                     "/Account/ResetPassword",
                     pageHandler: null,
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
-
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                return RedirectToPage("./ForgotPasswordConfirmation");
+                return Page();
             }
 
             return Page();
