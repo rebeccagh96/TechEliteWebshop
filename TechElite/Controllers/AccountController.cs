@@ -20,17 +20,18 @@ namespace TechElite.Controllers
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users
-                .Include(u => u.Customer) // Include the Customer navigation property
+                .Include(u => u.Customer) 
                 .ToListAsync();
 
             var orders = await _context.Orders
                 .Include(o => o.OrderProducts)
-                    .ThenInclude(op => op.Product) // Ensure Product is included
+                    .ThenInclude(op => op.Product) 
                 .ToListAsync();
 
             var products = await _context.Products.ToListAsync();
             var departments = await _context.Departments.ToListAsync();
             var customers = await _context.Customers.ToListAsync();
+            var userContact = await _context.userContacts.ToListAsync();
 
             var userViewModels = new List<UserViewModel>();
 
@@ -81,7 +82,8 @@ namespace TechElite.Controllers
                     DepartmentId = p.DepartmentId,
                     DepartmentName = p.Department?.DepartmentName ?? "Unknown"
                 }).ToList(),
-                Departments = departments
+                Departments = departments,
+                UserContacts = userContact
             };
 
             return View(model);

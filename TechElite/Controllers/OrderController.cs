@@ -172,10 +172,12 @@ namespace TechElite.Controllers
             }
         }
 
+
         [HttpPost]
         public async Task<IActionResult> AddToCart()
         {
             var cart = HttpContext.Session.GetObjectFromJson<Cart>("Cart");
+
 
             if (cart == null || !cart.Products.Any())
             {
