@@ -89,9 +89,6 @@ namespace TechElite.Controllers
             return View(model);
         }
 
-
-
-
         public async Task<IActionResult> Edit(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -269,7 +266,7 @@ namespace TechElite.Controllers
                 }
 
                 await transaction.CommitAsync();
-                return Ok(new { success = true, message = "Användaren raderades framgångsrikt." });
+                return RedirectToAction(nameof(HomeController.Index));
             }
             catch (Exception ex)
             {
