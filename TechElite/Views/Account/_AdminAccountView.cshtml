@@ -18,6 +18,7 @@
                     <tr>
                         <th>Användarnamn</th>
                         <th>Roll</th>
+						<th>KundID</th>
                         <th>E-post</th>
                         <th>Förnamn</th>
                         <th>Efternamn</th>
@@ -37,6 +38,16 @@
                                         <span>@role</span>
                                     }
                                 }
+                            </td>
+                            <td>
+                                @if (user.Customer != null)
+								{
+									<span>@user.Customer.CustomerId</span>
+								}
+								else
+								{
+									<span>Ej kund</span>
+								}
                             </td>
                             <td>@user.Email</td>
                             <td>@user.FirstName</td>
@@ -119,8 +130,6 @@
 						<th>Antal i lager</th>
                         <th>Pris</th>
 						<th>Avdelning</th>
-						<th>Beskrivning</th>
-						<th>Bild</th>
 						<th>Recensioner</th> 
 						<th>Åtgärder</th>
 					</tr>
@@ -134,20 +143,6 @@
                             <td>@product.Price</td>
                             <td>
                                 @(Model.Departments.FirstOrDefault(d => d.DepartmentId == product.DepartmentId)?.DepartmentName ?? "Unknown")
-                            </td>
-                            <td>@product.Description</td>
-                            <td>
-                                @if (product.Image != null && product.Image.Length > 0)
-                                {
-                                    <img src="data:image/svg+xml;base64,@Convert.ToBase64String(product.Image)"
-                                         alt="@product.ProductName"
-                                         style="width: 50px; height: 50px;" />
-
-                                }
-                                else
-                                {
-                                    <span>Ingen bild</span>
-                                }
                             </td>
                             <td>
                                 @if (product.Reviews != null && product.Reviews.Any())
@@ -184,8 +179,37 @@
         </div>
     </div>
     <div class="fourth account-tab">
-        <div class="">
-            <h2>fourth tab</h2>
+        <div class="inbox">
+			<h2>Inkommande meddelanden</h2>
+            <table class="inbox-table">
+				<thead>
+					<tr>
+						<th>Avsändare</th>
+						<th>Telefon</th>
+						<th>E-post</th>
+						<th>Meddelande</th>
+					</tr>
+				</thead>
+				<tbody>
+                    @foreach (var message in Model.UserContacts)
+                    {
+                        <tr>
+                            <td>@message.Name</td>
+                            <td>@message.Phone</td>
+                            <td>@message.Email</td>
+                            <td>@message.Message</td>
+                            <td>
+                                <button class="reply-btn"
+                                        data-message-id="@message.UserContactId"
+                                        data-sender="@message.Name">
+                                    Svara
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
         </div>
     </div>
     <div class="fifth account-tab">

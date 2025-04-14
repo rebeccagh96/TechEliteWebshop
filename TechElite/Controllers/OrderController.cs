@@ -80,6 +80,101 @@ namespace TechElite.Controllers
                 UserName = model.Customer.UserName
             };
 
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] OrderEditDto model)
+        {
+            if (model == null)
+            {
+                return BadRequest(new { message = "Ogiltig data" });
+            }
+
+            var order = await _context.Orders
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .FirstOrDefaultAsync(o => o.OrderId == model.OrderId);
+
+            if (order == null)
+            {
+                return NotFound("Ordern hittades inte.");
+            }
+
+            foreach (var orderProduct in model.OrderProducts)
+            {
+                var existingOrderProduct = order.OrderProducts.FirstOrDefault(op => op.ProductId == orderProduct.ProductId);
+                if (existingOrderProduct != null)
+                {
+                    existingOrderProduct.ProductQuantity = orderProduct.ProductQuantity;
+                }
+                else
+                {
+                    order.OrderProducts.Add(new OrderProduct
+                    {
+                        ProductId = orderProduct.ProductId,
+                        ProductQuantity = orderProduct.ProductQuantity
+                    });
+                }
+            }
+
+            var productIdsToRemove = model.OrderProducts
+                .Where(op => op.ProductQuantity == 0)
+                .Select(op => op.ProductId)
+                .ToList();
+
+            order.OrderProducts = order.OrderProducts
+                .Where(op => !productIdsToRemove.Contains(op.ProductId))
+                .ToList();
+
+            await _context.SaveChangesAsync();
+            return Ok(new { success = true, message = "Ordern uppdaterades." });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromBody] OrderDeleteDto request)
+        {
+            if (request == null || request.OrderId <= 0)
+            {
+                return BadRequest("Order ID krävs.");
+            }
+
+            int orderId = request.OrderId;
+
+            var order = await _context.Orders
+                .Include(o => o.OrderProducts)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                return NotFound("Ordern hittades inte.");
+            }
+
+            _context.Orders.Remove(order);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { success = true, message = "Ordern raderades framgångsrikt." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = "Ett fel inträffade: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToCart(int OrderId)
+        {
+            var cart = HttpContext.Session.GetObjectFromJson<Cart>("Cart");
+
+            if (cart == null || !cart.Products.Any())
+            {
+                return RedirectToAction("ViewCart", "Cart");
+            }
+
             var order = new Order
             {
                 OrderDate = DateTime.Now,

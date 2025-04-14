@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TechElite.Models.ForumThread>
+﻿@using TechElite.Models
+@model ForumViewModel
 @{
 	ViewData["Title"] = "My threads";
 }
@@ -13,9 +14,16 @@
             <section>
                 <h4>Mina trådar</h4>
                 <div>
-                    @foreach (var t in Model)
+                    @foreach (var t in Model.ForumThreads)
                     {
                         <a class="new-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@t.ThreadId">@t.ThreadTitle</a>
+                    }
+                </div>
+                <h4>Mina inlägg</h4>
+                <div>
+                    @foreach (var r in Model.ForumReplies)
+                    {
+                        <a class="new-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@r.ThreadId">@r.Content</a>
                     }
                 </div>
             </section>

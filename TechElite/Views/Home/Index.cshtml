@@ -1,18 +1,19 @@
-﻿@{
+﻿@using TechElite.Models
+@model ShopViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <head>
     <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/shop.css" asp-append-version="true"/>
 </head>
 
 <div class="hero-container">
     <div class="hero-image">
         <h1>Välkommen till TechElite</h1>
         <p>Upptäck de senaste teknologierna</p>
-        <!-- Shoppa nu knapp -->
-        <a href="shop" class="shop-now-btn">Shoppa nu</a>
-
+        <a class="shop-now-btn" asp-controller="Shop" asp-action="Index">Shoppa nu</a>
     </div>
     <div class="header-content">
         <div class="img-box">
@@ -20,111 +21,30 @@
 
     </div>
     <div class="links">
-        <a class="" href="#">Nyheter</a>
-        <a class="" href="#">Datorer</a>
-        <a class="" href="#">Tillbehör</a>
-        <a class="" href="#">Bildskärmar</a>
-        <a class="" href="#">Konsoler & tillbehör</a>
-        <a class="" href="#">Telefoner & tablets</a>
-        <a class="" href="#">Datorkomponenter</a>
-        <a class="" href="#">Ljud</a>
+        @foreach (var d in Model.Departments)
+        {
+            <a asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="@d.DepartmentId">@d.DepartmentName</a>
+        }
     </div>
 </div>
 <main>
     <div class="index-container">
         <article>
-            <div class="filter">
-                <h2>Nyheter</h2>
-                <div class="filter-icons">
-                    <img src="~/img/Icons/category_blck.svg" alt="icon">
-                    <img src="~/img/Icons/filter_blck.svg" alt="icon">
-                </div>
-                <img src="~/img/Icons/cart_blck.svg" alt="cart">
-            </div>
             <div class="product-view">
-                <section>
-                    <div class="products">
-                        <img src="~/img/Products/Charger/Charger2.svg" alt="">
-                    </div>
-                    <p>Text</p>
-                    <p><b></b></p>
-                    <p>Body text</p>
-                </section>
-                <section>
-                    <div class="products">
-                        <img src="~/img/Products/Consoles/Console2.svg" alt="">
-                    </div>
-                    <p>Text</p>
-                    <p><b></b></p>
-                    <p>Body text</p>
-                </section>
-                <section>
-                    <div class="products">
-                        <img src="~/img/Products/Earbuds/Buds2.svg" alt="">
-                    </div>
-                    <p>Text</p>
-                    <p><b></b></p>
-                    <p>Body text</p>
-                </section>
-                <section>
-                    <div class="products">
-                        <img src="~/img/Products/Laptop/Laptop1.svg" alt="">
-                    </div>
-                    <p>Text</p>
-                    <p><b></b></p>
-                    <p>Body text</p>
-                </section>
-                <section>
-                    <div class="products">
-                        <img src="~/img/Products/Headphones/Headphones1.svg" alt="">
-                    </div>
-                    <p>Text</p>
-                    <p><b></b></p>
-                    <p>Body text</p>
-                </section>
-                <section>
-                    <div class="products">
-                        <img src="~/img/Products/Keyboard/Keyboard1.svg" alt="">
-                    </div>
-                    <p>Text</p>
-                    <p><b></b></p>
-                    <p>Body text</p>
-                </section>
-                <section>
-                    <div class="products">
-                        <img src="~/img/Products/Consoles/Console1.svg" alt="">
-                    </div>
-                    <p>Text</p>
-                    <p><b></b></p>
-                    <p>Body text</p>
-                </section>
-                <section>
-                    <div class="products">
-                        <img src="~/img/Products/Controllers/Controller3.svg" alt="">
-                    </div>
-                    <p>Text</p>
-                    <p><b></b></p>
-                    <p>Body text</p>
-                </section>
-                <section>
-                    <div class="products">
-                        <img src="~/img/Products/Mouse/Mouse1.svg" alt="">
-                    </div>
-                    <p>Text</p>
-                    <p><b></b></p>
-                    <p>Body text</p>
-                </section>
-                <section>
-                    <div class="products">
-                        <img src="~/img/Products/Components/GPU3.svg" alt="">
-                    </div>
-                    <p>Text</p>
-                    <p><b></b></p>
-                    <p>Body text</p>
-                </section>
-            </div>
-            
+                @foreach (var p in Model.Products)
+                {
+                    <section class="Shop-section">
+                        <a asp-controller="Shop" asp-action="ProductPage" asp-route-id="@p.ProductId">
+                            <div class="products">
+                                <img src="~/img/Products/Department@(p.DepartmentId)/Product@(p.ProductId).svg" alt="">
+                            </div>
+                            <p>@p.ProductName</p>
+                            <p><b>@p.Price</b></p>
+                            <p>@p.Description</p>
+                        </a>
+                    </section>
+                }
+            </div> 
         </article>
     </div>
-    
 </main>

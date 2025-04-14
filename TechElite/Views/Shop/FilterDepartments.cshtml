@@ -1,6 +1,11 @@
-﻿@model IEnumerable<TechElite.Models.Product>
+@using TechElite.Models
+@model IEnumerable<TechElite.Models.Product>
 @{
     ViewData["Title"] = "Filter Departments";
+    var department = Model
+        .Where(d => d.DepartmentId != null)
+        .Select(d => d.DepartmentId)
+        .FirstOrDefault();
 }
 
 <head>
@@ -9,6 +14,10 @@
 
 <main>
     <div class="shop-container">
+        <article class="Feature">
+            <img style="max-height: 400px;" src="~/img/Shop/Department@(department).jpg" alt="shop.img" />
+        </article>
+
         <article class="produkten">
             @foreach (var p in Model)
             {
