@@ -14,28 +14,28 @@
 </article>
 
 <main>
-        <article>
-            <div class="filter">
-                <div class="filter-icons">
-                    <div class="dropdown">
-                        <button>
-                            <img src="~/img/Icons/filter_blck.svg" alt="icon">
-                        </button>
-                        <div class="dropdown-content">
-                            @foreach (var d in Model.Departments)
-                            {
-                                <a asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="@d.DepartmentId">@d.DepartmentName</a>
-                            }
-                        </div>
+    <article>
+        <div class="filter">
+            <div class="filter-icons">
+                <div class="dropdown">
+                    <button>
+                        <img src="~/img/Icons/filter_blck.svg" alt="icon">
+                    </button>
+                    <div class="dropdown-content">
+                        @foreach (var d in Model.Departments)
+                        {
+                            <a asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="@d.DepartmentId">@d.DepartmentName</a>
+                        }
                     </div>
                 </div>
-                <button class="cartlänk">
-                    <a href="cart.html">
-                        <img src="~/img/Icons/cart_blck.svg" alt="cart">
-                    </a>
-                </button>
             </div>
-            <div class="product-view">
+            <button class="cartlänk">
+                <a href="cart.html">
+                    <img src="~/img/Icons/cart_blck.svg" alt="cart">
+                </a>
+            </button>
+        </div>
+        <div class="product-view">
             @foreach (var p in Model.Products)
             {
                 <section>
@@ -51,116 +51,5 @@
                     </button>
                 </section>
             }
-                <section>
-                    <a asp-controller="Shop" asp-action="Productpage">
-                        <button>
-                            <div class="products">
-                                <img src="~/img/Products/Consoles/Console2.svg" alt="">
-                            </div>
-                            <p>Playstation 1</p>
-                            <p><b>$19.90</b></p>
-                            <p>En produkt för alla</p>
-                        </button>
-                    </a>
-                </section>
-                <section>
-                    <a asp-controller="Shop" asp-action="Productpage">
-                        <button>
-                            <div class="products">
-                                <img src="~/img/Products/Earbuds/Buds2.svg" alt="">
-                            </div>
-                            <p>Temu Earbuds</p>
-                            <p><b>$19.90</b></p>
-                            <p>En produkt för alla</p>
-                        </button>
-                    </a>
-                </section>
-                <section>
-                    <a href="laddarex2000.html">
-                        <button>
-                            <div class="products">
-                                <img src="~/img/Products/Drawingtabletdrtablet1.svg" alt="">
-                            </div>
-                            <p>Rit Bräda</p>
-                            <p><b>$19.90</b></p>
-                            <p>En produkt för alla</p>
-                        </button>
-                    </a>
-                </section>
-                <section>
-                    <a href="laddarex2000.html">
-                        <button>
-                            <div class="products">
-                                <img src="~/img/Products/Laptop/Laptop1.svg" alt="">
-                            </div>
-                            <p>Mac Attack</p>
-                            <p><b>$1990</b></p>
-                            <p>En produkt för alla</p>
-                        </button>
-                    </a>
-                </section>
-                <section>
-                    <a href="laddarex2000.html">
-                        <button>
-                            <div class="products">
-                                <img src="~/img/Products/Mouse/Mouse2.svg" alt="">
-                            </div>
-                            <p>Ergonomisk mus</p>
-                            <p><b>$19.90</b></p>
-                            <p>En produkt för alla</p>
-                        </button>
-                    </a>
-                </section>
-                <section>
-                    <a href="laddarex2000.html">
-                        <button>
-                            <div class="products">
-                                <img src="~/img/Products/Monitor/Monitor4.svg" alt="">
-                            </div>
-                            <p>Elite Monitor</p>
-                            <p><b>$19.90</b></p>
-                            <p>En produkt för alla</p>
-                        </button>
-                    </a>
-                </section>
-                <section>
-                    <a href="laddarex2000.html">
-                        <button>
-                            <div class="products">
-                                <img src="~/img/Products/Components/Exthdd1.svg" alt="">
-                            </div>
-                            <p>Samsung Hårddisk</p>
-                            <p><b>$19.90</b></p>
-                            <p>En produkt för alla</p>
-                        </button>
-                    </a>
-                </section>
-                <section>
-                    <a href="laddarex2000.html">
-                        <button>
-                            <div class="products">
-                                <img src="~/img/Products/Keyboard/Keyboard3.svg" alt="">
-                            </div>
-                            <p>Funky Keyboard</p>
-                            <p><b>$19.90</b></p>
-                            <p>En produkt för alla</p>
-                        </button>
-                    </a>
-                </section>
-                <section>
-                    <a href="laddarex2000.html">
-                        <button>
-                            <div class="products">
-                                <img src="~/imgProductsControllersController3.svg" alt="">
-                            </div>
-                            <p>Xbox Kontroll</p>
-                            <p><b>$19.90</b></p>
-                            <p>En produkt för alla</p>
-                        </button>
-                    </a>
-                </section>
-            </div>
-
-        </article>
-    
+    </article>
 </main>

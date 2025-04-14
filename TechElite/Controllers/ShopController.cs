@@ -9,12 +9,13 @@ namespace TechElite.Controllers
     public class ShopController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ShopController(ApplicationDbContext context)
+        public ShopController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
-
 
         public async Task<IActionResult> Index()
         {
@@ -31,6 +32,7 @@ namespace TechElite.Controllers
 
             return View(model);
         }
+
         public async Task<IActionResult> ProductPage(int? id)
         {
             if (id is null)
@@ -51,7 +53,30 @@ namespace TechElite.Controllers
         [HttpPost]
         public async Task<IActionResult> AddReview(int? id, string name, string title, int rating, string comment)
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            var model = await _context.Products
+                .Include(r => r.Reviews)
+                .FirstOrDefaultAsync(p => p.ProductId == id);
+            if (model is null)
+            {
+                return BadRequest("ProductId not found");
+            }
+
+            var review = new Review
+            {
+                ProductId = model.ProductId,
+                ReviewerName = name,
+                ReviewTitle = title,
+                Rating = rating,
+                ReviewText = comment,
+                ReviewDate = DateTime.Now,
+                ApplicationUserId = user.Id
+            };
+
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Productpage", new { id = model.ProductId });
         }
 
         public IActionResult Datorer()
