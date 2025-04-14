@@ -1,8 +1,132 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<head>
-    <link rel="stylesheet" href="~/css/checkout.css" asp-append-version="true" />
-</head>
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using System.Linq
+@using TechElite.Models
+
+@inject UserManager<ApplicationUser> UserManager
+
+@model TechElite.Models.CartViewModel
+
+<div class="cart-container">
+    <div class="cart">
+        <div class="cart-heading">
+            <h1>Din varukorg @UserManager.GetUserName(User)!</h1>
+        </div>
+        <div class="cart-items">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Produkt</th>
+                        <th>Antal</th>
+                        <th>Pris</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var Product in Model.OrderProducts)
+                    {
+                        <tr>
+                            <td>@order.Productname</td>
+                            <td>
+                                @if (user.Roles != null && user.Roles.Any())
+                                {
+                                    foreach (var role in user.Roles)
+                                    {
+                                        <span>@role</span>
+                                    }
+                                }
+                            </td>
+                            <td>@user.Email</td>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>
+                                <button class="manage-user-btn" data-user-id="@user.Id"
+                                        data-user-username="@user.UserName"
+                                        data-user-email="@user.Email"
+                                        data-user-firstname="@user.FirstName"
+                                        data-user-lastname="@user.LastName">
+                                    Hantera
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="user-actions">
+            <partial name="_AccountEditView" model="Model.Users" />
+        </div>
+    </div>
+    <div class="second account-tab">
+        <div class="welcome">
+            <h2>Hantera ordrar</h2>
+        </div>
+        <div class="orders">
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>OrderID</th>
+                        <th>KundID</th>
+                        <th>Datum</th>
+                        <th>Totalt belopp</th>
+                        <th>Åtgärder</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Orders)
+                    {
+                        @foreach (var product in order.Products)
+                        {
+                            <tr>
+                                <td>@order.OrderId</td>
+                                <td>@order.CustomerId</td>
+                                <td>@product.ProductName</td>
+                                <td>@product.Price</td>
+                                @* 								<td>@product.Quantity</td> *@
+                                <td>@order.TotalPrice</td>
+                                <td>@order.OrderDate</td>
+                                <td><button class="manage-order-btn">Hantera</button></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div class="order-actions">
+                <partial name="_OrderEditView" model="Model.Orders" />
+            </div>
+        </div>
+    </div>
+    <div class="third account-tab">
+        <div class="inventory-management">
+            <h2>Hantera lager</h2>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Produktnamn</th>
+                        <th>Antal i lager</th>
+                        <th>Pris</th>
+                        <th>Avdelning</th>
+                        <th>Beskrivning</th>
+                        <th>Bild</th>
+                        <th>Recensioner</th>
+                        <th>Åtgärder</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.Products)
+                    {
+                        <tr>
+                            <td>@product.ProductName</td>
+                            <td>@product.Quantity</td>
+                            <td>@product.Price</td>
+                            <td>@product.Department</td>
+                            <td>@product.Description</td>
+                            <td>@product.Image</td>
+                            <td><button class="manage-product-btn">Hantera</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

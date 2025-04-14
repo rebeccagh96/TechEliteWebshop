@@ -5,7 +5,7 @@ using TechElite.Models;
 [HttpPost]
 public IActionResult Checkout()
 {
-    var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart");
+    var cart = HttpContext.Session.GetObjectFromJson<List<CartViewModel>>("Cart");
     if (cart == null || !cart.Any())
         return RedirectToAction("ViewCart", "Cart");
 
