@@ -375,7 +375,7 @@ footer {
     max-width: 1200px;
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     justify-content: space-between;
 }
 
