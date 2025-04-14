@@ -3,6 +3,11 @@
     ViewData["Title"] = "Filter Departments";
 }
 
+@foreach (var product in Model)
+{
+    @await Html.PartialAsync("_ProductCard", product)
+}
+
 <head>
     <link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
 </head>

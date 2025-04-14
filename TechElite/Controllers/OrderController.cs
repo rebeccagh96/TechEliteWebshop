@@ -173,45 +173,45 @@ namespace TechElite.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> AddToCart()
+        public async Task<IActionResult> AddToCart()
         {
-            var cart = HttpContext.Session.GetObjectFromJson = List<Cart>;
-            if (cart == null!)cart.Any();
+            var cart = HttpContext.Session.GetObjectFromJson<Cart>("Cart");
 
-        return RedirectToAction("ViewCart", "Cart");
+            if (cart == null || !cart.Products.Any())
+            {
+                return RedirectToAction("ViewCart", "Cart");
+            }
 
             var order = new Order
             {
                 OrderDate = DateTime.Now,
                 UserName = User.Identity?.Name ?? "Guest",
+                ProductName = "Beställning",
                 OrderProducts = new List<OrderProduct>()
             };
 
-            foreach (var item in cart)
+            foreach (var item in cart.Products)
             {
-                var product = _context.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
-                if (product == null(product.Stock < item.Quantity));
-        {
-                    // Om inte tillräckligt i lager
+                var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == item.ProductId);
+                if (product == null || product.Quantity < item.CartQuantity)
+                {
                     return RedirectToAction("ViewCart", "Cart");
                 }
 
-                product.Quantity -= item.Quantity;
+                product.Quantity -= item.CartQuantity;
 
                 order.OrderProducts.Add(new OrderProduct
                 {
                     ProductId = product.ProductId,
-                    ProductQuantity = item.Quantity
+                    ProductQuantity = item.CartQuantity
                 });
             }
 
             _context.Orders.Add(order);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             HttpContext.Session.Remove("Cart");
             return RedirectToAction("Index");
         }
-
     }
 }
-

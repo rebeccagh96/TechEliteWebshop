@@ -4,6 +4,12 @@
 @{
     ViewData["Title"] = "Shop";
 }
+
+@foreach (var product in Model.Products)
+{
+    @await Html.PartialAsync("_ProductCard", product)
+}
+
 <head>
     <link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/SpecShopStyle.css" asp-append-version="true" />

@@ -1,13 +1,15 @@
-﻿using System.Text.Json;
+﻿using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace TechElite.Models
 {
-    public class SessionExtensions
+    public static class SessionExtensions
     {
         public static void Set<T>(this ISession session, string key, T value)
         {
             session.SetString(key, JsonSerializer.Serialize(value));
         }
+
         public static T Get<T>(this ISession session, string key)
         {
             var json = session.GetString(key);
@@ -16,10 +18,9 @@ namespace TechElite.Models
                 return default(T);
             }
             else
-                        {
+            {
                 return JsonSerializer.Deserialize<T>(json);
             }
-
         }
     }
 }

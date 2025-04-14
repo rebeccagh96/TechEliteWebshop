@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Productpage";
 }
+
+
+
+    @await Html.PartialAsync("_ProductCard", Model)
+
+
 <head>
     <link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
 </head>
