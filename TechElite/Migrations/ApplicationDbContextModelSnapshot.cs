@@ -704,7 +704,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 2,
                             DepartmentId = 2,
-                            Description = "En produkt för alla",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 1990.00m,
                             ProductName = "Mac Attack",
                             Quantity = 20
@@ -713,7 +713,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 3,
                             DepartmentId = 3,
-                            Description = "En produkt för alla",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 19.00m,
                             ProductName = "Temu Earbuds",
                             Quantity = 15
@@ -722,7 +722,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 4,
                             DepartmentId = 4,
-                            Description = "En produkt för alla",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 19.00m,
                             ProductName = "LADDARE X2000",
                             Quantity = 150
@@ -731,7 +731,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 5,
                             DepartmentId = 5,
-                            Description = "En produkt för alla",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 199.00m,
                             ProductName = "Xbox Kontroll",
                             Quantity = 30
@@ -740,7 +740,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 6,
                             DepartmentId = 1,
-                            Description = "En produkt för alla",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 19.00m,
                             ProductName = "Rit Bräda",
                             Quantity = 100
@@ -749,7 +749,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 7,
                             DepartmentId = 2,
-                            Description = "En produkt för alla",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 1990.00m,
                             ProductName = "Windows Fusion",
                             Quantity = 10
@@ -758,7 +758,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 8,
                             DepartmentId = 3,
-                            Description = "En bra produkt för alla",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 19.00m,
                             ProductName = "Professor Earbuds",
                             Quantity = 120
@@ -767,7 +767,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 9,
                             DepartmentId = 4,
-                            Description = "En bra product för alla",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 19.00m,
                             ProductName = "Smart Charger",
                             Quantity = 35
@@ -776,7 +776,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 10,
                             DepartmentId = 5,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 199.00m,
                             ProductName = "Custom ps5 Kontroll",
                             Quantity = 10
@@ -785,7 +785,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 11,
                             DepartmentId = 1,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 19.00m,
                             ProductName = "Wish Rit Bräda",
                             Quantity = 15
@@ -794,7 +794,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 12,
                             DepartmentId = 2,
-                            Description = "En produkt för alla",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 1990.00m,
                             ProductName = "Elite Monitor",
                             Quantity = 50
@@ -803,7 +803,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 13,
                             DepartmentId = 3,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 199.00m,
                             ProductName = "Airpods pro",
                             Quantity = 20
@@ -812,7 +812,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 14,
                             DepartmentId = 4,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 19.00m,
                             ProductName = "Supercharger adapter",
                             Quantity = 80
@@ -821,7 +821,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 15,
                             DepartmentId = 5,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 199.00m,
                             ProductName = "Standard PS Kontroll",
                             Quantity = 50
@@ -830,7 +830,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 16,
                             DepartmentId = 1,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 1990.00m,
                             ProductName = "iphone 7",
                             Quantity = 30
@@ -839,7 +839,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 17,
                             DepartmentId = 2,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 1990.00m,
                             ProductName = "PS5",
                             Quantity = 20
@@ -848,7 +848,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 18,
                             DepartmentId = 3,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 199.00m,
                             ProductName = "Trådade Ipods Pro",
                             Quantity = 20
@@ -857,7 +857,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 19,
                             DepartmentId = 4,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 19.00m,
                             ProductName = "iphone adapter",
                             Quantity = 30
@@ -866,7 +866,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 20,
                             DepartmentId = 5,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 1990.00m,
                             ProductName = "Nintendo",
                             Quantity = 20
@@ -875,7 +875,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 21,
                             DepartmentId = 1,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 1990.00m,
                             ProductName = "iphone 5",
                             Quantity = 20
@@ -884,7 +884,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 22,
                             DepartmentId = 2,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 1990.00m,
                             ProductName = "Win Screen",
                             Quantity = 20
@@ -893,7 +893,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 23,
                             DepartmentId = 3,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 199.00m,
                             ProductName = "WIN-Win Headpones",
                             Quantity = 20
@@ -902,7 +902,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 24,
                             DepartmentId = 4,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 199.00m,
                             ProductName = "Superb Fläkt",
                             Quantity = 25
@@ -911,7 +911,7 @@ namespace TechElite.Migrations
                         {
                             ProductId = 25,
                             DepartmentId = 5,
-                            Description = "En produkt för alla.",
+                            Description = "Upplev kraften i den senaste tekniken! Designad för att leverera hög prestanda, smart funktionalitet och stilren estetik.",
                             Price = 1990.00m,
                             ProductName = "Playstation 1",
                             Quantity = 20
