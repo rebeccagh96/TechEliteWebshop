@@ -8,7 +8,7 @@ using TechElite.Models;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DataContextConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
@@ -35,6 +35,8 @@ builder.Services.AddAuthentication(options =>
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession();
+
 
 
 var app = builder.Build();
@@ -56,6 +58,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseSession();
+
 
 app.UseAuthorization();
 
