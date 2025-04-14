@@ -15,12 +15,63 @@ namespace TechElite.Controllers
             _context = context;
         }
 
-[HttpPost]
-public IActionResult Checkout()
-{
-    var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart");
-    if (cart == null || !cart.Any())
-        return RedirectToAction("ViewCart", "Cart");
+        public async Task<IActionResult> Index()
+        {
+            var orders = await _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.OrderProducts)
+                    .ThenInclude(op => op.Product)
+                .ToListAsync();
+
+            var customers = await _context.Customers.ToListAsync();
+            var products = await _context.Products.ToListAsync();
+
+            var orderViewModels = orders.Select(order => new OrderViewModel
+            {
+                OrderId = order.OrderId,
+                CustomerId = order.CustomerId,
+                UserName = order.UserName,
+                OrderDate = order.OrderDate,
+                OrderProducts = order.OrderProducts.Select(op => new OrderProductViewModel
+                {
+                    ProductId = op.ProductId,
+                    ProductName = op.Product.ProductName,
+                    Price = op.Product.Price,
+                    ProductQuantity = op.ProductQuantity
+                }).ToList(),
+                TotalPrice = order.OrderProducts.Sum(op => op.Product.Price * op.ProductQuantity)
+            }).ToList();
+
+            var model = new AdminAccountViewModel
+            {
+                Orders = orderViewModels,
+                Customers = customers,
+                Products = products.Select(p => new ProductViewModel
+                {
+                    ProductId = p.ProductId,
+                    ProductName = p.ProductName,
+                    Quantity = p.Quantity,
+                    Price = p.Price,
+                    Description = p.Description,
+                    DepartmentId = p.DepartmentId
+                }).ToList()
+            };
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Save(OrderViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+                return BadRequest(new { message = "Ogiltig data", errors });
+            }
 
             var order = new Order
             {
@@ -120,5 +171,46 @@ public IActionResult Checkout()
             }
         }
 
+        //[HttpPost]
+        //public Task<IActionResult> Checkout()
+        //{
+        //    var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart");
+        //    if (cart == null!)cart.Any();
+
+        //return RedirectToAction("ViewCart", "Cart");
+
+        //    var order = new Order
+        //    {
+        //        OrderDate = DateTime.Now,
+        //        UserName = User.Identity?.Name ?? "Guest",
+        //        OrderProducts = new List<OrderProduct>()
+        //    };
+
+        //    foreach (var item in cart)
+        //    {
+        //        var product = _context.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
+        //        if (product == null(product.Stock < item.Quantity));
+        //{
+        //            // Om inte tillräckligt i lager
+        //            return RedirectToAction("ViewCart", "Cart");
+        //        }
+
+        //        product.Quantity -= item.Quantity;
+
+        //        order.OrderProducts.Add(new OrderProduct
+        //        {
+        //            ProductId = product.ProductId,
+        //            ProductQuantity = item.Quantity
+        //        });
+        //    }
+
+        //    _context.Orders.Add(order);
+        //    _context.SaveChanges();
+
+        //    HttpContext.Session.Remove("Cart");
+        //    return RedirectToAction("Index");
+        //}
+
     }
 }
+
