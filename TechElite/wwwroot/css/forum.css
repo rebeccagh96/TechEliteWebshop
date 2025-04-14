@@ -36,7 +36,6 @@ article {
     min-width: 200px;
 }
 section {
-    
     max-width: 100%;
     min-width: 200px;
     flex-direction: column;
