@@ -12,6 +12,20 @@
 
 
 <main>
+<<<<<<< HEAD
+    <article>
+        <div class="filter">
+            <div class="filter-icons">
+                <div class="dropdown">
+                    <button>
+                        <img src="~/img/Icons/filter_blck.svg" alt="icon">
+                    </button>
+                    <div class="dropdown-content">
+                        @foreach (var d in Model.Departments)
+                        {
+                            <a asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="@d.DepartmentId">@d.DepartmentName</a>
+                        }
+=======
     <article class="Feature">
         <img max height="500px" src="~/img/Shop/tech.shop.jpg" alt="shop.img">
     </article>
@@ -30,15 +44,17 @@
                                 <a asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="@d.DepartmentId">@d.DepartmentName</a>
                             }
                         </div>
+>>>>>>> master
                     </div>
                 </div>
-                <button class="cartlänk">
-                    <a href="cart.html">
-                        <img src="~/img/Icons/cart_blck.svg" alt="cart">
-                    </a>
-                </button>
             </div>
-            <div class="product-view">
+            <button class="cartlänk">
+                <a href="cart.html">
+                    <img src="~/img/Icons/cart_blck.svg" alt="cart">
+                </a>
+            </button>
+        </div>
+        <div class="product-view">
             @foreach (var p in Model.Products)
             {
                 <section>
@@ -54,6 +70,9 @@
                     </button>
                 </section>
             }
+<<<<<<< HEAD
+    </article>
+=======
                 <section>
                         <button><a asp-controller="Shop" asp-action="ProductPage">
                             <div class="products">
@@ -157,4 +176,5 @@
 
         </article>
     </div>
+>>>>>>> master
 </main>
