@@ -31,6 +31,7 @@ namespace TechElite.Controllers
 
             return View(model);
         }
+
         public async Task<IActionResult> ProductPage(int? id)
         {
             if (id is null)
@@ -50,8 +51,21 @@ namespace TechElite.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddReview(int? id, string name, string title, int rating, string comment)
+
         {
-            return View();
+            if (id is null)
+            {
+                return BadRequest("You must pass in a DepartmentId.");
+            }
+            var model = await _context.Products
+                .Include(p => p.ProductName)
+                .ThenInclude(d => d.Description)
+                .FirstOrDefaultAsync(t => t.ProductId == id);
+            if (model == null)
+            {
+                return NotFound($"Department with ID {id} was not found.");
+            }
+            return View(model);
         }
 
         public IActionResult Datorer()
@@ -87,6 +101,7 @@ namespace TechElite.Controllers
                 .Include(r => r.Reviews)
                 .Where(d => d.DepartmentId == id)
                 .ToListAsync();
+
             if (model == null)
             {
                 return NotFound($"Department with ID {id} was not found.");
