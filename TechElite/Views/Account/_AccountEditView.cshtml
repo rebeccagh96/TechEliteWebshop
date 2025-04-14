@@ -36,6 +36,25 @@
             <label for="edit-user-lastname">Efternamn</label>
             <input type="text" id="edit-user-lastname" name="LastName" />
         </div>
+        <div>
+            <input type="checkbox" id="change-password-checkbox" />
+            <label for="change-password-checkbox">Vill du ändra lösenord?</label>
+        </div>
+        <input type="hidden" id="change-password-hidden" name="ChangePassword" value="false" />
+        <div id="password-fields" style="display: none;">
+            <div>
+                <label for="edit-user-current-password">Nuvarande lösenord</label>
+                <input type="password" id="edit-user-current-password" name="CurrentPassword" />
+            </div>
+            <div>
+                <label for="edit-user-pword">Nytt lösenord</label>
+                <input type="password" id="edit-user-pword" name="Password" />
+            </div>
+            <div>
+                <label for="edit-user-pword-confirm">Bekräfta nytt lösenord</label>
+                <input type="password" id="edit-user-pword-confirm" name="PasswordConfirm" />
+            </div>
+        </div>
         <button type="submit" id="save-edit">Spara</button>
         <button type="button" id="cancel-edit">Avbryt</button>
         <button type="button" id="delete-user">Radera</button>

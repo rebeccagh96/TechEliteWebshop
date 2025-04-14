@@ -64,40 +64,50 @@
         <div class="welcome">
             <h2>Hantera ordrar</h2>
         </div>
-        @* <div class="orders">
+        <div class="orders">
             <table class="order-table">
                 <thead>
                     <tr>
                         <th>OrderID</th>
                         <th>KundID</th>
+                        <th>Produkter</th>
+                        <th>Totalt</th>
                         <th>Datum</th>
-                        <th>Totalt belopp</th>
                         <th>Åtgärder</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var order in Model.Orders)
                     {
-                        @foreach (var product in order.Products)
-                        {
-                            <tr>
-                                <td>@order.OrderId</td>
-                                <td>@order.CustomerId</td>
-                                <td>@product.ProductName</td>
-                                <td>@product.Price</td>
-@* 								<td>@product.Quantity</td>
-                                <td>@order.TotalPrice</td>
-                                <td>@order.OrderDate</td>
-                                <td><button class="manage-order-btn">Hantera</button></td>
-                            </tr>
-                        }
+                        <tr>
+                            <td>@order.OrderId</td>
+                            <td>@order.CustomerId</td>
+                            <td>@string.Join(", ", order.OrderProducts.Select(op => op.ProductName))</td>
+                            <td>@order.OrderProducts.Sum(op => op.Price * op.ProductQuantity).ToString("C")</td>
+                            <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <button class="manage-order-btn"
+                                        data-order-id="@order.OrderId"
+                                        data-customer-id="@order.CustomerId"
+                                        data-order-date="@order.OrderDate.ToString("yyyy-MM-dd")"
+                                        data-products='@Json.Serialize(order.OrderProducts.Select(op => new
+                                    {
+                                        op.ProductId,
+                                        op.ProductName,
+                                        op.Price,
+                                        op.ProductQuantity
+                                    }))'>
+                                    Hantera
+                                </button>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
-            <div class="order-actions">
-                <partial name="_OrderEditView" model="Model.Orders" />
-            </div>
-        </div> *@
+        </div>
+        <div class="order-actions">
+            <partial name="_OrderEditView" model="Model.Orders" />
+        </div>
     </div>
     <div class="third account-tab">
         <div class="inventory-management">
@@ -111,7 +121,7 @@
 						<th>Avdelning</th>
 						<th>Beskrivning</th>
 						<th>Bild</th>
-						<th>Recensioner</th>
+						<th>Recensioner</th> 
 						<th>Åtgärder</th>
 					</tr>
 				</thead>
@@ -139,6 +149,18 @@
                                     <span>Ingen bild</span>
                                 }
                             </td>
+                            <td>
+                                @if (product.Reviews != null && product.Reviews.Any())
+                                {
+                                    foreach (var review in product.Reviews)
+                                    {
+                                        <span>@review.ReviewText</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>Inga recensioner ännu</span>
+                                }
                             <td>
                                 <button class="manage-product-btn"
                                         data-product-id="@product.ProductId"
@@ -182,3 +204,4 @@
 
 <script src="~/js/productManagement.js"></script>
 <script src="~/js/userManagement.js"></script>
+<script src="~/js/orderManagement.js"></script>

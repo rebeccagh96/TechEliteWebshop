@@ -14,7 +14,7 @@ namespace TechElite.Models
         public int Quantity { get; set; }
 
         [Display(Name = "Pris")]
-        public int Price { get; set; }
+        public decimal Price { get; set; }
 
         [Display(Name = "Beskrivning")]
         public required string Description { get; set; }
@@ -25,6 +25,9 @@ namespace TechElite.Models
 
         [Display(Name = "Bild")]
         public byte[]? Image { get; set; }
-        
+
+        [Display(Name = "Recensioner")]
+        public ICollection<Review>? Reviews { get; set; } = new List<Review>();
+
     }
 }

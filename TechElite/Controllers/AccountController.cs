@@ -22,11 +22,15 @@ namespace TechElite.Controllers
             var currentUserId = _userManager.GetUserId(User);
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == currentUserId);
             var users = await _userManager.Users.ToListAsync();
-            var orders = await _context.Orders.Include(o => o.Products).ToListAsync();
+            var orders = await _context.Orders
+                .Include(o => o.OrderProducts)
+                    .ThenInclude(op => op.Product) // Ensure Product is included
+                .ToListAsync();
             var products = await _context.Products.ToListAsync();
             var departments = await _context.Departments.ToListAsync();
             var customers = await _context.Customers.ToListAsync();
 
+            
 
             var userViewModels = new List<UserViewModel>();
 
@@ -45,10 +49,27 @@ namespace TechElite.Controllers
                 });
             }
 
+            var orderViewModels = orders.Select(order => new OrderViewModel
+            {
+                OrderId = order.OrderId,
+                CustomerId = order.CustomerId,
+                UserName = order.UserName,
+                OrderDate = order.OrderDate,
+                OrderProducts = order.OrderProducts.Select(op => new OrderProductViewModel
+                {
+                    ProductId = op.ProductId,
+                    ProductName = op.Product.ProductName,
+                    Price = op.Product.Price,
+                    ProductQuantity = op.ProductQuantity,
+
+                }).ToList(),
+                TotalPrice = order.OrderProducts.Sum(op => op.Product.Price * op.ProductQuantity)
+            }).ToList();
+
             var model = new AdminAccountViewModel
             {
                 Users = userViewModels,
-                Orders = orders,
+                Orders = orderViewModels,
                 Customers = customers,
                 Products = products.Select(p => new ProductViewModel
                 {
@@ -99,6 +120,13 @@ namespace TechElite.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(UserViewModel model)
         {
+            if (!model.ChangePassword)
+            {
+                ModelState.Remove("Password");
+                ModelState.Remove("PasswordConfirm");
+                ModelState.Remove("CurrentPassword");
+            }
+
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
@@ -118,24 +146,27 @@ namespace TechElite.Controllers
             user.FirstName = model.FirstName ?? user.FirstName;
             user.LastName = model.LastName ?? user.LastName;
 
-
             // Uppdatera lösenord om det är angivet
-            if (!string.IsNullOrEmpty(model.Password))
+            if (model.ChangePassword && !string.IsNullOrEmpty(model.Password))
             {
+                if (string.IsNullOrEmpty(model.CurrentPassword))
+                {
+                    return BadRequest("Nuvarande lösenord krävs för att ändra lösenord.");
+                }
+
                 if (model.Password != model.PasswordConfirm)
                 {
                     return BadRequest("Lösenorden matchar inte.");
                 }
-                
+
                 var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.Password);
                 if (!changePasswordResult.Succeeded)
                 {
                     return BadRequest("Misslyckades med att uppdatera lösenordet. Kontrollera ditt gamla lösenord.");
                 }
-                
             }
 
-            // Updaterar roll
+            // Uppdatera roller om de är angivna
             if (model.Roles != null && model.Roles.Any())
             {
                 var selectedRole = model.Roles.First(); // Hämtar rollen

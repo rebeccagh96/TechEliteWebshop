@@ -52,6 +52,7 @@ namespace TechElite.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddReview(int? id, string name, string title, int rating, string comment)
+
         {
             var user = await _userManager.GetUserAsync(User);
             var model = await _context.Products
@@ -112,6 +113,7 @@ namespace TechElite.Controllers
                 .Include(r => r.Reviews)
                 .Where(d => d.DepartmentId == id)
                 .ToListAsync();
+
             if (model == null)
             {
                 return NotFound($"Department with ID {id} was not found.");
