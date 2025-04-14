@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using TechElite.Models;
 using TechElite.Areas.Identity.Data;
-using TechElite.Helpers.TechElite.Helpers;
-using System.Text.Json;
+using TechElite.Helpers;
 
 namespace TechElite.Controllers
 {
@@ -17,120 +16,50 @@ namespace TechElite.Controllers
             _context = context;
         }
 
-        // Display all orders for admin or management
-        public async Task<IActionResult> Index()
+        public IActionResult ViewCart()
         {
-            var orders = await _context.Orders
-                .Include(o => o.Customer)
-                .Include(o => o.OrderProducts)
-                    .ThenInclude(op => op.Product)
-                .ToListAsync();
-
-            var customers = await _context.Customers.ToListAsync();
-            var products = await _context.Products.ToListAsync();
-
-            var orderViewModels = orders.Select(order => new OrderViewModel
+            var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart") ?? new List<OrderProductViewModel>();
+            var model = new CartPageViewModel
             {
-                OrderId = order.OrderId,
-                CustomerId = order.CustomerId,
-                UserName = order.UserName,
-                OrderDate = order.OrderDate,
-                OrderProducts = order.OrderProducts.Select(op => new OrderProductViewModel
+                CartItems = cartItems,
+                Customer = new Customer
                 {
-                    ProductId = op.ProductId,
-                    ProductName = op.Product.ProductName,
-                    Price = op.Product.Price,
-                    ProductQuantity = op.ProductQuantity,
-                    CartQuantity = op.ProductQuantity
-                }).ToList(),
-                TotalPrice = order.TotalPrice
-            }).ToList();
-
-            var model = new AdminAccountViewModel
-            {
-                Orders = orderViewModels,
-                Customers = customers,
-                Products = products.Select(p => new ProductViewModel
-                {
-                    ProductId = p.ProductId,
-                    ProductName = p.ProductName,
-                    Quantity = p.Quantity,
-                    Price = p.Price,
-                    Description = p.Description,
-                    DepartmentId = p.DepartmentId
-                }).ToList()
+                    FirstName = string.Empty,
+                    LastName = string.Empty,
+                    Address = string.Empty,
+                    ZipCode = string.Empty,
+                    City = string.Empty,
+                    UserName = User.Identity?.Name ?? "Guest"
+                }
             };
-
             return View(model);
         }
 
-        // Add product to session cart
-        public IActionResult AddToCart(int id)
-        {
-            var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
-            if (product == null) return NotFound();
-
-            var cart = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart") ?? new List<OrderProductViewModel>();
-            var existing = cart.FirstOrDefault(c => c.ProductId == id);
-
-            if (existing != null)
-            {
-                existing.CartQuantity++;
-            }
-            else
-            {
-                cart.Add(new OrderProductViewModel
-                {
-                    ProductId = product.ProductId,
-                    ProductName = product.ProductName,
-                    Price = product.Price,
-                    CartQuantity = 1,
-                    ProductQuantity = 1
-                });
-            }
-
-            HttpContext.Session.SetObjectAsJson("Cart", cart);
-            return RedirectToAction("ViewCart");
-        }
-
-        // View the cart
-        public IActionResult ViewCart()
-        {
-            var cart = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart") ?? new List<OrderProductViewModel>();
-            return View(cart);
-        }
-
-        // Remove an item from the cart
-        public IActionResult RemoveFromCart(int id)
-        {
-            var cart = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart");
-            if (cart != null)
-            {
-                var item = cart.FirstOrDefault(c => c.ProductId == id);
-                if (item != null)
-                {
-                    cart.Remove(item);
-                    HttpContext.Session.SetObjectAsJson("Cart", cart);
-                }
-            }
-            return RedirectToAction("ViewCart");
-        }
-
-        // Checkout and save order
         [HttpPost]
-        public async Task<IActionResult> Checkout(int OrderId)
+        public async Task<IActionResult> Checkout(CartPageViewModel model)
         {
-            var cart = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart");
+            if (!ModelState.IsValid)
+            {
+                return View("ViewCart", model); // Show validation messages
+            }
 
-            if (cart == null || !cart.Any())
-                return RedirectToAction("ViewCart");
+            var customer = new Customer
+            {
+                FirstName = model.Customer.FirstName,
+                LastName = model.Customer.LastName,
+                Address = model.Customer.Address,
+                ZipCode = model.Customer.ZipCode,
+                City = model.Customer.City,
+                ApplicationUserId = model.Customer.ApplicationUserId,
+                UserName = model.Customer.UserName
+            };
 
             var order = new Order
             {
-                UserName = User.Identity?.Name ?? "Guest",
                 OrderDate = DateTime.Now,
-                OrderId = OrderId,
-                OrderProducts = cart.Select(item => new OrderProduct
+                UserName = model.Customer.UserName ?? "Guest",
+                Customer = customer,
+                OrderProducts = model.CartItems.Select(item => new OrderProduct
                 {
                     ProductId = item.ProductId,
                     ProductQuantity = item.CartQuantity
@@ -145,7 +74,19 @@ namespace TechElite.Controllers
             return RedirectToAction("Confirmation");
         }
 
-        // Show order confirmation
+        [HttpPost]
+        public IActionResult RemoveFromCart(int id)
+        {
+            var cart = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart") ?? new List<OrderProductViewModel>();
+            var itemToRemove = cart.FirstOrDefault(p => p.ProductId == id);
+            if (itemToRemove != null)
+            {
+                cart.Remove(itemToRemove);
+                HttpContext.Session.SetObjectAsJson("Cart", cart);
+            }
+            return RedirectToAction("ViewCart");
+        }
+
         public IActionResult Confirmation()
         {
             return View();

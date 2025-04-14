@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TechElite.Models;
 using TechElite.Areas.Identity.Data;
 using System.Threading.Tasks;
-using TechElite.Helpers.TechElite.Helpers;
+using TechElite.Helpers;
 
 namespace TechElite.Controllers
 {
@@ -61,30 +61,23 @@ namespace TechElite.Controllers
             return View(model);
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> Save(OrderViewModel model)
+        public async Task<IActionResult> Checkout(CartPageViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (model == null || model.CartItems == null || !model.CartItems.Any())
             {
-                var errors = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-                return BadRequest(new { message = "Ogiltig data", errors });
+                return RedirectToAction("ViewCart", "Cart");
             }
 
-            var order = new Order
+            var customer = new Customer
             {
-                OrderId = model.OrderId,
-                CustomerId = model.CustomerId,
-                UserName = model.UserName,
-                OrderDate = DateTime.Now,
-                OrderProducts = model.OrderProducts.Select(op => new OrderProduct
-                {
-                    ProductId = op.ProductId,
-                    ProductQuantity = op.ProductQuantity
-                }).ToList()
+                FirstName = model.Customer.FirstName,
+                LastName = model.Customer.LastName,
+                Address = model.Customer.Address,
+                ZipCode = model.Customer.ZipCode,
+                City = model.Customer.City,
+                ApplicationUserId = model.Customer.ApplicationUserId,
+                UserName = model.Customer.UserName
             };
 
             _context.Orders.Add(order);
@@ -172,12 +165,10 @@ namespace TechElite.Controllers
             }
         }
 
-
         [HttpPost]
         public async Task<IActionResult> AddToCart(int OrderId)
         {
             var cart = HttpContext.Session.GetObjectFromJson<Cart>("Cart");
-
 
             if (cart == null || !cart.Products.Any())
             {
@@ -187,33 +178,20 @@ namespace TechElite.Controllers
             var order = new Order
             {
                 OrderDate = DateTime.Now,
-                UserName = User.Identity?.Name ?? "Guest",
-                OrderId = OrderId,
-                OrderProducts = new List<OrderProduct>()
-            };
-
-            foreach (var item in cart.Products)
-            {
-                var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == item.ProductId);
-                if (product == null || product.Quantity < item.CartQuantity)
+                UserName = model.Customer.UserName ?? "Guest",
+                Customer = customer,
+                OrderProducts = model.CartItems.Select(item => new OrderProduct
                 {
-                    return RedirectToAction("ViewCart", "Cart");
-                }
-
-                product.Quantity -= item.CartQuantity;
-
-                order.OrderProducts.Add(new OrderProduct
-                {
-                    ProductId = product.ProductId,
+                    ProductId = item.ProductId,
                     ProductQuantity = item.CartQuantity
-                });
-            }
+                }).ToList()
+            };
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
             HttpContext.Session.Remove("Cart");
-            return RedirectToAction("Index");
+            return RedirectToAction("Confirmation", "Cart");
         }
     }
 }
