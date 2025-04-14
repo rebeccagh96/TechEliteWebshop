@@ -60,11 +60,39 @@ använd denna kanske
         
     </div>
     <div class="second account-tab">
-        <div class="Favorites">
+        <div class="Orderhistorik">
+            <div class="welcome">
+                <h2>Dina ordrar</h2>
+            </div>
+            <div class="orders">
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>OrderID</th>
+                            <th>Produkter</th>
+                            <th>Totalt</th>
+                            <th>Datum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.Orders)
+                        {
+                            <tr>
+                                <td>@order.OrderId</td>
+                                <td>@string.Join(", ", order.OrderProducts.Select(op => op.ProductName))</td>
+                                <td>@order.OrderProducts.Sum(op => op.Price * op.ProductQuantity).ToString("C")</td>
+                                <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                                <td>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div class="third account-tab">
-        <div class="Orderhistorik">
+        <div class="Favoriter">
         </div>
     </div>
     <div class="fourth account-tab">
