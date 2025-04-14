@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TechElite.Models;
 using TechElite.Areas.Identity.Data;
 using System.Threading.Tasks;
+using TechElite.Helpers.TechElite.Helpers;
 
 namespace TechElite.Controllers
 {
@@ -169,6 +170,46 @@ namespace TechElite.Controllers
             {
                 return BadRequest(new { success = false, message = "Ett fel inträffade: " + ex.Message });
             }
+        }
+
+        [HttpPost]
+        public Task<IActionResult> AddToCart()
+        {
+            var cart = HttpContext.Session.GetObjectFromJson = List<Cart>;
+            if (cart == null!)cart.Any();
+
+        return RedirectToAction("ViewCart", "Cart");
+
+            var order = new Order
+            {
+                OrderDate = DateTime.Now,
+                UserName = User.Identity?.Name ?? "Guest",
+                OrderProducts = new List<OrderProduct>()
+            };
+
+            foreach (var item in cart)
+            {
+                var product = _context.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
+                if (product == null(product.Stock < item.Quantity));
+        {
+                    // Om inte tillräckligt i lager
+                    return RedirectToAction("ViewCart", "Cart");
+                }
+
+                product.Quantity -= item.Quantity;
+
+                order.OrderProducts.Add(new OrderProduct
+                {
+                    ProductId = product.ProductId,
+                    ProductQuantity = item.Quantity
+                });
+            }
+
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+
+            HttpContext.Session.Remove("Cart");
+            return RedirectToAction("Index");
         }
 
     }
