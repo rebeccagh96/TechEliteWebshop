@@ -22,10 +22,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Product> Products { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    public DbSet<UserContact> userContacts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Product>()
+            .Property(p => p.Price)
+            .HasColumnType("decimal(18,2)");
 
         // Konfigurerar relationer
         modelBuilder.Entity<Customer>()
@@ -92,6 +97,19 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(n => n.ForumThread)
             .WithMany(ft => ft.Notifications)
             .HasForeignKey(n => n.ThreadId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<OrderProduct>()
+            .HasOne(op => op.Order)
+            .WithMany(o => o.OrderProducts)
+            .HasForeignKey(op => op.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+        modelBuilder.Entity<OrderProduct>()
+            .HasOne(op => op.Product)
+            .WithMany(p => p.OrderProducts)
+            .HasForeignKey(op => op.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Skapa statiska variabler för att kunna referera till dem vid relationer
@@ -181,6 +199,31 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         );
 
         var product1Id = 1;
+        var product2Id = 2;
+        var product3Id = 3;
+        var product4Id = 4;
+        var product5Id = 5;
+        var product6Id = 6;
+        var product7Id = 7;
+        var product8Id = 8;
+        var product9Id = 9;
+        var product10Id = 10;
+        var product11Id = 11;
+        var product12Id = 12;
+        var product13Id = 13;
+        var product14Id = 14;
+        var product15Id = 15;
+        var product16Id = 16;
+        var product17Id = 17;
+        var product18Id = 18;
+        var product19Id = 19;
+        var product20Id = 20;
+        var product21Id = 21;
+        var product22Id = 22;
+        var product23Id = 23;
+        var product24Id = 24;
+        var product25Id = 25;
+
         modelBuilder.Entity<Product>().HasData(
             new Product
             {
@@ -188,8 +231,224 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 DepartmentId = dept1Id,
                 ProductName = "Exempelprodukt",
                 Description = "Beskrivning av exempelprodukten",
-                Price = 100,
+                Price = 100.00m,
                 Quantity = 10
+            },
+            new Product
+            {
+                ProductId = product2Id,
+                DepartmentId = dept2Id,
+                ProductName = "Mac Attack",
+                Description = "En produkt för alla",
+                Price = 1990.00m,
+                Quantity = 20
+            },
+            new Product
+            {
+                ProductId = product3Id,
+                DepartmentId = dept3Id,
+                ProductName = "Temu Earbuds",
+                Description = "En produkt för alla",
+                Price = 19.00m,
+                Quantity = 15
+            },
+            new Product
+            {
+                ProductId = product4Id,
+                DepartmentId = dept4Id,
+                ProductName = "LADDARE X2000",
+                Description = "En produkt för alla",
+                Price = 19.00m,
+                Quantity = 150
+            },
+            new Product
+            {
+                ProductId = product5Id,
+                DepartmentId = dept5Id,
+                ProductName = "Xbox Kontroll",
+                Description = "En produkt för alla",
+                Price = 199.00m,
+                Quantity = 30
+            },
+            new Product
+            {
+                ProductId = product6Id,
+                DepartmentId = dept1Id,
+                ProductName = "Rit Bräda",
+                Description = "En produkt för alla",
+                Price = 19.00m,
+                Quantity = 100
+            },
+            new Product
+            {
+                ProductId = product7Id,
+                DepartmentId = dept2Id,
+                ProductName = "Windows Fusion",
+                Description = "En produkt för alla",
+                Price = 1990.00m,
+                Quantity = 10
+            },
+            new Product
+            {
+                ProductId = product8Id,
+                DepartmentId = dept3Id,
+                ProductName = "Professor Earbuds",
+                Description = "En bra produkt för alla",
+                Price = 19.00m,
+                Quantity = 120
+            },
+            new Product
+            {
+                ProductId = product9Id,
+                DepartmentId = dept4Id,
+                ProductName = "Smart Charger",
+                Description = "En bra product för alla",
+                Price = 19.00m,
+                Quantity = 35
+            },
+            new Product
+            {
+                ProductId = product10Id,
+                DepartmentId = dept5Id,
+                ProductName = "Custom ps5 Kontroll",
+                Description = "En produkt för alla.",
+                Price = 199.00m,
+                Quantity = 10
+            },
+            new Product
+            {
+                ProductId = product11Id,
+                DepartmentId = dept1Id,
+                ProductName = "Wish Rit Bräda",
+                Description = "En produkt för alla.",
+                Price = 19.00m,
+                Quantity = 15
+            },
+            new Product
+            {
+                ProductId = product12Id,
+                DepartmentId = dept2Id,
+                ProductName = "Elite Monitor",
+                Description = "En produkt för alla",
+                Price = 1990.00m,
+                Quantity = 50
+            },
+            new Product
+            {
+                ProductId = product13Id,
+                DepartmentId = dept3Id,
+                ProductName = "Airpods pro",
+                Description = "En produkt för alla.",
+                Price = 199.00m,
+                Quantity = 20
+            },
+            new Product 
+            {
+                ProductId = product14Id,
+                DepartmentId = dept4Id,
+                ProductName = "Supercharger adapter",
+                Description = "En produkt för alla.",
+                Price = 19.00m,
+                Quantity = 80
+            },
+            new Product
+            {
+                ProductId = product15Id,
+                DepartmentId = dept5Id,
+                ProductName = "Standard PS Kontroll",
+                Description = "En produkt för alla.",
+                Price = 199.00m,
+                Quantity = 50
+            },
+            new Product
+            {
+                ProductId = product16Id,
+                DepartmentId = dept1Id,
+                ProductName = "iphone 7",
+                Description = "En produkt för alla.",
+                Price = 1990.00m,
+                Quantity = 30
+            },
+            new Product
+            {
+                ProductId = product17Id,
+                DepartmentId = dept2Id,
+                ProductName = "PS5",
+                Description = "En produkt för alla.",
+                Price = 1990.00m,
+                Quantity = 20
+            },
+            new Product 
+            {
+                ProductId = product18Id,
+                DepartmentId = dept3Id,
+                ProductName = "Trådade Ipods Pro",
+                Description = "En produkt för alla.",
+                Price = 199.00m,
+                Quantity = 20
+            },
+            new Product
+            {
+                ProductId = product19Id,
+                DepartmentId = dept4Id,
+                ProductName = "iphone adapter",
+                Description = "En produkt för alla.",
+                Price = 19.00m,
+                Quantity = 30
+            },
+            new Product
+            {
+                ProductId = product20Id,
+                DepartmentId = dept5Id,
+                ProductName = "Nintendo",
+                Description = "En produkt för alla.",
+                Price = 1990.00m,
+                Quantity = 20
+            },
+            new Product
+            {
+                ProductId = product21Id,
+                DepartmentId = dept1Id,
+                ProductName = "iphone 5",
+                Description = "En produkt för alla.",
+                Price = 1990.00m,
+                Quantity = 20
+            },
+            new Product
+            {
+                ProductId = product22Id,
+                DepartmentId = dept2Id,
+                ProductName = "Win Screen",
+                Description = "En produkt för alla.",
+                Price = 1990.00m,
+                Quantity = 20
+            },
+            new Product
+            {
+                ProductId = product23Id,
+                DepartmentId = dept3Id,
+                ProductName = "WIN-Win Headpones",
+                Description = "En produkt för alla.",
+                Price = 199.00m,
+                Quantity = 20
+            },
+            new Product
+            {
+                ProductId = product24Id,
+                DepartmentId = dept4Id,
+                ProductName = "Superb Fläkt",
+                Description = "En produkt för alla.",
+                Price = 199.00m,
+                Quantity = 25
+            }, 
+            new Product
+            {
+                ProductId = product25Id,
+                DepartmentId = dept5Id,
+                ProductName = "Playstation 1",
+                Description = "En produkt för alla.",
+                Price = 1990.00m,
+                Quantity = 20
             }
         );
 
@@ -278,8 +537,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             }
         );
 
-        // Seeda en Order
+        // Seeda Ordrar
         var order1Id = 1;
+
         modelBuilder.Entity<Order>().HasData(
             new Order
             {
@@ -287,8 +547,52 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 CustomerId = customer1StaticId,
                 UserName = "user1",
                 OrderDate = new DateTime(2025, 1, 1),
-                ProductName = "Exempelprodukt",
-                TotalPrice = 100
+            }
+        );
+
+        modelBuilder.Entity<OrderProduct>().HasData(
+            new OrderProduct
+            {
+                Id = 1, 
+                OrderId = order1Id,
+                ProductId = product1Id,
+                ProductQuantity = 2 
+            },
+            new OrderProduct
+            {
+                Id = 2, 
+                OrderId = order1Id,
+                ProductId = product2Id,
+                ProductQuantity = 1 
+            }
+        );
+
+        var order2Id = 2;
+
+        modelBuilder.Entity<Order>().HasData(
+            new Order
+            {
+                OrderId = order2Id,
+                CustomerId = customer1StaticId,
+                UserName = "user1",
+                OrderDate = new DateTime(2025, 1, 1),
+            }
+        );
+
+        modelBuilder.Entity<OrderProduct>().HasData(
+            new OrderProduct
+            {
+                Id = 3,
+                OrderId = order2Id,
+                ProductId = product4Id,
+                ProductQuantity = 5
+            },
+            new OrderProduct
+            {
+                Id = 4,
+                OrderId = order2Id,
+                ProductId = product8Id,
+                ProductQuantity = 1
             }
         );
     }
@@ -344,28 +648,28 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         var users = new[] { user1, user2, admin1 };
 
-        //foreach (var user in users)
-        //{
-        //    if (await userManager.FindByEmailAsync(user.Email) == null)
-        //    {
-        //        var createUserResult = await userManager.CreateAsync(user, "Password123!");
-        //        if (createUserResult.Succeeded)
-        //        {
-        //            var roleToAssign = user.UserName.Equals("admin1", StringComparison.OrdinalIgnoreCase) ? "Admin" : "User";
-        //            var addRoleResult = await userManager.AddToRoleAsync(user, roleToAssign);
-        //            if (!addRoleResult.Succeeded)
-        //            {
-        //                var errors = string.Join(", ", addRoleResult.Errors.Select(e => e.Description));
-        //                Console.WriteLine($"{user.UserName} kunde inte tilldelas rollen: {roleToAssign}.{errors}");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            var errors = string.Join(", ", createUserResult.Errors.Select(e => e.Description));
-        //            Console.WriteLine($"{user.UserName} kunde inte skapas: {errors}");
-        //        }
+        foreach (var user in users)
+        {
+            if (await userManager.FindByEmailAsync(user.Email) == null)
+            {
+                var createUserResult = await userManager.CreateAsync(user, "Password123!");
+                if (createUserResult.Succeeded)
+                {
+                    var roleToAssign = user.UserName.Equals("admin1", StringComparison.OrdinalIgnoreCase) ? "Admin" : "User";
+                    var addRoleResult = await userManager.AddToRoleAsync(user, roleToAssign);
+                    if (!addRoleResult.Succeeded)
+                    {
+                        var errors = string.Join(", ", addRoleResult.Errors.Select(e => e.Description));
+                        Console.WriteLine($"{user.UserName} kunde inte tilldelas rollen: {roleToAssign}.{errors}");
+                    }
+                }
+                else
+                {
+                    var errors = string.Join(", ", createUserResult.Errors.Select(e => e.Description));
+                    Console.WriteLine($"{user.UserName} kunde inte skapas: {errors}");
+                }
 
-        //    }
-        //}
+            }
+        }
     }
 }

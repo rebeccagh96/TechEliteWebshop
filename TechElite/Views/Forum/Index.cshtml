@@ -2,6 +2,7 @@
 @model ForumViewModel
 @{
     ViewData["Title"] = "Forum";
+    int unreadCount = Model.Notifications.Count(n => !n.IsRead);
 }
 <head>
     <link rel="stylesheet" href="~/css/forum.css" asp-append-version="true" />
@@ -10,21 +11,36 @@
 <main>
     <div class="forum-container">
         <article class="forum-menu">
-            <img class="notifications" src="~/img/Icons/notifications.svg" onclick="showNotifications()">
-            <form asp-action="Search" method="get">
-                <input type="text" name="search" placeholder="Sök..." />
-                <button type="submit"><img src="~/img/Icons/search_black.svg"></button>
-            </form>
-            <a class="btn" asp-controller="Forum" asp-action="Create">Skapa tråd</a>
+            <div class="notification-container" onclick="showNotifications()">
+                <img class="notifications" src="~/img/Icons/notifications.svg" />
+                @if (unreadCount > 0)
+                {
+                    <span id="notification-badge" class="notification-badge">@unreadCount</span>
+                }
+            </div>
+            <div class="search">
+                <img src="~/img/Icons/search_black.svg" onclick="SearchForum()">
+                <form asp-action="SearchForum" method="get">
+                    <input class="search-input-forum" type="text" name="search" placeholder="Sök..." />
+                </form>
+            </div>
+            <div class="create">
+                <a class="btn" asp-controller="Forum" asp-action="Create">Skapa tråd</a>
+            </div>
         </article>
-
         <article id="notification-article">
             <section>
                 <h4>Notiser</h4>
                 <div>
-                    @foreach (ForumThread t in Model.ForumThreads)
+                    @foreach (Notification n in Model.Notifications)
                     {
-                        <p>Nytt inlägg i din tråd: <a class="notification-link" asp-controller="Forum" asp-action="Thread" asp-route-id="@t.ThreadId">@t.ThreadTitle</a></p>
+                        <p class="@(n.IsRead ? "read" : "unread")">
+                            @n.Message
+                            <a class="notification-link" asp-controller="Forum" 
+                                asp-action="Read" asp-route-id="@n.NotificationId">
+                                @n.ForumThread.ThreadTitle
+                            </a>
+                        </p>
                     }
                 </div>
             </section>
@@ -52,7 +68,7 @@
                     }
                     else
                     {
-                        <p>Du måste vara inloggad för att se dina trådar.</p>
+                        <p class="my-thread">Du måste vara inloggad för att se dina trådar.</p>
                     }
 
                     <a class="show-more" asp-controller="Forum" asp-action="MyThreads">Visa mer</a>
@@ -61,10 +77,4 @@
         </article>
     </div>
 </main>
-<script>
-    function showNotifications() {
-        var notis = document.getElementById("notification-article");
-        if (notis.style.display == "flex") notis.style.display = "none";
-        else notis.style.display = "flex";
-    }
-</script>
+<script src="~/js/forum.js"></script>

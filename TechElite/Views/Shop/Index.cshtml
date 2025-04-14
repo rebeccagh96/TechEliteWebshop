@@ -9,11 +9,14 @@
     <link rel="stylesheet" href="~/css/SpecShopStyle.css" asp-append-version="true" />
 </head>
 
-<article class="Feature">
-    <img max height="500px" src="~/img/Shop/tech.shop.jpg" alt="shop.img">
-</article>
+
 
 <main>
+    <article class="Feature">
+        <img max height="500px" src="~/img/Shop/tech.shop.jpg" alt="shop.img">
+    </article>
+    <div class="shop-container">
+    
         <article>
             <div class="filter">
                 <div class="filter-icons">
@@ -36,17 +39,21 @@
                 </button>
             </div>
             <div class="product-view">
-                <section>                
-                        <button><a asp-controller="Shop" asp-action="ProductPage">
+            @foreach (var p in Model.Products)
+            {
+                <section>
+                    <button>
+                        <a asp-controller="Shop" asp-action="ProductPage" asp-route-id="@p.ProductId">
                             <div class="products">
-                                <img src="~/img/Products/Charger/Charger2.svg" alt="">
+                                <img src="~/img/Products/Department@(p.DepartmentId)/Product@(p.ProductId).svg" alt="">
                             </div>
-                            <p>LADDARE X2000</p>
-                            <p><b>$19.90</b></p>
-                            <p>En produkt för alla</p>
+                            <p>@p.ProductName</p>
+                            <p><b>@p.Price</b></p>
+                            <p>@p.Description</p>
                         </a>
                     </button>
                 </section>
+            }
                 <section>
                         <button><a asp-controller="Shop" asp-action="ProductPage">
                             <div class="products">
@@ -149,5 +156,5 @@
             </div>
 
         </article>
-    
+    </div>
 </main>

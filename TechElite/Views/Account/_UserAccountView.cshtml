@@ -1,10 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using TechElite.Areas.Identity.Data
+@using System.Linq
+@using TechElite.Models
+@using Microsoft.AspNetCore.Mvc.Rendering
 
 
 @inject UserManager<ApplicationUser> UserManager
 
-@model IEnumerable<TechElite.Models.UserViewModel>
+@model TechElite.Models.AdminAccountViewModel
+
 
 <!-- https://codewithmukesh.com/blog/user-management-in-aspnet-core-mvc/
 använd denna kanske
@@ -15,35 +19,71 @@ använd denna kanske
         <div class="welcome">
             <h1>Välkommen @UserManager.GetUserName(User)!</h1>
         </div>
-        <div class="users">
-
-            <p>testtext</p>
-
+        <div class="Profile">
+            <div class="profile-details">
+                <img class="profile-picture" src="https://picsum.photos/100" alt="user icon">
+                <h2>Användarnamn:</h2>
+                <p>@UserManager.GetUserName(User)</p>
+                <h2>Förnamn:</h2>
+                <p>@UserManager.GetUserAsync(User).Result.FirstName</p>
+                <h2>Efternamn:</h2>
+                <p>@UserManager.GetUserAsync(User).Result.LastName</p>
+                <h2>E-post:</h2>
+                <p>@UserManager.GetUserAsync(User).Result.Email</p>
+                @if (Model.Customers != null)
+                {
+                    var customer = Model.Customers.FirstOrDefault(c => c.ApplicationUserId == UserManager.GetUserId(User));
+                    if (customer != null)
+                    {
+                        <h2>Adress:</h2>
+                        <p>@customer.Address</p>
+                        <h2>Postnummer:</h2>
+                        <p>@customer.ZipCode</p>
+                        <h2>Stad:</h2>
+                        <p>@customer.City</p>
+                    }
+                    else
+                    {
+                        <h2>Adress:</h2>
+                        <p>Ej angett</p>
+                        <h2>Postnummer:</h2>
+                        <p>Ej angett</p>
+                        <h2>Stad:</h2>
+                        <p>Ej angett</p>
+                    }
+                }
+            </div> 
+            <div class="profile-management">
+                <partial name="_UserAccountEditView" model="Model" />
+            </div>
         </div>
+        
     </div>
     <div class="second account-tab">
-        <div class="">
+        <div class="Favorites">
         </div>
     </div>
     <div class="third account-tab">
-        <div class="">
+        <div class="Orderhistorik">
         </div>
     </div>
     <div class="fourth account-tab">
-        <div class="">
+        <div class="Spårning">
             <h2>fourth tab</h2>
         </div>
     </div>
     <div class="fifth account-tab">
-        <div class="">
+        <div class="Trådar">
         </div>
     </div>
     <div class="sixth account-tab">
-        <div class="">
+        <div class="Inlägg">
         </div>
     </div>
     <div class="seventh account-tab">
-        <div class="">
+        <div class="Hjälp">
         </div>
     </div>
 </div>
+
+<script src="~/js/userManagement.js"></script>

@@ -58,7 +58,7 @@ span {
 
 .dropdown-content a:hover {
     background-color: #efefef77;
-    }
+}
 
 .dropdown:hover .dropdown-content {
     display: block;
@@ -69,4 +69,14 @@ span {
     padding: 10px;
     border: none;
     cursor: pointer;
+}
+
+a.btn {
+    padding: 10px;
+    width: 140px;
+}
+
+.buttons {
+    display: inline-block;
+    margin-top: 15px;
 }

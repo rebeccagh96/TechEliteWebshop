@@ -1,53 +1,62 @@
 ﻿@page
 @model TechElite.Areas.Identity.Pages.Account.LoginModel
 
-@{
-    ViewData["Title"] = "Log in";
-}
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
+<link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 
-            <form id="account" method="post">
-                <h2>Logga in med ditt konto.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="namn@exempel.se" />
-                    <label asp-for="Input.Email" class="form-label">E-mejladress</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Lösenord" />
-                    <label asp-for="Input.Password" class="form-label">Lösenord</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Logga in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Glömt ditt lösenord?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrera ny användare</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Skicka mailbekräftelse på nytt</a>
+
+<main>
+    <div class="login-container">
+        <article>
+            <div class="loginwelcome">
+                <div class="welcome">
+                    <h2>Välkommen till TechElite!</h2>
+                    <p>Registrera dig för att få tillgång till exklusiva erbjudanden och nyheter.</p>
+                    <p>Har du redan ett konto? Logga in för att se dina senaste köp och favoriter, delta i
+                            diskussionerna i forumet, och mycket mer!
                     </p>
                 </div>
-            </form>
-        </section>
+                <form id="account" class="loginregister" method="post">
+                    <h2>Logga in med ditt konto.</h2>
+                    <hr />
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="namn@exempel.se" />
+                        <label asp-for="Input.Email" class="form-label">E-postadress</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Lösenord" />
+                        <label asp-for="Input.Password" class="form-label">Lösenord</label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="checkbox mb-3">
+                        <label asp-for="Input.RememberMe" class="form-label">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                            @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        </label>
+                    </div>
+                    <div>
+                        <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Logga in</button>
+                    </div>
+                    <div>
+                        <p>
+                            <a id="forgot-password" asp-page="./ForgotPassword">Glömt ditt lösenord?</a>
+                        </p>
+                        <p>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrera ny användare</a>
+                        </p>
+                        <p>
+                            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Skicka mailbekräftelse på nytt</a>
+                        </p>
+                    </div>
+                </form>                    
+            </div>
+        </article>
     </div>
-</div>
+</main>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
