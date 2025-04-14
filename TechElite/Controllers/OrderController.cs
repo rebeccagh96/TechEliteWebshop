@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TechElite.Models;
 using TechElite.Areas.Identity.Data;
 using System.Threading.Tasks;
-using TechElite.Helpers.TechElite.Helpers;
+using TechElite.Helpers;
 
 namespace TechElite.Controllers
 {
@@ -61,157 +61,42 @@ namespace TechElite.Controllers
             return View(model);
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> Save(OrderViewModel model)
+        public async Task<IActionResult> Checkout(CartPageViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (model == null || model.CartItems == null || !model.CartItems.Any())
             {
-                var errors = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-                return BadRequest(new { message = "Ogiltig data", errors });
+                return RedirectToAction("ViewCart", "Cart");
             }
+
+            var customer = new Customer
+            {
+                FirstName = model.Customer.FirstName,
+                LastName = model.Customer.LastName,
+                Address = model.Customer.Address,
+                ZipCode = model.Customer.ZipCode,
+                City = model.Customer.City,
+                ApplicationUserId = model.Customer.ApplicationUserId,
+                UserName = model.Customer.UserName
+            };
 
             var order = new Order
             {
-                OrderId = model.OrderId,
-                CustomerId = model.CustomerId,
-                UserName = model.UserName,
                 OrderDate = DateTime.Now,
-                OrderProducts = model.OrderProducts.Select(op => new OrderProduct
+                UserName = model.Customer.UserName ?? "Guest",
+                Customer = customer,
+                OrderProducts = model.CartItems.Select(item => new OrderProduct
                 {
-                    ProductId = op.ProductId,
-                    ProductQuantity = op.ProductQuantity
+                    ProductId = item.ProductId,
+                    ProductQuantity = item.CartQuantity
                 }).ToList()
             };
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit([FromBody] OrderEditDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest(new { message = "Ogiltig data" });
-            }
-
-            var order = await _context.Orders
-                .Include(o => o.OrderProducts)
-                .ThenInclude(op => op.Product)
-                .FirstOrDefaultAsync(o => o.OrderId == model.OrderId);
-
-            if (order == null)
-            {
-                return NotFound("Ordern hittades inte.");
-            }
-
-            foreach (var orderProduct in model.OrderProducts)
-            {
-                var existingOrderProduct = order.OrderProducts.FirstOrDefault(op => op.ProductId == orderProduct.ProductId);
-                if (existingOrderProduct != null)
-                {
-                    existingOrderProduct.ProductQuantity = orderProduct.ProductQuantity;
-                }
-                else
-                {
-                    order.OrderProducts.Add(new OrderProduct
-                    {
-                        ProductId = orderProduct.ProductId,
-                        ProductQuantity = orderProduct.ProductQuantity
-                    });
-                }
-            }
-
-            var productIdsToRemove = model.OrderProducts
-                .Where(op => op.ProductQuantity == 0)
-                .Select(op => op.ProductId)
-                .ToList();
-
-            order.OrderProducts = order.OrderProducts
-                .Where(op => !productIdsToRemove.Contains(op.ProductId))
-                .ToList();
-
-            await _context.SaveChangesAsync();
-            return Ok(new { success = true, message = "Ordern uppdaterades." });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete([FromBody] OrderDeleteDto request)
-        {
-            if (request == null || request.OrderId <= 0)
-            {
-                return BadRequest("Order ID krävs.");
-            }
-
-            int orderId = request.OrderId;
-
-            var order = await _context.Orders
-                .Include(o => o.OrderProducts)
-                .FirstOrDefaultAsync(o => o.OrderId == orderId);
-
-            if (order == null)
-            {
-                return NotFound("Ordern hittades inte.");
-            }
-
-            _context.Orders.Remove(order);
-
-            try
-            {
-                await _context.SaveChangesAsync();
-                return Ok(new { success = true, message = "Ordern raderades framgångsrikt." });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { success = false, message = "Ett fel inträffade: " + ex.Message });
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddToCart(int OrderId)
-        {
-            var cart = HttpContext.Session.GetObjectFromJson<Cart>("Cart");
-
-            if (cart == null || !cart.Products.Any())
-            {
-                return RedirectToAction("ViewCart", "Cart");
-            }
-
-            var order = new Order
-            {
-                OrderDate = DateTime.Now,
-                UserName = User.Identity?.Name ?? "Guest",
-                OrderId = OrderId,
-                OrderProducts = new List<OrderProduct>()
-            };
-
-            foreach (var item in cart.Products)
-            {
-                var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == item.ProductId);
-                if (product == null || product.Quantity < item.CartQuantity)
-                {
-                    return RedirectToAction("ViewCart", "Cart");
-                }
-
-                product.Quantity -= item.CartQuantity;
-
-                order.OrderProducts.Add(new OrderProduct
-                {
-                    ProductId = product.ProductId,
-                    ProductQuantity = item.CartQuantity
-                });
-            }
-
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
 
             HttpContext.Session.Remove("Cart");
-            return RedirectToAction("Index");
+            return RedirectToAction("Confirmation", "Cart");
         }
     }
 }
