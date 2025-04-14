@@ -57,7 +57,7 @@
                 </div>
             </section>
             <section>
-                <h4>Mina trådar</h4>
+                <h4>Mina trådar och inlägg</h4>
                 <div>
                     @if (Model.CurrentUser != null)
                     {
@@ -65,10 +65,14 @@
                     {
                         <a class="my-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@myThread.ThreadId">@myThread.ThreadTitle</a>
                     }
+                    @foreach (var myReply in Model.ForumReplies)
+                    {
+                        <a class="my-thread" asp-controller="Forum" asp-action="Thread" asp-route-id="@myReply.ReplyId">@myReply.Content</a>
+                    }
                     }
                     else
                     {
-                        <p class="my-thread">Du måste vara inloggad för att se dina trådar.</p>
+                        <p class="my-thread">Du måste vara inloggad för att se dina trådar och inlägg.</p>
                     }
 
                     <a class="show-more" asp-controller="Forum" asp-action="MyThreads">Visa mer</a>
