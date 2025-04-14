@@ -12,6 +12,7 @@ namespace TechElite.Models
         public IEnumerable<OrderViewModel> Orders { get; set; }
         public IEnumerable<OrderProductViewModel> OrderProducts { get; set; }
         public IEnumerable<Cart> Carts { get; set; } = new List<Cart>();
+        public IEnumerable<UserContact> UserContacts { get; set; }
 
         public int SelectedDepartmentId { get; set; }
     }
