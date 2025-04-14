@@ -1,8 +1,49 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<head>
-    <link rel="stylesheet" href="~/css/checkout.css" asp-append-version="true" />
-</head>
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using System.Linq
+@using TechElite.Models
+
+@inject UserManager<ApplicationUser> UserManager
+
+@model TechElite.Models.AdminAccountViewModel
+
+<div class="cart-container">
+    <div class="cart">
+        <div class="cart-heading">
+            <h1>Din varukorg @UserManager.GetUserName(User)!</h1>
+        </div>
+        <div class="cart-items">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Produkt</th>
+                        <th>Antal</th>
+                        <th>Pris</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Orders)
+                    {
+                        foreach (var op in order.OrderProducts)
+                        {
+                            <tr>
+                                <td>@op.ProductName</td>
+                                <td>@op.ProductQuantity</td>
+                                <td>@op.Price</td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td colspan="3">
+                                <strong>
+                                    Total:
+                                    @order.OrderProducts.Sum(op => op.Price * op.ProductQuantity) kr
+                                </strong>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

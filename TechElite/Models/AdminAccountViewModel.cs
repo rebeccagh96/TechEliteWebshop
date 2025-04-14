@@ -11,6 +11,8 @@ namespace TechElite.Models
         public IEnumerable<Department> Departments { get; set; }
         public IEnumerable<OrderViewModel> Orders { get; set; }
         public IEnumerable<OrderProductViewModel> OrderProducts { get; set; }
+        public IEnumerable<Cart> Carts { get; set; }
+
         public int SelectedDepartmentId { get; set; }
     }
 }
