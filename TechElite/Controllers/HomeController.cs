@@ -31,6 +31,11 @@ namespace TechElite.Controllers
             return View(model);
         }
 
+        public IActionResult AllaVillkor()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
