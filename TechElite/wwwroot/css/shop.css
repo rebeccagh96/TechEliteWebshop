@@ -13,7 +13,7 @@ h2 {
 
 article {
     display: flex;
-    flex-direction: column;
+    flex-flow:row wrap;
     max-width: 1200px;
     width: 100%;
     margin: auto;
@@ -21,13 +21,14 @@ article {
     justify-content: center;
 }
 
-section {
-    flex-direction: column;
+.Shop-section {
+    display:flex;
+    flex-flow: row wrap;
+    max-width: 200px;
     background-color: white;
     padding: 10px;
     margin: 20px;
     border-radius: 5px;
-
     filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.100));
 }
 
@@ -60,6 +61,9 @@ section {
         width: 150px;
         background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
     }
+.products {
+    margin: 0 auto;
+}
 
 .products img {
     max-height: 60%;
@@ -68,12 +72,18 @@ section {
 }
 
 .Feature {
- filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.479));
-background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
-display: flex;
-flex-direction: column;
-margin: 20px auto;
+    filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.479));
+    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+    display: flex;
+    flex-direction: column;
+    margin: 20px auto;
+ 
 }
+    .Feature img {
+        max-height: 500px;
+        max-width: 100%;
+        min-width: 200px;
+    }
 
 .säljtext {
     padding-left: 10%
@@ -236,4 +246,9 @@ h3{
         margin-top: 20px;
         align-self: flex-start;
     }
-  
+
+    .filter-icons button{
+        color:white;
+    }
+
+   

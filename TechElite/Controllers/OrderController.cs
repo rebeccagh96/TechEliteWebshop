@@ -173,7 +173,47 @@ namespace TechElite.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> AddToCart()
+        {
+            var cart = HttpContext.Session.GetObjectFromJson<Cart>("Cart");
 
+
+            if (cart == null || !cart.Products.Any())
+            {
+                return RedirectToAction("ViewCart", "Cart");
+            }
+
+            var order = new Order
+            {
+                OrderDate = DateTime.Now,
+                UserName = User.Identity?.Name ?? "Guest",
+                ProductName = "Beställning",
+                OrderProducts = new List<OrderProduct>()
+            };
+
+            foreach (var item in cart.Products)
+            {
+                var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == item.ProductId);
+                if (product == null || product.Quantity < item.CartQuantity)
+                {
+                    return RedirectToAction("ViewCart", "Cart");
+                }
+
+                product.Quantity -= item.CartQuantity;
+
+                order.OrderProducts.Add(new OrderProduct
+                {
+                    ProductId = product.ProductId,
+                    ProductQuantity = item.CartQuantity
+                });
+            }
+
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            HttpContext.Session.Remove("Cart");
+            return RedirectToAction("Index");
+        }
     }
 }
-

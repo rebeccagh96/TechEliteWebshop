@@ -1,5 +1,34 @@
-﻿<div class="text-center">
-    <h2>Tack för ditt köp!</h2>
-    <p>Din beställning har mottagits. Du kommer att få en bekräftelse via e-post.</p>
-    <a href="/Shop" class="btn btn-primary mt-3">Tillbaka till butiken</a>
+﻿@model TechElite.Models.AdminAccountViewModel
+<div cart-container>
+     <div class="text-center">
+        <h2>Tack för ditt köp!</h2>
+        <p>Din beställning har mottagits. Du kommer att få en bekräftelse via e-post.</p>
+        <a href="/Shop" class="btn btn-primary mt-3">Tillbaka till butiken</a>
+    </div>
+    <div class="orders">
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>OrderID</th>
+                    <th>KundID</th>
+                    <th>Produkter</th>
+                    <th>Totalt</th>
+                    <th>Datum</th>
+                    <th>Åtgärder</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Orders)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.CustomerId</td>
+                        <td>@string.Join(", ", order.OrderProducts.Select(op => op.ProductName))</td>
+                        <td>@order.OrderProducts.Sum(op => op.Price * op.ProductQuantity).ToString("C")</td>
+                        <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

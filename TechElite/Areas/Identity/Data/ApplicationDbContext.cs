@@ -233,9 +233,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             {
                 ProductId = product1Id,
                 DepartmentId = dept1Id,
-                ProductName = "Exempelprodukt",
-
-                Description = "Beskrivning av exempelprodukten",
+                ProductName = "Elite Phone",
+                Description = productDescription,
                 Price = 100.00m,
                 Quantity = 10
             },

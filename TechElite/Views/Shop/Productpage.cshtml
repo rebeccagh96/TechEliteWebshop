@@ -11,6 +11,12 @@
     ViewData["Title"] = "Productpage";
  //   var image = $"/img/Products/Charger{Model.ProductId}.svg";
 }
+
+
+
+    @await Html.PartialAsync("_ProductCard", Model)
+
+
 <head>
     <link rel="stylesheet" href="~/css/shop.css" asp-append-version="true" />
 </head>
