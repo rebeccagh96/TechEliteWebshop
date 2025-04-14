@@ -174,7 +174,7 @@ namespace TechElite.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddToCart()
+        public async Task<IActionResult> AddToCart(int OrderId)
         {
             var cart = HttpContext.Session.GetObjectFromJson<Cart>("Cart");
 
@@ -188,7 +188,7 @@ namespace TechElite.Controllers
             {
                 OrderDate = DateTime.Now,
                 UserName = User.Identity?.Name ?? "Guest",
-                ProductName = "Beställning",
+                OrderId = OrderId,
                 OrderProducts = new List<OrderProduct>()
             };
 
