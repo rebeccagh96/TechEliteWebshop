@@ -108,11 +108,6 @@ namespace TechElite.Controllers
                 return BadRequest("You must be logged in.");
             }
 
-            /*var forumThreads = await _context.ForumThreads
-                .Where(ft => ft.ApplicationUserId == user.Id)
-                .Include(r => r.Replies)
-                .ToListAsync();*/
-
             var forumCategories = await _context.ForumCategories.ToListAsync();
             var forumThreads = await _context.ForumThreads.Where(ft => ft.ApplicationUserId == user.Id).ToListAsync();
             var forumReplies = await _context.ForumReplies.Where(r => r.ApplicationUserId == user.Id).ToListAsync();
