@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TechElite.Models;
 using TechElite.Areas.Identity.Data;
 using System.Threading.Tasks;
+using TechElite.Helpers.TechElite.Helpers;
 
 namespace TechElite.Controllers
 {
@@ -171,46 +172,46 @@ namespace TechElite.Controllers
             }
         }
 
-        //[HttpPost]
-        //public Task<IActionResult> Checkout()
-        //{
-        //    var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart");
-        //    if (cart == null!)cart.Any();
+        [HttpPost]
+        public async Task<IActionResult> AddToCart()
+        {
+            var cart = HttpContext.Session.GetObjectFromJson<Cart>("Cart");
 
-        //return RedirectToAction("ViewCart", "Cart");
+            if (cart == null || !cart.Products.Any())
+            {
+                return RedirectToAction("ViewCart", "Cart");
+            }
 
-        //    var order = new Order
-        //    {
-        //        OrderDate = DateTime.Now,
-        //        UserName = User.Identity?.Name ?? "Guest",
-        //        OrderProducts = new List<OrderProduct>()
-        //    };
+            var order = new Order
+            {
+                OrderDate = DateTime.Now,
+                UserName = User.Identity?.Name ?? "Guest",
+                ProductName = "Beställning",
+                OrderProducts = new List<OrderProduct>()
+            };
 
-        //    foreach (var item in cart)
-        //    {
-        //        var product = _context.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
-        //        if (product == null(product.Stock < item.Quantity));
-        //{
-        //            // Om inte tillräckligt i lager
-        //            return RedirectToAction("ViewCart", "Cart");
-        //        }
+            foreach (var item in cart.Products)
+            {
+                var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == item.ProductId);
+                if (product == null || product.Quantity < item.CartQuantity)
+                {
+                    return RedirectToAction("ViewCart", "Cart");
+                }
 
-        //        product.Quantity -= item.Quantity;
+                product.Quantity -= item.CartQuantity;
 
-        //        order.OrderProducts.Add(new OrderProduct
-        //        {
-        //            ProductId = product.ProductId,
-        //            ProductQuantity = item.Quantity
-        //        });
-        //    }
+                order.OrderProducts.Add(new OrderProduct
+                {
+                    ProductId = product.ProductId,
+                    ProductQuantity = item.CartQuantity
+                });
+            }
 
-        //    _context.Orders.Add(order);
-        //    _context.SaveChanges();
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
 
-        //    HttpContext.Session.Remove("Cart");
-        //    return RedirectToAction("Index");
-        //}
-
+            HttpContext.Session.Remove("Cart");
+            return RedirectToAction("Index");
+        }
     }
 }
-

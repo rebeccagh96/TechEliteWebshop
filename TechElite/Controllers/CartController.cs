@@ -118,7 +118,7 @@ namespace TechElite.Controllers
 
         // Checkout and save order
         [HttpPost]
-        public async Task<IActionResult> Checkout()
+        public async Task<IActionResult> Checkout(int OrderId)
         {
             var cart = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart");
 
@@ -129,7 +129,7 @@ namespace TechElite.Controllers
             {
                 UserName = User.Identity?.Name ?? "Guest",
                 OrderDate = DateTime.Now,
-                ProductName = "Beställning",
+                OrderId = OrderId,
                 OrderProducts = cart.Select(item => new OrderProduct
                 {
                     ProductId = item.ProductId,

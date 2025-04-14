@@ -71,7 +71,8 @@ main {
 .checkout-container,
 .about-container,
 .login-container,
-.signup-container {
+.signup-container,
+.cart-container {
     min-height: 70vh;
     background-color: #e3e3e3ff;
 }
