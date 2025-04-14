@@ -69,12 +69,18 @@ article {
 }
 
 .Feature {
- filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.479));
-background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
-display: flex;
-flex-direction: column;
-margin: 20px auto;
+    filter: drop-shadow(1px 4px 5px rgba(0, 0, 0, 0.479));
+    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+    display: flex;
+    flex-direction: column;
+    margin: 20px auto;
+ 
 }
+    .Feature img {
+        max-height: 500px;
+        max-width: 100%;
+        min-width: 200px;
+    }
 
 .säljtext {
     padding-left: 10%
@@ -241,3 +247,5 @@ h3{
     .filter-icons button{
         color:white;
     }
+
+   
