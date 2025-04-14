@@ -192,3 +192,24 @@ span {
         padding: 10px 25px;
         font-size: 1em;
     }
+
+.villkor {
+    width: 100%;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    resize: none;
+    box-sizing: border-box;
+}
+
+section {
+    background-color: white;
+    max-width: 100%;
+    min-width: 200px;
+    flex-direction: column;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+}
