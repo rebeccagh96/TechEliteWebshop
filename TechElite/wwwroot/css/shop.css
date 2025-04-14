@@ -61,6 +61,9 @@ article {
         width: 150px;
         background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
     }
+.products {
+    margin: 0 auto;
+}
 
 .products img {
     max-height: 60%;
