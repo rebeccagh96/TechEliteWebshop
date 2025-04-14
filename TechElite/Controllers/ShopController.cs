@@ -9,12 +9,13 @@ namespace TechElite.Controllers
     public class ShopController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ShopController(ApplicationDbContext context)
+        public ShopController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
-
 
         public async Task<IActionResult> Index()
         {
@@ -53,19 +54,30 @@ namespace TechElite.Controllers
         public async Task<IActionResult> AddReview(int? id, string name, string title, int rating, string comment)
 
         {
-            if (id is null)
-            {
-                return BadRequest("You must pass in a DepartmentId.");
-            }
+            var user = await _userManager.GetUserAsync(User);
             var model = await _context.Products
-                .Include(p => p.ProductName)
-                .ThenInclude(d => d.Description)
-                .FirstOrDefaultAsync(t => t.ProductId == id);
-            if (model == null)
+                .Include(r => r.Reviews)
+                .FirstOrDefaultAsync(p => p.ProductId == id);
+            if (model is null)
             {
-                return NotFound($"Department with ID {id} was not found.");
+                return BadRequest("ProductId not found");
             }
-            return View(model);
+
+            var review = new Review
+            {
+                ProductId = model.ProductId,
+                ReviewerName = name,
+                ReviewTitle = title,
+                Rating = rating,
+                ReviewText = comment,
+                ReviewDate = DateTime.Now,
+                ApplicationUserId = user.Id
+            };
+
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Productpage", new { id = model.ProductId });
         }
 
         public IActionResult Datorer()
