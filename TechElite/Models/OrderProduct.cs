@@ -20,3 +20,4 @@ namespace TechElite.Models
         public int ProductQuantity { get; set; } // Antal av produkten i ordern
     }
 }
+

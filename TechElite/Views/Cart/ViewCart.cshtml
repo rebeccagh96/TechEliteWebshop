@@ -1,50 +1,50 @@
 ﻿@model List<TechElite.Models.OrderProductViewModel>
 
 <div class="cart-container">
-    <h2>Din varukorg</h2>
+<h2>Din varukorg</h2>
 
-    @if (!Model.Any())
-    {
-        <p>Din varukorg är tom.</p>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
+@if (!Model.Any())
+{
+    <p>Din varukorg är tom.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Antal</th>
+                <th>Pris</th>
+                <th>Totalt</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>Produkt</th>
-                    <th>Antal</th>
-                    <th>Pris</th>
-                    <th>Totalt</th>
-                    <th></th>
+                    <td>@item.ProductName</td>
+                    <td>@item.CartQuantity</td>
+                    <td>@item.Price kr</td>
+                    <td>@(item.Price * item.CartQuantity) kr</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" asp-route-id="@item.ProductId" method="post">
+                            <button type="submit" class="btn btn-danger">Ta bort</button>
+                        </form>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.ProductName</td>
-                        <td>@item.CartQuantity</td>
-                        <td>@item.Price kr</td>
-                        <td>@(item.Price * item.CartQuantity) kr</td>
-                        <td>
-                            <form asp-action="RemoveFromCart" asp-route-id="@item.ProductId" method="post">
-                                <button type="submit" class="btn btn-danger">Ta bort</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 
-        <div class="text-end">
-            <form asp-action="Checkout" method="post">
-                <button type="submit" class="btn btn-success">Köp nu</button>
-            </form>
-        </div>
-    }
+    <div class="text-end">
+        <form asp-action="Checkout" method="post">
+            <button type="submit" class="btn btn-success">Köp nu</button>
+        </form>
+    </div>
+}
 
-    <a href="/Shop" class="btn btn-secondary">Fortsätt handla</a>
+<a href="/Shop" class="btn btn-secondary">Fortsätt handla</a>
 
 
 </div>

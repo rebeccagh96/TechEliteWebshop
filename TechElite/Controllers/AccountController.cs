@@ -48,7 +48,7 @@ namespace TechElite.Controllers
                     LastName = user.LastName,
                 });
             }
-
+          
             var orderViewModels = orders.Select(order => new OrderViewModel
             {
                 OrderId = order.OrderId,
@@ -84,6 +84,7 @@ namespace TechElite.Controllers
                 }).ToList(),
                 Departments = departments
             };
+
 
             return View(model);
         }

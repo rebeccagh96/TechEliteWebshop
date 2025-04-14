@@ -34,8 +34,12 @@
                 <a asp-controller="About" asp-action="Index">Om oss</a>
             </nav>
             <div class="icons">
-                <a href="#"><img class="icon "src="~/img/Icons/cart.svg" alt="Varukorg"></a>
+                <a asp-controller="Cart" asp-action="ViewCart">
+                    <img class="icon" src="~/img/Icons/cart.svg" alt="Varukorg" />
+                </a>
+
                 <partial name="_LoginPartial" />
+
 
                 <div class="search">
                     <span class="search-icon material-symbols-outlined" onclick="toggleSearch()">search</span>
