@@ -41,31 +41,31 @@
             <h3>Kundinformation</h3>
             <form asp-action="Checkout" asp-controller="Cart" method="post">
                 <div class="form-group">
-                    <label for="firstName"></label>
+                    <label for="firstName">Förnamn:</label>
                     <input name="firstname" class="form-control" />
                     <span asp-validation-for="Customer.FirstName" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="lastName"></label>
+                    <label for="lastName">Efternamn:</label>
                     <input name="lastname" class="form-control" />
                     <span asp-validation-for="Customer.LastName" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="address"></label>
+                    <label for="address">Adress:</label>
                     <input name="address" class="form-control" />
                     <span asp-validation-for="Customer.Address" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="zipcode"></label>
+                    <label for="zipcode">Postnummer:</label>
                     <input name="zipcode" class="form-control" />
                     <span asp-validation-for="Customer.ZipCode" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="city"></label>
+                    <label for="city">Stad</label>
                     <input name="city" class="form-control" />
                     <span asp-validation-for="Customer.City" class="text-danger"></span>
                 </div>
