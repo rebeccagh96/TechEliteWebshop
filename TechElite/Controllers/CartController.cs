@@ -4,16 +4,20 @@ using Microsoft.AspNetCore.Http;
 using TechElite.Models;
 using TechElite.Areas.Identity.Data;
 using TechElite.Helpers;
+using Microsoft.AspNetCore.Identity;
+using System.Text.Json;
 
 namespace TechElite.Controllers
 {
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(ApplicationDbContext context)
+        public CartController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult ViewCart()
@@ -35,37 +39,82 @@ namespace TechElite.Controllers
             return View(model);
         }
 
+        // Add a product to the cart
         [HttpPost]
-        public async Task<IActionResult> Checkout(CartPageViewModel model)
+        public IActionResult AddToCart(int id)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
+            if (product == null) return NotFound();
+
+            var cart = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart") ?? new List<OrderProductViewModel>();
+            var existing = cart.FirstOrDefault(c => c.ProductId == id);
+
+            if (existing != null)
+            {
+                existing.CartQuantity++;
+            }
+            else
+            {
+                cart.Add(new OrderProductViewModel
+                {
+                    ProductId = product.ProductId,
+                    ProductName = product.ProductName,
+                    Price = product.Price,
+                    CartQuantity = 1,
+                    ProductQuantity = 1
+                });
+            }
+
+            HttpContext.Session.SetObjectAsJson("Cart", cart);
+            return RedirectToAction("ViewCart");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Checkout(string firstname, string lastname, string address, string zipcode, string city)
         {
             if (!ModelState.IsValid)
             {
-                return View("ViewCart", model); // Show validation messages
+                return View("ViewCart"); // Show validation messages
             }
+            var FirstName = firstname;
+            var LastName = lastname;
+            var Address = address;
+            var Zipcode = zipcode;
+            var City = city;
+            var user = await _userManager.GetUserAsync(User);
 
             var customer = new Customer
             {
-                FirstName = model.Customer.FirstName,
-                LastName = model.Customer.LastName,
-                Address = model.Customer.Address,
-                ZipCode = model.Customer.ZipCode,
-                City = model.Customer.City,
-                ApplicationUserId = model.Customer.ApplicationUserId,
-                UserName = model.Customer.UserName
+                FirstName = FirstName,
+                LastName = LastName,
+                Address = Address,
+                ZipCode = Zipcode,
+                City = City,
+                ApplicationUserId = user.Id,
+                UserName = user.UserName
             };
 
+            var cartJson = HttpContext.Session.GetString("Cart");
+            if (string.IsNullOrEmpty(cartJson))
+            {
+                ModelState.AddModelError("", "Din kundvagn är tom.");
+                return View("ViewCart");
+            }
+
+            var cartItems = JsonSerializer.Deserialize<List<Product>>(cartJson);
             var order = new Order
             {
                 OrderDate = DateTime.Now,
-                UserName = model.Customer.UserName ?? "Guest",
+                UserName = user.UserName,
                 Customer = customer,
-                OrderProducts = model.CartItems.Select(item => new OrderProduct
+                OrderProducts = cartItems.Select(item => new OrderProduct
                 {
                     ProductId = item.ProductId,
-                    ProductQuantity = item.CartQuantity
+                    ProductQuantity = item.Quantity,
                 }).ToList()
             };
 
+            _context.Customers.Add(customer);
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
