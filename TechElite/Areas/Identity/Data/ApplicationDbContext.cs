@@ -23,6 +23,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<UserContact> userContacts { get; set; }
+    public DbSet<Cart> carts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
