@@ -1,7 +1,15 @@
-﻿@using TechElite.Models
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using TechElite.Models
 @model Product
+
+<<<<<<< HEAD
+@inject SignInManager<ApplicationUser> SignInManager
+=======
+>>>>>>> master
 @{
     ViewData["Title"] = "Productpage";
+ //   var image = $"/img/Products/Charger{Model.ProductId}.svg";
 }
 
 
@@ -25,14 +33,6 @@
                 <p><b>@Model.Price</b></p><br>
                 <p>
                     @Model.Description
-                    <!--Upplev kraften i den senaste tekniken! 🚀 Designad för att leverera hög prestanda,
-                    smart funktionalitet och stilren estetik.
-                    Med avancerad teknik och kvalitativa material säkerställer
-                    denna produkt en smidig och pålitlig upplevelse,
-                    oavsett om det gäller arbete, underhållning eller vardagsbehov.
-                    Innovativa funktioner och modern design gör den till ett
-                    självklart val för den som vill ta sin tech-vardag till nästa nivå.
-                    Uppgradera och upptäck skillnaden idag!😁-->
                 </p>
                 <p><Br></Br></p>
                 <form asp-controller="Cart" asp-action="AddToCart" method="post">
@@ -41,64 +41,73 @@
                 </form>
             </section>
         </article>
-        <!--<div class="filter">
-            <div class="filter-icons">
-                <div class="dropdown">
-                    <button><img src="~/img/Icons/filter_blck.svg" alt="icon"></button>
-                    <div class="dropdown-content">
-                        @*foreach (var d in Department)
-                        {
-                            <a asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="@d.DepartmentId">@d.DepartmentName</a>
-                        }*@
-                    </div> 
-                </div>
-            </div>
-            <button class="cartlänk"><a href="cart.html"><img src="~/img/Icons/cart_blck.svg" alt="cart"></a></button>
-                </div>-->
         <div class="reviews-container">
             <div class="reviews-section">
                 <div class="review-form-container">
                     <div class="review-form">
                         <h3>Lämna en recension</h3>
-                        <form asp-action="" method="post">
-                            <label for="name">Ditt namn</label>
-                            <input type="text" id="name" name="name" placeholder="Skriv ditt namn..." required>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <form asp-action="AddReview" method="post">
+                                <input type="hidden" name="id" value="@Model.ProductId" />
+                                <label for="name">Ditt namn</label>
+                                <input type="text" id="name" name="name" placeholder="Skriv ditt namn..." required />
+                                <label for="title">Titel</label>
+                                <input type="text" name="title" required />
+                                <label for="rating">Betyg</label>
+                                <select id="rating" name="rating" required>
+                                    <option value="">Välj betyg</option>
+                                    <option value="5">★★★★★ (5)</option>
+                                    <option value="4">★★★★☆ (4)</option>
+                                    <option value="3">★★★☆☆ (3)</option>
+                                    <option value="2">★★☆☆☆ (2)</option>
+                                    <option value="1">★☆☆☆☆ (1)</option>
+                                </select>
 
-                            <label for="rating">Betyg</label>
-                            <select id="rating" name="rating" required>
-                                <option value="">Välj betyg</option>
-                                <option value="5">★★★★★ (5)</option>
-                                <option value="4">★★★★☆ (4)</option>
-                                <option value="3">★★★☆☆ (3)</option>
-                                <option value="2">★★☆☆☆ (2)</option>
-                                <option value="1">★☆☆☆☆ (1)</option>
-                            </select>
+                                <label for="comment">Recension</label>
+                                <textarea id="comment" name="comment" rows="4" placeholder="Vad tyckte du om produkten?" required></textarea>
 
-                            <label for="comment">Recension</label>
-                            <textarea id="comment" name="comment" rows="4" placeholder="Vad tyckte du om produkten?" required></textarea>
-
-                            <button type="submit" class="Varukorg">Skicka recension</button>
-                        </form>
+                                <button type="submit" class="Varukorg">Skicka recension</button>
+                            </form>
+                        }
+                        else 
+                        {
+                            <p>Du måste vara inloggad för att kunna lämna en recension.</p>
+                        }
                     </div>
                 </div>
+
                 <h2>Recensioner</h2>
-
-                <div class="review">
-                    <div class="review-header">
-                        <strong>Emma L.</strong>
-                        <span class="stars">★★★★★</span>
+                @foreach (var r in Model.Reviews)
+                {
+                    <div class="review">
+                        <div class="review-header">
+                            <strong>@r.ReviewerName</strong>
+                            @if (r.Rating == 5)
+                            {
+                                <span class="stars">★★★★★</span>
+                            }
+                            @if (r.Rating == 4)
+                            {
+                                <span class="stars">★★★★☆</span>
+                            }
+                            @if (r.Rating == 3)
+                            {
+                                <span class="stars">★★★☆☆</span>
+                            }
+                            @if (r.Rating == 2)
+                            {
+                                <span class="stars">★★☆☆☆</span>
+                            }
+                            @if (r.Rating == 1)
+                            {
+                                <span class="stars">★☆☆☆☆</span>
+                            }
+                        </div>
+                        <p>@r.ReviewTitle</p>
+                        <p>@r.ReviewText</p>
                     </div>
-                    <p>Otroligt bra ljud! Batteriet håller länge och brusreduceringen fungerar superbra. Rekommenderas!</p>
-                </div>
-
-                <div class="review">
-                    <div class="review-header">
-                        <strong>Jonas K.</strong>
-                        <span class="stars">★★★★☆</span>
-                    </div>
-                    <p>Väldigt nöjd, men hade önskat lite bättre passform för träning. Annars toppenprodukt!</p>
-                </div>
-
+                }
             </div>
         </div>
     </div>

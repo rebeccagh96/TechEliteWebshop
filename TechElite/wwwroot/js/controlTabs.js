@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "Användare",
         "Orderhistorik",
         "Lagersaldo",
-        "Kundregister",
+        "Inkorga",
         "Aviseringar",
         "Inställningar",
         "Övrigt"
@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const userLabels = [
         "Profil",
-        "Favoriter",
         "Orderhistorik",
+        "Hjälp",
         "Spårning",
         "Trådar",
         "Inlägg",

@@ -4,13 +4,12 @@
 @inject UserManager<ApplicationUser> UserManager
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv-se">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TechElite</title>
     <script type="importmap"></script>
-    @*  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> 
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,10 +46,7 @@
                         <input class="search-input" type="search" name="search" placeholder="Search" />
                     </form>
                 </div>
-
             </div>
-
-           
         </div>
     </header>
 
@@ -64,41 +60,35 @@
         <div class="footer-content">
             <div class="categories">
                 <h3>Kategorier</h3>
-                <a class="footer-cat" asp-controller="Shop" asp-action="Nyheter">Nyheter</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="Datorer">Datorer</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="Tillbehor">Tillbehör</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="Bildskarmar">Bildskärmar</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="KonsolerTillbehor">Konsoler & tillbehör</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="TelefonerTablets">Telefoner & tablets</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="Datorkomponenter">Datorkomponenter</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="Ljud">Ljud</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="1">Telefoner & Tablets</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="2">Laptops & Skärmar</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="3">Hörlurar & Hifi</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="4">Tillbehör & komponenter</a>
+                <a class="footer-cat" asp-controller="Shop" asp-action="FilterDepartments" asp-route-id="5">Gaming</a>
             </div>
             <div class="forum-links">
                 <h3>Forum</h3>
-                <a class="footer-cat" asp-controller="Forum" asp-action="Register">Registrera dig</a>
-                <a class="footer-cat" asp-controller="Forum" asp-action="Login">Logga in</a>
-                <a class="footer-cat" asp-controller="Forum" asp-action="Nyheter">Nyheter</a>
-                <a class="footer-cat" asp-controller="Forum" asp-action="Account">Konto</a>
-                <a class="footer-cat" asp-controller="Forum" asp-action="Terms">Användarvillkor</a>
-                <a class="footer-cat" asp-controller="Forum" asp-action="AccountManagement">Kontohantering</a>
+                <a class="footer-cat" asp-area="Identity" asp-page="/Account/Register">Registrera dig</a>
+                <a class="footer-cat" asp-area="Identity" asp-page="/Account/Login">Logga in</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="Index">Forum</a>
+                <a class="footer-cat" asp-controller="Forum" asp-action="MyThreads">Mina trådar och inlägg</a>
+                <a class="footer-cat" asp-controller="Home" asp-action="AllaVillkor">Användarvillkor</a>
             </div>
             <div class="About">
                 <h3>Om oss</h3>
-                <a class="footer-cat" asp-controller="About" asp-action="Historia">Vår historia</a>
-                <a class="footer-cat" asp-controller="About" asp-action="Medarbetare">Våra medarbetare</a>
-                <a class="footer-cat" asp-controller="About" asp-action="Kontakt">Kontaktinformation</a>
-                <a class="footer-cat" asp-controller="About" asp-action="JobbaHosOss">Jobba hos oss</a>
-                <a class="footer-cat" asp-controller="About" asp-action="Press">Press</a>
-                <a class="footer-cat" asp-controller="About" asp-action="VanligaFragor">Vanliga frågor</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Index">Vår historia</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Index">Våra medarbetare</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Index">Kontaktinformation</a>
+                <a class="footer-cat" asp-controller="About" asp-action="Index">Vanliga frågor</a>
             </div>
             <div class="Handla">
                 <h3>Handla hos oss</h3>
-                <a class="footer-cat" asp-controller="Shop" asp-action="SalesConditions">Försäljningsvillkor</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="ShippingDelivery">Frakt & leverans</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="ReturnPolicy">Ångerrätt</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="Warranty">Garanti</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="Complaint">Reklamation</a>
-                <a class="footer-cat" asp-controller="Shop" asp-action="PrivacyPolicy">Sekretess & integritet</a>
+                <a class="footer-cat" asp-controller="Home" asp-action="AllaVillkor">Försäljningsvillkor</a>
+                <a class="footer-cat" asp-controller="Home" asp-action="AllaVillkor">Frakt & leverans</a>
+                <a class="footer-cat" asp-controller="Home" asp-action="AllaVillkor">Ångerrätt</a>
+                <a class="footer-cat" asp-controller="Home" asp-action="AllaVillkor">Garanti</a>
+                <a class="footer-cat" asp-controller="Home" asp-action="AllaVillkor">Reklamation</a>
+                <a class="footer-cat" asp-controller="Home" asp-action="AllaVillkor">Sekretess & integritet</a>
             </div>
             <div class="shortcuts">
                 <h3>Nyhetsbrev</h3>
@@ -107,8 +97,8 @@
                     <input class="btn" type="submit" id="submit" value="Submit">
                 </div>
                 <div class="footer-buttons">
-                    <a class="btn btn-primary" asp-controller="Profile" asp-action="Login">Sign In</a>
-                    <a class="btn btn-primary" asp-controller="Profile" asp-action="Register">Register</a>
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
                 </div>
 
                 <div class="socials">

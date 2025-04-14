@@ -19,18 +19,19 @@ namespace TechElite.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var currentUserId = _userManager.GetUserId(User);
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == currentUserId);
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userManager.Users
+                .Include(u => u.Customer) 
+                .ToListAsync();
+
             var orders = await _context.Orders
                 .Include(o => o.OrderProducts)
-                    .ThenInclude(op => op.Product) // Ensure Product is included
+                    .ThenInclude(op => op.Product) 
                 .ToListAsync();
+
             var products = await _context.Products.ToListAsync();
             var departments = await _context.Departments.ToListAsync();
             var customers = await _context.Customers.ToListAsync();
-
-            
+            var userContact = await _context.userContacts.ToListAsync();
 
             var userViewModels = new List<UserViewModel>();
 
@@ -46,9 +47,10 @@ namespace TechElite.Controllers
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    Customer = user.Customer
                 });
             }
-          
+
             var orderViewModels = orders.Select(order => new OrderViewModel
             {
                 OrderId = order.OrderId,
@@ -61,7 +63,6 @@ namespace TechElite.Controllers
                     ProductName = op.Product.ProductName,
                     Price = op.Product.Price,
                     ProductQuantity = op.ProductQuantity,
-
                 }).ToList(),
                 TotalPrice = order.OrderProducts.Sum(op => op.Product.Price * op.ProductQuantity)
             }).ToList();
@@ -79,15 +80,15 @@ namespace TechElite.Controllers
                     Price = p.Price,
                     Description = p.Description,
                     DepartmentId = p.DepartmentId,
-                    DepartmentName = p.Department?.DepartmentName ?? "Unknown",
-                    Image = p.Image
+                    DepartmentName = p.Department?.DepartmentName ?? "Unknown"
                 }).ToList(),
-                Departments = departments
+                Departments = departments,
+                UserContacts = userContact
             };
-
 
             return View(model);
         }
+
 
 
 
@@ -112,6 +113,7 @@ namespace TechElite.Controllers
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+
 
             };
 

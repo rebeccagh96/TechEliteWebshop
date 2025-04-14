@@ -22,29 +22,37 @@ h2 {
 }
 
 article {
+
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     justify-content: center;
     width: 80%;
     margin: auto;
     padding: 20px;
 }
-
+ .Tråd {
+    margin:0px;
+    max-width: 100%;
+    min-width: 200px;
+}
 section {
+    
+    max-width: 100%;
+    min-width: 200px;
     flex-direction: column;
-    background-color: white;
     padding: 10px;
     margin: 20px;
     border-radius: 5px;
 }
 
-section div {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    width: 400px;
-    background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
-}
+    section div {
+     
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        width: 400px;
+        background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+    }
 
 #notification-article {
     display: none;
