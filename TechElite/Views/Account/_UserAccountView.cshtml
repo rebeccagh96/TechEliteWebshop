@@ -57,7 +57,7 @@ använd denna kanske
                 <partial name="_UserAccountEditView" model="Model" />
             </div>
         </div>
-        
+
     </div>
     <div class="second account-tab">
         <div class="Orderhistorik">
@@ -75,16 +75,29 @@ använd denna kanske
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var order in Model.Orders)
+                        @if (Model.Customers != null)
                         {
-                            <tr>
-                                <td>@order.OrderId</td>
-                                <td>@string.Join(", ", order.OrderProducts.Select(op => op.ProductName))</td>
-                                <td>@order.OrderProducts.Sum(op => op.Price * op.ProductQuantity).ToString("C")</td>
-                                <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
-                                <td>
-                                </td>
-                            </tr>
+                            var customer = Model.Customers.FirstOrDefault(c => c.ApplicationUserId == UserManager.GetUserId(User));
+                            if (customer != null)
+                            {
+                                @foreach (var order in Model.Orders.Where(o => o.CustomerId == customer.CustomerId))
+                                {
+                                    <tr>
+                                        <td>@order.OrderId</td>
+                                        <td>@string.Join(", ", order.OrderProducts.Select(op => op.ProductName))</td>
+                                        <td>@order.OrderProducts.Sum(op => op.Price * op.ProductQuantity).ToString("C")</td>
+                                        <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>Inga ordrar hittades för denna användare.</td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>
