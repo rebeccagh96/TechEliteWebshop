@@ -40,7 +40,8 @@ article {
 }
 
 .account-panel {
-    width: 240px;
+    max-width: 240px;
+    width: 100%;
     height: 100%;
     min-height: 600px;
     border-radius: 5px;
@@ -52,7 +53,7 @@ article {
 }
 
 .tab-label {
-    font-size: 24px;
+    font-size: 1.77em;
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -117,31 +118,31 @@ article {
     }
 
 #tab1:checked ~ .marker {
-    transform: translateY(calc(-10 * 56px));
+    transform: translateY(calc(-10 * 56.1px));
 }
 
 #tab2:checked ~ .marker {
-    transform: translateY(calc(-9 * 55px));
+    transform: translateY(calc(-9 * 56px));
 }
 
 #tab3:checked ~ .marker {
-    transform: translateY(calc(-8 * 55px));
+    transform: translateY(calc(-8 * 56px));
 }
 
 #tab4:checked ~ .marker {
-    transform: translateY(calc(-7 * 55px));
+    transform: translateY(calc(-7 * 56px));
 }
 
 #tab5:checked ~ .marker {
-    transform: translateY(calc(-6 * 55px));
+    transform: translateY(calc(-6 * 56px));
 }
 
 #tab6:checked ~ .marker {
-    transform: translateY(calc(-5 * 55px));
+    transform: translateY(calc(-5 * 56px));
 }
 
 #tab7:checked ~ .marker {
-    transform: translateY(calc(-4 * 55px));
+    transform: translateY(calc(-4 * 56px));
 }
 
 .content {
@@ -268,10 +269,7 @@ th, td {
     flex: 1;
 }
 
-.order-table {
-    display: flex;
-    flex-direction: column;
-}
+
 
 .user-table,
 .inventory-table,
@@ -302,60 +300,116 @@ th, td {
     margin: 20px;
 }
 
-#hamburger-btn {
-    background-color: #9747ffff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 18px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.hamburger-menu {
-    display: none;
-}
-
-#overlay-menu {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 999;
-    color: white;
-    text-align: center;
-    padding-top: 50px;
-}
-
-    #overlay-menu ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    #overlay-menu li {
-        margin: 20px 0;
-    }
-
-    #overlay-menu label {
-        font-size: 20px;
-        cursor: pointer;
-        color: white;
-    }
-
 
 @media (max-width: 980px) {
-    .tabs, .account-panel {
-        display: none;
+    body {
+        font-size: 12px;
     }
 
-    .hamburger-menu {
-        display: block;
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        z-index: 1000;
+    article {
+        display: flex;
+        flex-flow: column;
+        width: 100%;
+        max-width: 980px;
     }
+
+
+
+    .account-panel {
+        min-height: 60px;
+        max-height:70px;
+        display: flex;
+        flex-direction: row;
+        max-width: 980px;
+        width: 100%;
+    }
+
+    .tab-label {
+        font-weight: 500;
+        text-align: left;
+        color: #fff;
+        opacity: 1;
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 12px;
+        border-radius: 5px;
+        filter: none;
+        box-shadow: none;
+    }
+
+    .tabs label:hover,
+    .tabs input[type="radio"]:checked + label {
+        opacity: 1;
+        font-weight: 700;
+        color: #000;
+        background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));
+        transition: background .6s ease-in-out;
+    }
+
+
+    .tabs {
+        position: relative;
+        width: 100%;
+        max-width: 980px;
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        gap: 5px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+        .tabs::-webkit-scrollbar {
+            height: 6px;
+
+
+        }
+
+        .tabs::-webkit-scrollbar-track {
+            background-color: #ffffff0a;
+
+            margin-bottom: 10px;
+            padding: 2px;
+        }
+
+        .tabs::-webkit-scrollbar-thumb {
+            background-image: linear-gradient(to right, #301934ff, #9747ffff, #301934ff);
+            border-radius: 6px;
+            margin: 2px;
+        }
+
+
+
+}
+
+@media (max-width: 768px) {
+     body {
+        font-size: 12px;
+    }
+
+    article {
+
+        max-width: 768px;
+    }
+
+
+
+    .account-panel {
+        max-width: 768px;
+    }
+
+    .tab-label {
+        font-weight: 400;
+        padding: 10px;
+    }
+
+
+
+    .tabs {
+        max-width: 768px;
+    }
+
 }

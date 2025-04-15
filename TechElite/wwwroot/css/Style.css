@@ -99,8 +99,9 @@ main {
 
 
 .logo {
-    width: 180px;
-    margin-top: 5px; /* Kanske behöver lösas på bättre sätt*/
+    width: 100%;
+    max-width: 180px;
+    margin-top: 5px;
 }
 
 
@@ -114,11 +115,22 @@ main {
     width: 100%;
     margin: 0 auto;
     justify-content: space-between;
+    font-size: 1.2em;
+
 }
 
-nav a {
-    margin: 0 10px;
+nav {
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translate(-50%, -25%);
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
 }
+
 
     nav a:hover {
         font-weight: bold;
@@ -130,13 +142,20 @@ nav a {
 .icons {
     display: flex;
     flex-direction: row;
-    padding: 10px;
+    padding: 10px 0 0;
     gap: 15px;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
+
 }
 
-.icons img {
+.icons a {
+    display: flex;
+    gap: 5px;
+
+}
+
+.icon {
     width: 25px;
 }
 
@@ -308,9 +327,7 @@ button.logout-btn {
         background-color: #0056b3;
     }
 
-span {
-    padding: 0 5px;
-}
+
 
 
 
@@ -339,7 +356,6 @@ span {
     padding: 8px 14px;
     border-radius: 5px;
     border: none;
-    /* filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.479)); */
 }
 
 
@@ -466,3 +482,39 @@ footer p, .footer-cat {
     .readmore:hover {
         text-decoration: underline;
     }
+
+
+@media (max-width: 980px){
+
+    .logo {
+        max-width: 150px;
+    }
+
+    .menu {
+        font-size: 1.4em;
+    }
+
+    .logo {
+        width: 180px;
+        margin-top: 5px; /* Kanske behöver lösas på bättre sätt*/
+    }
+}
+
+@media (max-width: 768px) {
+
+    body {
+        font-size: 12px;
+    }
+
+    .logo {
+        max-width: 120px;
+    }
+
+    .icons span {
+        display: none;
+    }
+
+    .menu {
+        font-size: 1.4em;
+    }
+}

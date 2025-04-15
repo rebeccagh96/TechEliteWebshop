@@ -20,11 +20,13 @@ h2 {
 
 }
 
-#registerForm input,
-#account input[type="email"],
-#account input[type="password"] {
-    width: 100%;
-}
+    #edit-user-form input[type="text"],
+    #edit-user-form input[type="email"],
+    #registerForm input,
+    #account input[type="email"],
+    #account input[type="password"] {
+        width: 100%;
+    }
 .checkbox {
     width: 50%;
 }
@@ -43,7 +45,7 @@ h2 {
 
     .loginregister input,
     #edit-user-form input,
-    #edit-product-form input
+    #edit-product-form input,
     #edit-order-form input,
     .checkout-form input {
         border-radius: 5px;
