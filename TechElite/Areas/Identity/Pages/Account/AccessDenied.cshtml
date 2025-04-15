@@ -4,7 +4,18 @@
     ViewData["Title"] = "Access denied";
 }
 
-<header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
-</header>
+<link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+
+<main>
+    <div class="login-container">
+        <article>
+            <div class="welcome">
+                <h1 class="text-danger">@ViewData["Title"]</h1>
+                <p class="text-danger">You do not have access to this resource.</p>
+            </div>
+        </article>
+    </div>
+</main>
+
+

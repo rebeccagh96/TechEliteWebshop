@@ -66,69 +66,6 @@ namespace TechElite.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Checkout(string firstname, string lastname, string address, string zipcode, string city)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View("ViewCart"); // Show validation messages
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-
-            // Check if the customer already exists
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
-            if (customer == null)
-            {
-                // Create a new customer if one doesn't exist
-                customer = new Customer
-                {
-                    FirstName = firstname,
-                    LastName = lastname,
-                    Address = address,
-                    ZipCode = zipcode,
-                    City = city,
-                    ApplicationUserId = user.Id,
-                    UserName = user.UserName
-                };
-                _context.Customers.Add(customer);
-            }
-            else
-            {
-                // Update existing customer details if necessary
-                customer.FirstName = firstname;
-                customer.LastName = lastname;
-                customer.Address = address;
-                customer.ZipCode = zipcode;
-                customer.City = city;
-            }
-
-            var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart");
-            if (cartItems == null || !cartItems.Any())
-            {
-                ModelState.AddModelError("", "Din kundvagn är tom.");
-                return View("ViewCart");
-            }
-
-            var order = new Order
-            {
-                OrderDate = DateTime.Now,
-                UserName = user.UserName,
-                Customer = customer,
-                OrderProducts = cartItems.Select(item => new OrderProduct
-                {
-                    ProductId = item.ProductId,
-                    ProductQuantity = item.CartQuantity
-                }).ToList()
-            };
-
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-
-            HttpContext.Session.Remove("Cart");
-
-            return RedirectToAction("Confirmation");
-        }
 
         [HttpPost]
         public async Task<IActionResult> Edit([FromBody] OrderEditDto model)

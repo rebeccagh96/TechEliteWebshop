@@ -29,6 +29,7 @@ article {
 .loginregister {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     padding: 20px;
     margin: auto;
     background-image: linear-gradient(to bottom right, rgb(253, 244, 255), rgb(228, 255, 250));

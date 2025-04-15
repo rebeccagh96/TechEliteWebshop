@@ -25,17 +25,13 @@ article {
     background-image: linear-gradient(to bottom right, #301934ff, #163832ff, #301934ff);
 }
 
-.account-container,
-.cart-container {
+
+
+.account-container {
     padding: 15px;
 }
 
-.cart-container {
-    display: flex;
-    gap: 10px
-}
 
-.cart-container article,
 .text-center {
     display: flex;
     flex-direction: column;

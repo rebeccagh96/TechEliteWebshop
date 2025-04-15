@@ -23,10 +23,20 @@ namespace TechElite.Controllers
         public IActionResult ViewCart()
         {
             var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart") ?? new List<OrderProductViewModel>();
+
+            // Hämtar den inloggade användaren
+            var user = _userManager.GetUserAsync(User).Result;
+
+            Customer customer = null;
+            if (user != null)
+            {
+                customer = _context.Customers.FirstOrDefault(c => c.ApplicationUserId == user.Id);
+            }
+
             var model = new CartPageViewModel
             {
                 CartItems = cartItems,
-                Customer = new Customer
+                Customer = customer ?? new Customer
                 {
                     FirstName = string.Empty,
                     LastName = string.Empty,
@@ -39,7 +49,7 @@ namespace TechElite.Controllers
             return View(model);
         }
 
-        // Add a product to the cart
+        // Lägg till en produkt i korgen
         [HttpPost]
         public IActionResult AddToCart(int id)
         {
@@ -72,18 +82,46 @@ namespace TechElite.Controllers
         [HttpPost]
         public async Task<IActionResult> Checkout(string firstname, string lastname, string address, string zipcode, string city)
         {
+            // Validering av input
+            if (string.IsNullOrWhiteSpace(firstname))
+                ModelState.AddModelError("firstname", "Förnamn är obligatoriskt.");
+            if (string.IsNullOrWhiteSpace(lastname))
+                ModelState.AddModelError("lastname", "Efternamn är obligatoriskt.");
+            if (string.IsNullOrWhiteSpace(address))
+                ModelState.AddModelError("address", "Adress är obligatorisk.");
+            if (string.IsNullOrWhiteSpace(zipcode))
+                ModelState.AddModelError("zipcode", "Postnummer är obligatoriskt.");
+            if (string.IsNullOrWhiteSpace(city))
+                ModelState.AddModelError("city", "Stad är obligatorisk.");
+
+            // Om validering misslyckas skickas användaren tillbaka till cart med de fält dne fyllt i och 
+            // de items i carten som användaren har lagts till
             if (!ModelState.IsValid)
             {
-                return View("ViewCart"); // Show validation messages
+                var cartItemsFromSession = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart") ?? new List<OrderProductViewModel>();
+                var model = new CartPageViewModel
+                {
+                    CartItems = cartItemsFromSession,
+                    Customer = new Customer
+                    {
+                        FirstName = firstname,
+                        LastName = lastname,
+                        Address = address,
+                        ZipCode = zipcode,
+                        City = city,
+                        UserName = User.Identity?.Name ?? "Guest"
+                    }
+                };
+                return View("ViewCart", model);
             }
 
             var user = await _userManager.GetUserAsync(User);
 
-            // Retrieve the existing customer or create a new one
+            // Hämta existerande kund eller skapa en ny
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
             if (customer == null)
             {
-                // Create a new customer if one doesn't exist
+                // Skapa ny kund om den inte redan finns
                 customer = new Customer
                 {
                     FirstName = firstname,
@@ -98,7 +136,7 @@ namespace TechElite.Controllers
             }
             else
             {
-                // Update existing customer details if necessary
+                // Uppdatera befintlig kund
                 customer.FirstName = firstname;
                 customer.LastName = lastname;
                 customer.Address = address;
@@ -113,12 +151,12 @@ namespace TechElite.Controllers
                 return View("ViewCart");
             }
 
-            // Create a new order and associate it with the existing or new customer
+            // Skapa en ny order och koppla den till kunden
             var order = new Order
             {
                 OrderDate = DateTime.Now,
                 UserName = user.UserName,
-                Customer = customer, // Associate the customer
+                Customer = customer, // Koppla ordern till kunden
                 OrderProducts = cartItems.Select(item => new OrderProduct
                 {
                     ProductId = item.ProductId,

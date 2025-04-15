@@ -67,11 +67,11 @@ namespace TechElite.Areas.Identity.Pages.Account
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
                 PasswordResetUrl = Url.Page(
-                    "/Account/ResetPassword",
+                    "/Account/ResetPasswordConfirmation",
                     pageHandler: null,
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
-                return Page();
+                return RedirectToPage("./ForgotPasswordConfirmation", new { code });
             }
 
             return Page();

@@ -4,5 +4,14 @@
     ViewData["Title"] = "Bekräfta din e-postadress";
 }
 
-<h1>@ViewData["Title"]</h1>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+<link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+
+<main>
+    <div class="login-container">
+        <article>
+            <h1>@ViewData["Title"]</h1>
+            <partial name="_StatusMessage" model="Model.StatusMessage" />
+        </article>
+    </div>
+</main>

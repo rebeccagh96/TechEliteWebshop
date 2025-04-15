@@ -212,6 +212,7 @@ namespace TechElite.Controllers
 
             try
             {
+                // Raderar all data relaterad till användaren
                 var userReplies = await _context.ForumReplies
                     .Where(r => r.ApplicationUserId == user.Id)
                     .ToListAsync();
