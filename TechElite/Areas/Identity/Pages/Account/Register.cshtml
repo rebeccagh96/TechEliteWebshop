@@ -26,19 +26,19 @@
                     <div class="form-floating mb-3">
                         <input asp-for="Input.Username" class="form-control" aria-required="true" placeholder="Användarnamn" />
                         <label asp-for="Input.Username">Användarnamn</label>
-                        <p>Användarnamn måste innehålla minst 4 och max 20 alfanumeriska tecken.</p>
+                        <p>Minst 4 och max 20 alfanumeriska tecken.</p>
                         <span asp-validation-for="Input.Username" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
                         <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="Förnamn" />
                         <label asp-for="Input.FirstName">Förnamn</label>
-                        <p>Förnamn måste innehålla minst 2 och max 40 alfanumeriska tecken.</p>
+                        <p>Minst 2 och max 40 alfanumeriska tecken.</p>
                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
                         <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="Efternamn" />
                         <label asp-for="Input.LastName">Efternamn</label>
-                        <p>Efternamn måste innehålla minst 2 och max 40 alfanumeriska tecken.</p>
+                        <p>Minst 2 och max 40 alfanumeriska tecken.</p>
                         <span asp-validation-for="Input.LastName" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
@@ -49,7 +49,7 @@
                     <div class="form-floating mb-3">
                         <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Lösenord" />
                         <label asp-for="Input.Password">Lösenord</label>
-                        <p>Lösenord måste innehålla minst 8 och max 100 alfanumeriska tecken.</p>
+                        <p>Måste innehålla minst 8 och max 100 alfanumeriska tecken.</p>
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">

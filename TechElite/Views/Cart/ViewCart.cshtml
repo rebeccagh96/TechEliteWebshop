@@ -1,82 +1,99 @@
-﻿@model TechElite.Models.CartPageViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@using TechElite.Areas.Identity.Data
+@using System.Linq
+@using TechElite.Models
+
+@model TechElite.Models.CartPageViewModel
+
+@inject UserManager<ApplicationUser> UserManager
+
+<link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
 
 <div class="cart-container">
-    <h2>Din varukorg</h2>
-
-    @if (!Model.CartItems.Any())
-    {
-        <p>Din varukorg är tom.</p>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Produkt</th>
-                    <th>Antal</th>
-                    <th>Pris</th>
-                    <th>Totalt</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.CartItems)
-                {
-                    <tr>
-                        <td>@item.ProductName</td>
-                        <td>@item.CartQuantity</td>
-                        <td>@item.Price.ToString("C")</td>
-                        <td>@(item.Price * item.CartQuantity).ToString("C")</td>
-                        <td>
-                            <form asp-action="RemoveFromCart" asp-controller="Cart" asp-route-id="@item.ProductId" method="post">
-                                <button type="submit" class="btn btn-danger">Ta bort</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-        <div class="checkout-form">
-            <h3>Kundinformation</h3>
-            <form asp-action="Checkout" asp-controller="Cart" method="post">
-                <div class="form-group">
-                    <label for="firstName">Förnamn:</label>
-                    <input name="firstname" class="form-control" />
-                    <span asp-validation-for="Customer.FirstName" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="lastName">Efternamn:</label>
-                    <input name="lastname" class="form-control" />
-                    <span asp-validation-for="Customer.LastName" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="address">Adress:</label>
-                    <input name="address" class="form-control" />
-                    <span asp-validation-for="Customer.Address" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="zipcode">Postnummer:</label>
-                    <input name="zipcode" class="form-control" />
-                    <span asp-validation-for="Customer.ZipCode" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="city">Stad</label>
-                    <input name="city" class="form-control" />
-                    <span asp-validation-for="Customer.City" class="text-danger"></span>
-                </div>
-
-                <button type="submit" class="btn btn-success">Köp nu</button>
-            </form>
+    <div class="cart">
+        <div class="cart-heading">
+            <h1>Din varukorg @UserManager.GetUserName(User)!</h1>
         </div>
-    }
+        <div class="cart-items">
+            @if (!Model.CartItems.Any())
+            {
+                <div class="cart-message">
+                    <p>Din varukorg är tom.</p>
+                    <a href="/Shop" class="btn btn-secondary mt-3">Fortsätt handla</a>
+                </div>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Produkt</th>
+                            <th>Antal</th>
+                            <th>Pris</th>
+                            <th>Totalt</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <tr>
+                                <td>@item.ProductName</td>
+                                <td>@item.CartQuantity</td>
+                                <td>@item.Price.ToString("C")</td>
+                                <td>@(item.Price * item.CartQuantity)</td>
+                                <td>
+                                    <form asp-action="RemoveFromCart" asp-controller="Cart" asp-route-id="@item.ProductId" method="post">
+                                        <button type="submit" class="btn btn-danger">Ta bort</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
 
-    <a href="/Shop" class="btn btn-secondary mt-3">Fortsätt handla</a>
+                <div class="checkout-form">
+                    <h3>Kundinformation</h3>
+                    <form asp-action="Checkout" asp-controller="Cart" method="post">
+                        <div class="form-group">
+                            <label for="firstName">Förnamn:</label>
+                            <input name="firstname" class="form-control" value="@Model.Customer.FirstName " />
+                            <span asp-validation-for="Customer.FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">Efternamn:</label>
+                            <input name="lastname" class="form-control" value="@Model.Customer.LastName" />
+                            <span asp-validation-for="Customer.LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Adress:</label>
+                            <input name="address" class="form-control" @Model.Customer.Address />
+                            <span asp-validation-for="Customer.Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zipcode">Postnummer:</label>
+                            <input name="zipcode" class="form-control" @Model.Customer.ZipCode />
+                            <span asp-validation-for="Customer.ZipCode" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city">Stad</label>
+                            <input name="city" class="form-control" @Model.Customer.City />
+                            <span asp-validation-for="Customer.City" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Köp nu</button>
+                    </form>
+                </div>
+            }
+        </div>
+    </div>
 </div>
+
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")

@@ -23,10 +23,20 @@ namespace TechElite.Controllers
         public IActionResult ViewCart()
         {
             var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart") ?? new List<OrderProductViewModel>();
+
+            // Hämtar den inloggade användaren
+            var user = _userManager.GetUserAsync(User).Result;
+
+            Customer customer = null;
+            if (user != null)
+            {
+                customer = _context.Customers.FirstOrDefault(c => c.ApplicationUserId == user.Id);
+            }
+
             var model = new CartPageViewModel
             {
                 CartItems = cartItems,
-                Customer = new Customer
+                Customer = customer ?? new Customer
                 {
                     FirstName = string.Empty,
                     LastName = string.Empty,
@@ -72,9 +82,37 @@ namespace TechElite.Controllers
         [HttpPost]
         public async Task<IActionResult> Checkout(string firstname, string lastname, string address, string zipcode, string city)
         {
+            // Validering av input
+            if (string.IsNullOrWhiteSpace(firstname))
+                ModelState.AddModelError("firstname", "Förnamn är obligatoriskt.");
+            if (string.IsNullOrWhiteSpace(lastname))
+                ModelState.AddModelError("lastname", "Efternamn är obligatoriskt.");
+            if (string.IsNullOrWhiteSpace(address))
+                ModelState.AddModelError("address", "Adress är obligatorisk.");
+            if (string.IsNullOrWhiteSpace(zipcode))
+                ModelState.AddModelError("zipcode", "Postnummer är obligatoriskt.");
+            if (string.IsNullOrWhiteSpace(city))
+                ModelState.AddModelError("city", "Stad är obligatorisk.");
+
+            // Om validering misslyckas skickas användaren tillbaka till cart med de fält dne fyllt i och 
+            // de items i carten som användaren har lagts till
             if (!ModelState.IsValid)
             {
-                return View("ViewCart"); // Visa valideringsmeddelande
+                var cartItemsFromSession = HttpContext.Session.GetObjectFromJson<List<OrderProductViewModel>>("Cart") ?? new List<OrderProductViewModel>();
+                var model = new CartPageViewModel
+                {
+                    CartItems = cartItemsFromSession,
+                    Customer = new Customer
+                    {
+                        FirstName = firstname,
+                        LastName = lastname,
+                        Address = address,
+                        ZipCode = zipcode,
+                        City = city,
+                        UserName = User.Identity?.Name ?? "Guest"
+                    }
+                };
+                return View("ViewCart", model);
             }
 
             var user = await _userManager.GetUserAsync(User);
