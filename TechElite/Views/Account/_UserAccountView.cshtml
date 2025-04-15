@@ -83,8 +83,7 @@
                                         <td>@string.Join(", ", order.OrderProducts.Select(op => op.ProductName))</td>
                                         <td>@order.OrderProducts.Sum(op => op.Price * op.ProductQuantity).ToString("C")</td>
                                         <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
-                                        <td>
-                                        </td>
+
                                     </tr>
                                 }
                             }
