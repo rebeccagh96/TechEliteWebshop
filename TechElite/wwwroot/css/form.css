@@ -15,8 +15,19 @@ h2 {
     margin-bottom: 10px;
 }
 
+#registerForm, #account {
+    padding: 20px;
 
+}
 
+#registerForm input,
+#account input[type="email"],
+#account input[type="password"] {
+    width: 100%;
+}
+.checkbox {
+    width: 50%;
+}
 
 
 #edit-user-form,
@@ -48,7 +59,7 @@ h2 {
 #edit-user-form input[type="email"],
 #edit-user-form input[type="password"],
 #edit-product-form input[type="text"],
-#edit-order-form input[type="text"],
+#edit-order-form input[type="text"]
 {
     height: 30px;
 }
