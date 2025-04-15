@@ -71,16 +71,16 @@ namespace TechElite.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("ViewCart"); // Show validation messages
+                return View("ViewCart"); // visa valideringsmeddelande
             }
 
             var user = await _userManager.GetUserAsync(User);
 
-            // Check if the customer already exists
+            // Kntrollerar om kunden redan finns
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
             if (customer == null)
             {
-                // Create a new customer if one doesn't exist
+                // Skapar en ny kund om den inte redan finns
                 customer = new Customer
                 {
                     FirstName = firstname,
@@ -95,7 +95,7 @@ namespace TechElite.Controllers
             }
             else
             {
-                // Update existing customer details if necessary
+                // Uåppdaterar kundens information om den redan finns
                 customer.FirstName = firstname;
                 customer.LastName = lastname;
                 customer.Address = address;

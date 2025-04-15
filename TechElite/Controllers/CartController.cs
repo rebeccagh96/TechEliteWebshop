@@ -39,7 +39,7 @@ namespace TechElite.Controllers
             return View(model);
         }
 
-        // Add a product to the cart
+        // Lägg till en produkt i korgen
         [HttpPost]
         public IActionResult AddToCart(int id)
         {
@@ -74,16 +74,16 @@ namespace TechElite.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("ViewCart"); // Show validation messages
+                return View("ViewCart"); // Visa valideringsmeddelande
             }
 
             var user = await _userManager.GetUserAsync(User);
 
-            // Retrieve the existing customer or create a new one
+            // Hämta existerande kund eller skapa en ny
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
             if (customer == null)
             {
-                // Create a new customer if one doesn't exist
+                // Skapa ny kund om den inte redan finns
                 customer = new Customer
                 {
                     FirstName = firstname,
@@ -98,7 +98,7 @@ namespace TechElite.Controllers
             }
             else
             {
-                // Update existing customer details if necessary
+                // Uppdatera befintlig kund
                 customer.FirstName = firstname;
                 customer.LastName = lastname;
                 customer.Address = address;
@@ -113,12 +113,12 @@ namespace TechElite.Controllers
                 return View("ViewCart");
             }
 
-            // Create a new order and associate it with the existing or new customer
+            // Skapa en ny order och koppla den till kunden
             var order = new Order
             {
                 OrderDate = DateTime.Now,
                 UserName = user.UserName,
-                Customer = customer, // Associate the customer
+                Customer = customer, // Koppla ordern till kunden
                 OrderProducts = cartItems.Select(item => new OrderProduct
                 {
                     ProductId = item.ProductId,
